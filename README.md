@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# myswap
-copy uniswap
-=======
 # Uniswap Interface
 
 [![Unit Tests](https://github.com/Uniswap/uniswap-interface/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/Uniswap/uniswap-interface/actions/workflows/unit-tests.yaml)
@@ -72,4 +68,3 @@ linked from the [v1.0.0 release](https://github.com/Uniswap/uniswap-interface/re
 
 
 v2 版本
->>>>>>> master
