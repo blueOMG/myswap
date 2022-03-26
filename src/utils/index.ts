@@ -18,35 +18,17 @@ export function isAddress(value: any): string | false {
 }
 
 const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  1: '',
-  3: 'ropsten.',
-  4: 'rinkeby.',
-  5: 'goerli.',
-  42: 'kovan.'
+  1: 'https://etherscan.io',
+  3: 'https://ropsten.etherscan.io',
+  4: 'https://rinkeby.etherscan.io',
+  5: 'https://goerli.etherscan.io',
+  42: 'https://kovan.etherscan.io',
+  97: 'https://testnet.bscscan.com'
 }
 
-export function getEtherscanLink(
-  chainId: ChainId,
-  data: string,
-  type: 'transaction' | 'token' | 'address' | 'block'
-): string {
-  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    case 'block': {
-      return `${prefix}/block/${data}`
-    }
-    case 'address':
-    default: {
-      return `${prefix}/address/${data}`
-    }
-  }
+export function getEtherscanLink(chainId: ChainId, data: string, type: 'transaction' | 'token' | 'address'| 'block'): string {
+  const prefix = `${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}`
+  return prefix
 }
 
 // shorten the checksummed version of the input address to have 0x + 4 characters at start and end
