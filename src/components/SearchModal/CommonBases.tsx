@@ -38,9 +38,9 @@ export default function CommonBases({
     <AutoColumn gap="md">
       <AutoRow>
         <Text fontWeight={500} fontSize={14}>
-          Common bases
+          常用代币
         </Text>
-        <QuestionHelper text="These tokens are commonly paired with other tokens." />
+        <QuestionHelper text="这些代币通常与其他代币配对" />
       </AutoRow>
       <AutoRow gap="4px">
         <BaseWrapper

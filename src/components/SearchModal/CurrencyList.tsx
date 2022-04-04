@@ -120,14 +120,14 @@ function CurrencyRow({
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (
             <TYPE.main fontWeight={500}>
-              Added by user
+              已添加
               <LinkStyledButton
                 onClick={event => {
                   event.stopPropagation()
                   if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
                 }}
               >
-                (Remove)
+                (移除)
               </LinkStyledButton>
             </TYPE.main>
           ) : null}
@@ -140,7 +140,7 @@ function CurrencyRow({
                   if (currency instanceof Token) addToken(currency)
                 }}
               >
-                (Add)
+                (添加)
               </LinkStyledButton>
             </TYPE.main>
           ) : null}

@@ -69,7 +69,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             <FixedHeightRow>
               <RowFixed>
                 <Text fontWeight={500} fontSize={16}>
-                  Your position
+                 你的份额
                 </Text>
               </RowFixed>
             </FixedHeightRow>

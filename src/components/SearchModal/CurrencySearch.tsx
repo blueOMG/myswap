@@ -1,7 +1,6 @@
 import { Currency, ETHER, Token } from 'hlbscswap-sdk'
 import React, { KeyboardEvent, RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import ReactGA from 'react-ga'
-import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
@@ -42,7 +41,6 @@ export function CurrencySearch({
   isOpen,
   onChangeList
 }: CurrencySearchProps) {
-  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
@@ -142,15 +140,15 @@ export function CurrencySearch({
       <PaddedColumn gap="14px">
         <RowBetween>
           <Text fontWeight={500} fontSize={16}>
-            Select a token
-            <QuestionHelper text="Find a token by searching for its name or symbol or by pasting its address below." />
+            选择一个代币
+            <QuestionHelper text="通过搜索代币的名称或符号或将其地址粘贴在下面来查找代币" />
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
         <SearchInput
           type="text"
           id="token-search-input"
-          placeholder={t('tokenSearchPlaceholder')}
+          placeholder={"搜索代币或合约地址"}
           value={searchQuery}
           ref={inputRef as RefObject<HTMLInputElement>}
           onChange={handleInput}
@@ -161,7 +159,7 @@ export function CurrencySearch({
         )}
         <RowBetween>
           <Text fontSize={14} fontWeight={500}>
-            Token Name
+            代币名称
           </Text>
           <SortButton ascending={invertSearchOrder} toggleSortOrder={() => setInvertSearchOrder(iso => !iso)} />
         </RowBetween>
@@ -201,11 +199,11 @@ export function CurrencySearch({
             </Row>
           ) : null}
           <LinkStyledButton
-            style={{ fontWeight: 500, color: theme.text2, fontSize: 16 }}
+            style={{ fontWeight: 500, color: theme.text2, fontSize: 16, width: 80 }}
             onClick={onChangeList}
             id="currency-search-change-list-button"
           >
-            {selectedListInfo.current ? 'Change' : 'Select a list'}
+            {selectedListInfo.current ? '修改' : '选择一个列表'}
           </LinkStyledButton>
         </RowBetween>
       </Card>

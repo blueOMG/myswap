@@ -272,7 +272,7 @@ export default function RemoveLiquidity({
         ]
       }
     } else {
-      throw new Error('Attempting to confirm without approval or a signature. Please contact support.')
+      throw new Error('试图在没有批准或签名的情况下确认。请联系支持')
     }
 
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
@@ -280,7 +280,7 @@ export default function RemoveLiquidity({
         router.estimateGas[methodName](...args)
           .then(calculateGasMargin)
           .catch(error => {
-            console.error(`estimateGas failed`, methodName, args, error)
+            console.error(`estimateGas 失败`, methodName, args, error)
             return undefined
           })
       )
@@ -306,11 +306,11 @@ export default function RemoveLiquidity({
 
           addTransaction(response, {
             summary:
-              'Remove ' +
+              '移除 ' +
               parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
               ' ' +
               currencyA?.symbol +
-              ' and ' +
+              '添加 ' +
               parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
               ' ' +
               currencyB?.symbol
@@ -319,8 +319,8 @@ export default function RemoveLiquidity({
           setTxHash(response.hash)
 
           ReactGA.event({
-            category: 'Liquidity',
-            action: 'Remove',
+            category: '流动性',
+            action: '移除',
             label: [currencyA?.symbol, currencyB?.symbol].join('/')
           })
         })
@@ -362,8 +362,8 @@ export default function RemoveLiquidity({
         </RowBetween>
 
         <TYPE.italic fontSize={12} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
+          {`输出估计。如果价格变化超过 ${allowedSlippage /
+            100}% 你的交易将恢复。`}
         </TYPE.italic>
       </AutoColumn>
     )
@@ -410,9 +410,9 @@ export default function RemoveLiquidity({
     )
   }
 
-  const pendingText = `Removing ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
+  const pendingText = `移除 ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
     currencyA?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
+  } 和 ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
 
   const liquidityPercentChangeCallback = useCallback(
     (value: number) => {
@@ -476,7 +476,7 @@ export default function RemoveLiquidity({
             hash={txHash ? txHash : ''}
             content={() => (
               <ConfirmationModalContent
-                title={'You will receive'}
+                title={'你将收到'}
                 onDismiss={handleDismissConfirmation}
                 topContent={modalHeader}
                 bottomContent={modalBottom}
@@ -495,7 +495,7 @@ export default function RemoveLiquidity({
                       setShowDetailed(!showDetailed)
                     }}
                   >
-                    {showDetailed ? 'Simple' : 'Detailed'}
+                    {showDetailed ? '简介' : '详情'}
                   </ClickableText>
                 </RowBetween>
                 <Row style={{ alignItems: 'flex-end' }}>
@@ -517,7 +517,7 @@ export default function RemoveLiquidity({
                         75%
                       </MaxButton>
                       <MaxButton onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')} width="20%">
-                        Max
+                        最大值
                       </MaxButton>
                     </RowBetween>
                   </>
@@ -603,7 +603,7 @@ export default function RemoveLiquidity({
                   onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                   showMaxButton={!atMaxAmount}
                   currency={currencyA}
-                  label={'Output'}
+                  label={'输出'}
                   onCurrencySelect={handleSelectCurrencyA}
                   id="remove-liquidity-tokena"
                 />
@@ -617,7 +617,7 @@ export default function RemoveLiquidity({
                   onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                   showMaxButton={!atMaxAmount}
                   currency={currencyB}
-                  label={'Output'}
+                  label={'输出'}
                   onCurrencySelect={handleSelectCurrencyB}
                   id="remove-liquidity-tokenb"
                 />
@@ -641,7 +641,7 @@ export default function RemoveLiquidity({
             )}
             <div style={{ position: 'relative' }}>
               {!account ? (
-                <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+                <ButtonLight onClick={toggleWalletModal}>连接钱包</ButtonLight>
               ) : (
                 <RowBetween>
                   <ButtonConfirmed
