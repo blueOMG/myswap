@@ -294,12 +294,12 @@ export default function WalletModal({
           <CloseIcon onClick={toggleWalletModal}>
             <CloseColor />
           </CloseIcon>
-          <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
+          <HeaderRow>{error instanceof UnsupportedChainIdError ? '网络错误' : '连接错误'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
               <h5>Please connect to the appropriate Ethereum network.</h5>
             ) : (
-              'Error connecting. Try refreshing the page.'
+              '连接错误. 请尝试刷新页面.'
             )}
           </ContentWrapper>
         </UpperSection>
@@ -329,7 +329,7 @@ export default function WalletModal({
                 setWalletView(WALLET_VIEWS.ACCOUNT)
               }}
             >
-              Back
+              返回
             </HoverText>
           </HeaderRow>
         ) : (
@@ -350,8 +350,8 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>New to Ethereum? &nbsp;</span>{' '}
-              <ExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</ExternalLink>
+              <span>暂无其他钱包? &nbsp;</span>{' '}
+              <ExternalLink href="https://ethereum.org/wallets/">了解更多钱包</ExternalLink>
             </Blurb>
           )}
         </ContentWrapper>

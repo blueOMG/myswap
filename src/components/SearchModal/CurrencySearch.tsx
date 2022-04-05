@@ -41,6 +41,7 @@ export function CurrencySearch({
   isOpen,
   onChangeList
 }: CurrencySearchProps) {
+  
   const { chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
@@ -48,7 +49,7 @@ export function CurrencySearch({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
   const allTokens = useAllTokens()
-
+  
   // if they input an address, use it
   const isAddressSearch = isAddress(searchQuery)
   const searchToken = useToken(searchQuery)

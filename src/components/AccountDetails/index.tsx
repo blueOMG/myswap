@@ -238,7 +238,7 @@ export default function AccountDetails({
           SUPPORTED_WALLETS[k].connector === connector && (connector !== injected || isMetaMask === (k === 'METAMASK'))
       )
       .map(k => SUPPORTED_WALLETS[k].name)[0]
-    return <WalletName>Connected with {name}</WalletName>
+    return <WalletName>连接到 {name}</WalletName>
   }
 
   function getStatusIcon() {
@@ -295,7 +295,7 @@ export default function AccountDetails({
         <CloseIcon onClick={toggleWalletModal}>
           <CloseColor />
         </CloseIcon>
-        <HeaderRow>Account</HeaderRow>
+        <HeaderRow>账号</HeaderRow>
         <AccountSection>
           <YourAccount>
             <InfoCard>
@@ -309,7 +309,7 @@ export default function AccountDetails({
                         ;(connector as any).close()
                       }}
                     >
-                      Disconnect
+                      断开连接
                     </WalletAction>
                   )}
                   <WalletAction
@@ -318,7 +318,7 @@ export default function AccountDetails({
                       openOptions()
                     }}
                   >
-                    Change
+                    修改
                   </WalletAction>
                 </div>
               </AccountGroupingRow>
@@ -348,7 +348,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>Copy Address</span>
+                            <span style={{ marginLeft: '4px' }}>复制地址</span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -358,7 +358,7 @@ export default function AccountDetails({
                             href={chainId && getEtherscanLink(chainId, ENSName, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+                            <span style={{ marginLeft: '4px' }}>浏览器中查看</span>
                           </AddressLink>
                         )}
                       </div>
@@ -370,7 +370,7 @@ export default function AccountDetails({
                       <div>
                         {account && (
                           <Copy toCopy={account}>
-                            <span style={{ marginLeft: '4px' }}>Copy Address</span>
+                            <span style={{ marginLeft: '4px' }}>复制地址</span>
                           </Copy>
                         )}
                         {chainId && account && (
@@ -380,7 +380,7 @@ export default function AccountDetails({
                             href={getEtherscanLink(chainId, account, 'address')}
                           >
                             <LinkIcon size={16} />
-                            <span style={{ marginLeft: '4px' }}>View on Etherscan</span>
+                            <span style={{ marginLeft: '4px' }}>浏览器中查看</span>
                           </AddressLink>
                         )}
                       </div>
@@ -403,7 +403,7 @@ export default function AccountDetails({
         </LowerSection>
       ) : (
         <LowerSection>
-          <TYPE.body color={theme.text1}>Your transactions will appear here...</TYPE.body>
+          <TYPE.body color={theme.text1}>你的交易会出现在这里...</TYPE.body>
         </LowerSection>
       )}
     </>
