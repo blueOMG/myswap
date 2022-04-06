@@ -1,5 +1,5 @@
 // the Uniswap Default token list lives here
-export const DEFAULT_TOKEN_LIST_URL = 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json'
+export const DEFAULT_TOKEN_LIST_URL = 'https://umaproject.org/uma.tokenlist.json'
  
 // 可以注释 只放一个json文件的链接 就可以了， 
 export const DEFAULT_LIST_OF_LISTS: string[] = [

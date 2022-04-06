@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text } from 'rebass'
-import { ExternalLink } from '../../theme'
+// import { ExternalLink } from '../../theme'
 import { ButtonPrimary } from '../Button'
-import { OutlineCard } from '../Card'
+// import { OutlineCard } from '../Card'
 import Column, { AutoColumn } from '../Column'
 import { PaddedColumn } from './styleds'
 import { useDarkModeManager } from '../../state/user/hooks'
@@ -28,18 +28,18 @@ export default function ListIntroduction({ onSelectList }: { onSelectList: () =>
             alt="token-list-preview"
           />
           <Text style={{ marginBottom: '8px', textAlign: 'center' }}>
-            Uniswap now supports token lists. You can add your own custom lists via IPFS, HTTPS and ENS.{' '}
+            Startswap 暂无可支持的代币列表. 你可以添加自定义的代币列表(IPFS,、HTTPS、ENS).{' '}
           </Text>
           <ButtonPrimary onClick={onSelectList} id="list-introduction-choose-a-list">
-            Choose a list
+            选择一个列表
           </ButtonPrimary>
-          <OutlineCard style={{ marginBottom: '8px', padding: '1rem' }}>
+          {/* <OutlineCard style={{ marginBottom: '8px', padding: '1rem' }}>
             <Text fontWeight={400} fontSize={14} style={{ textAlign: 'center' }}>
-              Token lists are an{' '}
-              <ExternalLink href="https://github.com/uniswap/token-lists">open specification</ExternalLink>. Check out{' '}
-              <ExternalLink href="https://tokenlists.org">tokenlists.org</ExternalLink> to learn more.
+            代币列表是一个{' '}
+              <ExternalLink href="https://github.com/uniswap/token-lists">open specification</ExternalLink>. 查看{' '}
+              <ExternalLink href="https://tokenlists.org">tokenlists.org</ExternalLink> 来了解更多.
             </Text>
-          </OutlineCard>
+          </OutlineCard> */}
         </AutoColumn>
       </PaddedColumn>
     </Column>
