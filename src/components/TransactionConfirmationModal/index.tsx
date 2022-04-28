@@ -49,7 +49,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
           <Text fontWeight={500} fontSize={20}>
-            Waiting For Confirmation
+            等待确认
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
             <Text fontWeight={600} fontSize={14} color="" textAlign="center">
@@ -57,7 +57,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
             </Text>
           </AutoColumn>
           <Text fontSize={12} color="#565A69" textAlign="center">
-            Confirm this transaction in your wallet
+            在你钱包上确认交易
           </Text>
         </AutoColumn>
       </Section>
@@ -88,19 +88,19 @@ function TransactionSubmittedContent({
         </ConfirmedIcon>
         <AutoColumn gap="12px" justify={'center'}>
           <Text fontWeight={500} fontSize={20}>
-            Transaction Submitted
+            交易已提交
           </Text>
 
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
               <Text fontWeight={500} fontSize={14} color={theme.primary1}>
-                View on Etherscan
+                在区块浏览上查看
               </Text>
             </ExternalLink>
           )}
           <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
             <Text fontWeight={500} fontSize={20}>
-              Close
+              关闭
             </Text>
           </ButtonPrimary>
         </AutoColumn>
@@ -143,7 +143,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
       <Section>
         <RowBetween>
           <Text fontWeight={500} fontSize={20}>
-            Error
+            错误
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>

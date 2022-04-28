@@ -225,15 +225,15 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
 
             <AutoRow justify="center" marginTop={'10px'}>
               <ExternalLink href={`https://uniswap.info/pair/${pair.liquidityToken.address}`}>
-                View pool information ↗
+                查看资金流动池信息 ↗
               </ExternalLink>
             </AutoRow>
             <RowBetween marginTop="10px">
               <ButtonSecondary as={Link} to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`} width="48%">
-                Add
+                添加
               </ButtonSecondary>
               <ButtonSecondary as={Link} width="48%" to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                Remove
+                移除
               </ButtonSecondary>
             </RowBetween>
           </AutoColumn>

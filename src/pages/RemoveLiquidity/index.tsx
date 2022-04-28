@@ -362,8 +362,8 @@ export default function RemoveLiquidity({
         </RowBetween>
 
         <TYPE.italic fontSize={12} color={theme.text2} textAlign="left" padding={'12px 0 0 0'}>
-          {`输出估计。如果价格变化超过 ${allowedSlippage /
-            100}% 你的交易将恢复。`}
+          {`输出数额仅为估值。如果价格变化超过 ${allowedSlippage /
+            100}% 你的交易将被还原。`}
         </TYPE.italic>
       </AutoColumn>
     )

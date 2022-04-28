@@ -10,16 +10,16 @@ export default function confirmPriceImpactWithoutFee(priceImpactWithoutFee: Perc
   if (!priceImpactWithoutFee.lessThan(PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN)) {
     return (
       window.prompt(
-        `This swap has a price impact of at least ${PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN.toFixed(
+        `这次兑换对价格至少有 ${PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN.toFixed(
           0
-        )}%. Please type the word "confirm" to continue with this swap.`
+        )}%的影响. 请键入“确认”来继续这个兑换`
       ) === 'confirm'
     )
   } else if (!priceImpactWithoutFee.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) {
     return window.confirm(
-      `This swap has a price impact of at least ${ALLOWED_PRICE_IMPACT_HIGH.toFixed(
+      `这次兑换对价格至少有 ${ALLOWED_PRICE_IMPACT_HIGH.toFixed(
         0
-      )}%. Please confirm that you would like to continue with this swap.`
+      )}%的影响. 请确认您想要继续这个交换.`
     )
   }
   return true

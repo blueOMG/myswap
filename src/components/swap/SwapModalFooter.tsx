@@ -45,7 +45,7 @@ export default function SwapModalFooter({
       <AutoColumn gap="0px">
         <RowBetween align="center">
           <Text fontWeight={400} fontSize={14} color={theme.text2}>
-            Price
+            价格
           </Text>
           <Text
             fontWeight={500}
@@ -69,9 +69,9 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              {trade.tradeType === TradeType.EXACT_INPUT ? 'Minimum received' : 'Maximum sold'}
+              {trade.tradeType === TradeType.EXACT_INPUT ? '最低收到量' : '最大出售量'}
             </TYPE.black>
-            <QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
+            <QuestionHelper text="如果在确认前出现较大的不利价格波动，您的交易将还原。" />
           </RowFixed>
           <RowFixed>
             <TYPE.black fontSize={14}>
@@ -89,18 +89,18 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <TYPE.black color={theme.text2} fontSize={14} fontWeight={400}>
-              Price Impact
+              价格影响
             </TYPE.black>
-            <QuestionHelper text="The difference between the market price and your price due to trade size." />
+            <QuestionHelper text="市场价格和你的价格之间由于交易规模存在差异。" />
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
         <RowBetween>
           <RowFixed>
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-              Liquidity Provider Fee
+              流动性供应商费用
             </TYPE.black>
-            <QuestionHelper text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
+            <QuestionHelper text="每笔交易的一部分(0.30%)作为协议激励流向流动性提供者。" />
           </RowFixed>
           <TYPE.black fontSize={14}>
             {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}
@@ -117,7 +117,7 @@ export default function SwapModalFooter({
           id="confirm-swap-or-send"
         >
           <Text fontSize={20} fontWeight={500}>
-            {severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
+            {severity > 2 ? '确认兑换' : '确认兑换'}
           </Text>
         </ButtonError>
 

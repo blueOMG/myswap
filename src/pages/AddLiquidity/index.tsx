@@ -243,8 +243,8 @@ export default function AddLiquidity({
           </Text>
         </Row>
         <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
+          {`输出数额仅为估值。如果价格变化超过 ${allowedSlippage /
+            100}% 你的交易将被还原。`}
         </TYPE.italic>
       </AutoColumn>
     )
