@@ -22,12 +22,15 @@ import { Link, useLocation } from 'react-router-dom'
 
 const HeaderFrame = styled.div`
   width: 100%;
-  background:pink;
+  max-width: 600px;
+  margin: 0 auto;
   position: relative;
   padding: 0 20px;
   box-sizing: border-box;
   padding-top: 73px;
-  padding-bottom: 40px;
+  padding-bottom: 120px;
+  background: url(${require('./../../assets/img/headerbg.png')}) no-repeat;
+  background-size: 100% 100%;
   p {
     margin: 0;
     padding: 0;
@@ -78,6 +81,8 @@ export default function HeaderNew() {
       setNavTab(1)
     } else if(path=== '/swap') {
       setNavTab(2)
+    } else if(path === '/pools') {
+      setNavTab(3)
     }
   },[location.pathname])
 
@@ -96,10 +101,12 @@ export default function HeaderNew() {
           { navTab === 2 && <span></span>}
         </NavItem>
         </Link>
+        <Link to="/pools">
         <NavItem>
           <p style={navTab === 3 ? {fontSize:18,fontWeight:'bold'}:{}}>矿池</p>
           { navTab === 3 && <span></span>}
         </NavItem>
+        </Link>
         <NavItem>
           <p style={navTab === 4 ? {fontSize:18,fontWeight:'bold'}:{}}>DAO</p>
           { navTab === 4 && <span></span>}

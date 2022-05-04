@@ -22,7 +22,7 @@ import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redir
 import Swap from './Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import Home from './Home'
-
+import Pools from './Pools'
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -72,8 +72,10 @@ export default function App() {
             <Popups />
             <Web3ReactManager>
               <Switch>
-              <Route exact strict path="/home" component={Home} />
+                <Route exact strict path="/home" component={Home} />
                 <Route exact strict path="/swap" component={Swap} />
+                <Route exact strict path="/pools" component={Pools} />
+
                 <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                 <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                 <Route exact strict path="/find" component={PoolFinder} />
