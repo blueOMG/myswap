@@ -297,7 +297,7 @@ export default function WalletModal({
           <HeaderRow>{error instanceof UnsupportedChainIdError ? '网络错误' : '连接错误'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Ethereum network.</h5>
+              <h5>请切换到币安链网络</h5>
             ) : (
               '连接错误. 请尝试刷新页面.'
             )}

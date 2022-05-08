@@ -61,6 +61,7 @@ const NavItem = styled.div`
     position: absolute;
     left: 0;
     bottom: 0;
+    border-radius: 6px;
   }
 `
 
@@ -72,7 +73,7 @@ export default function HeaderNew() {
   // const [isDark] = useDarkModeManager()
   const location:any = useLocation();
   console.log('location',location);
-  const [ navTab, setNavTab ] = useState(1);
+  const [ navTab, setNavTab ] = useState(100);
 
   useEffect(()=>{
     const path = location.pathname;
@@ -83,6 +84,13 @@ export default function HeaderNew() {
       setNavTab(2)
     } else if(path === '/pools') {
       setNavTab(3)
+    } else if(path === '/DAO') {
+      setNavTab(4)
+    } else if(path === '/NFT') {
+      setNavTab(5)
+    }
+    else {
+      setNavTab(100)
     }
   },[location.pathname])
 
@@ -91,30 +99,34 @@ export default function HeaderNew() {
       <NavView>
         <Link to="/home">
         <NavItem>
-          <p style={navTab === 1 ? {fontSize:18,fontWeight:'bold'}:{}}>首页</p>
+          <p style={navTab === 1 ? {fontSize:'17px',fontWeight:'bold'}:{}}>首页</p>
           { navTab === 1 && <span></span>}
         </NavItem>
         </Link>
         <Link to="/swap">
         <NavItem>
-          <p style={navTab === 2 ? {fontSize:18,fontWeight:'bold'}:{}}>兑换</p>
+          <p style={navTab === 2 ? {fontSize:'17px',fontWeight:'bold'}:{}}>兑换</p>
           { navTab === 2 && <span></span>}
         </NavItem>
         </Link>
         <Link to="/pools">
         <NavItem>
-          <p style={navTab === 3 ? {fontSize:18,fontWeight:'bold'}:{}}>矿池</p>
+          <p style={navTab === 3 ? {fontSize:'17px',fontWeight:'bold'}:{}}>矿池</p>
           { navTab === 3 && <span></span>}
         </NavItem>
         </Link>
+        <Link to="/DAO">
         <NavItem>
-          <p style={navTab === 4 ? {fontSize:18,fontWeight:'bold'}:{}}>DAO</p>
+          <p style={navTab === 4 ? {fontSize:'17px',fontWeight:'bold'}:{}}>DAO</p>
           { navTab === 4 && <span></span>}
         </NavItem>
+        </Link>
+        <Link to="/NFT">
         <NavItem>
-          <p style={navTab === 5 ? {fontSize:18,fontWeight:'bold'}:{}}>NFT交易</p>
+          <p style={navTab === 5 ? {fontSize:'17px',fontWeight:'bold'}:{}}>NFT交易</p>
           { navTab === 5 && <span></span>}
         </NavItem>
+        </Link>
       </NavView>
     </HeaderFrame>
   )

@@ -23,6 +23,9 @@ import Swap from './Swap'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import Home from './Home'
 import Pools from './Pools'
+import PoolsDetail from './PoolsDetail'
+import DAO from './DAO'
+import NFT from './NFT'
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -75,7 +78,10 @@ export default function App() {
                 <Route exact strict path="/home" component={Home} />
                 <Route exact strict path="/swap" component={Swap} />
                 <Route exact strict path="/pools" component={Pools} />
-
+                <Route exact strict path="/poolsDetail" component={PoolsDetail} />
+                <Route exact strict path="/DAO" component={DAO} />
+                <Route exact strict path="/NFT" component={NFT} />
+                
                 <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
                 <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
                 <Route exact strict path="/find" component={PoolFinder} />

@@ -1,5 +1,13 @@
-import React, { } from 'react'
-import styled from 'styled-components'
+import React, {  } from 'react'
+import { ChainId } from 'hlbscswap-sdk'
+// import { Text } from 'rebass'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components';
+import { useActiveWeb3React } from '../../hooks'
+// import { YellowCard } from '../../components/Card'
+import Web3Status from '../../components/Web3Status'
+// import { useDarkModeManager } from '../../state/user/hooks'
+// import { useETHBalances } from '../../state/wallet/hooks'
 // import { Link, useLocation } from 'react-router-dom'
 const HomePage = styled.div`
   width: 100%;
@@ -29,100 +37,89 @@ const HomePage = styled.div`
     background: #427BFC;
     border-radius: 7px;
     margin-bottom: 11px;
-  }
-  .star_value_view {
-    width: 100%;
-    min-height: 61px;
-    background: #23305C;
-    border-radius: 7px;
-    padding: 16px 11px 14px 8px;
-    box-sizing: border-box;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    .star_value_view_left {
-      display: flex;
-      align-items: center;
+    justify-content: center;
+    .network_txt {
+      font-size: 12px;
+      color: #fff;
+      line-height: 33px;
       flex-shrink: 0;
-      img {
-        width: 25px;
-        height: auto;
-        margin-right: 6px;
-      }
-      p {
-        font-size: 19px;
-        font-weight: bold;
-        color: #fff;
+      margin-left: 15px;
+    }
+    button {
+      width: auto;
+      background: none;
+      border: none;
+      outline: none;
+      &:focus {
+        background: none;
+        border: none;
       }
     }
-    .star_value_view_right {
-      font-size: 34px;
-      font-family: Arial;
+  }
+  .star_inter_view {
+    width: 100%;
+    height: 264px;
+    background: url(${require('./../../assets/img/introbg.png')}) no-repeat;
+    background-size: 85% auto;
+    background-position: center center;
+    background-color: #23305C;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 22px;
+    text-align: left;
+    margin-bottom: 19px;
+    .txt1 {
+      font-size: 21px;
       font-weight: bold;
       color: #FFFFFF;
-      line-height: 32px;
-      
+      margin-bottom: 14px;
+      width: 100%;
     }
-  }
-  .pool_income_view {
-    width: 100%;
-    background: #23305C;
-    border-radius: 7px;
-    padding: 10px 0;
-    .income_view {
-      display: flex;
-      align-items: center;
-      margin-bottom: 13px;
-      .income_item_view {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        .item_title {
-          display: flex;
-          align-items: center;
-          img {
-            width: 21px;
-            height: 21px;
-          }
-          p {
-            font-size: 14px;
-            font-weight: 400;
-            color: #919ECB;
-          }
-        }
-        .item_blue_value {
-          font-size: 15px;
-          color: #4072E9;
-          margin-top: 25px;
-          font-weight: bold;
-        }
-        .item_white_value {
-          margin-top: 22px;
-          font-size: 16px;
-          color: #fff;
-          font-weight: bold;
-        }
-      }
-      .mid_border {
-        width: 2px;
-        height: 110px;
-        flex-shrink: 0;
-      }
+    .txt2 {
+      font-size: 14px;
+      font-weight: bold;
+      color: #FFFFFF;
+      margin-bottom: 25px;
+      width: 100%;
     }
-    .get_pool_btn {
+    .txt3 {
+      font-size: 10px;
+      font-weight: 400;
+      color: #B0BEEC;
+      margin-bottom: 46px;
+      width: 100%;
+      line-height: 18px;
+    }
+    .btn {
       width: 228px;
-      height: 37px;
+      height: 38px;
       background: linear-gradient(0deg, #2E63FD, #4782F6);
       border-radius: 19px;
+      margin-bottom: 20px;
       text-align: center;
-      line-height: 37px;
       font-size: 13px;
       font-weight: bold;
       color: #FFFFFF;
-      margin: 0 auto;
+      line-height: 38px;
+    }
+    a {
+      color: none;
+      text-decoration: none;
+    }
+  }
+  .chart_view {
+    width: 100%;
+    background: #23305C;
+    border-radius: 7px;
+    margin-bottom: 38px;
+    padding: 16px;
+    img {
+      width: 100%;
+      height: auto;
     }
   }
   .data_box_view {
@@ -160,11 +157,34 @@ const HomePage = styled.div`
       &.marginRight {
         margin-right: 23px;
       }
+      .value {
+        font-size: 14px;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-bottom: 10px;
+      }
+      .title {
+        font-size: 8px;
+        font-weight: 400;
+        color: #989DC5;
+      }
     }
   }
 `
-
+const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
+  [ChainId.MAINNET]: null,
+  [ChainId.RINKEBY]: 'Rinkeby',
+  [ChainId.ROPSTEN]: 'Ropsten',
+  [ChainId.GÖRLI]: 'Görli',
+  [ChainId.KOVAN]: 'Kovan',
+  [ChainId.BSCTEST]: 'BSCTEST', // 需要修改
+  [ChainId.BSC]: 'BSC',
+}
 export default function Home() {
+
+  const { chainId } = useActiveWeb3React()
+
+  // const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
  return (
    <HomePage>
     <div className='banner_view'>
@@ -172,60 +192,40 @@ export default function Home() {
     </div>
     {/* 连接钱包交互区域 */}
     <div className='wallet_view'>
-
+        
+        <Web3Status/>
+        { chainId && NETWORK_LABELS[chainId] && <p className='network_txt'>已连接至 { chainId && (NETWORK_LABELS[chainId] && NETWORK_LABELS[chainId])}</p>}
     </div>
-    {/* star sum */}
-    <div className='star_value_view'>
-      <div className='star_value_view_left'>
-        <img src={require('./../../assets/img/star_zengzhang.png')} alt=""/>
-        <p>STAR</p>
-      </div>
-      <p className='star_value_view_right'>$500,211,200</p>
+    {/* star 简介 */}
+    <div className='star_inter_view'>
+      <p className='txt1'>STAR DAO</p>
+      <p className='txt2'>全球领先的加密基金社区自治组织</p>
+      <p className='txt3'>专注于加密数字资产价值投资，由web3技术和社区驱动，为用户捕获行业增长红利。</p>
+      <Link to="/pools">
+        <div className='btn'>参与/进入矿池</div>
+      </Link>
     </div>
-    {/* 挖矿收益 */}
-    <div className='pool_income_view'>
-      <div className='income_view'>
-        <div className='income_item_view'>
-          <div className='item_title'>
-            <img src={require('./../../assets/img/wallet.png')} alt=""/>
-            <p>钱包余额</p>
-          </div>
-          <p className='item_blue_value'>0 STAR</p>
-          <p className='item_white_value'>0 STAR</p>
-        </div>
-        <img src={require('./../../assets/img/border.png')} alt="" className='mid_border'/>
-        <div className='income_item_view'>
-          <div className='item_title'>
-            <img src={require('./../../assets/img/income.png')} alt=""/>
-            <p>待领取收益</p>
-          </div>
-          <p className='item_blue_value'>0 STAR</p>
-          <p className='item_white_value'>0 STAR</p>
-        </div>
-      </div>
-      <div className='get_pool_btn'>提取挖矿收益</div>
+    {/* 图标 */}
+    <div className='chart_view'>
+      <img src={require('./../../assets/img/charts.png')} alt="" />
     </div>
     {/* 数据 */}
-
     <div className='data_box_view'>
-      <div className='data_box_item marginRight'>
+      <div className='data_box_item marginRight' style={{borderColor:'#E7C047'}}>
+        <p className='value' style={{color:'#E58932'}}>$0.468921</p>
+        <p className='title'>STAR 价格</p>
       </div>
-      <div className='data_box_item'>
+      <div className='data_box_item' style={{borderColor:'#C83C7B'}}>
+        <p className='value'>894540154</p>
+        <p className='title'>STAR 总供应量</p>
       </div>
-      <div className='data_box_item marginRight'>
+      <div className='data_box_item marginRight' style={{borderColor:'#189DEA'}}>
+        <p className='value'>894540154.6591</p>
+        <p className='title'>STAR 流通量</p>
       </div>
-      <div className='data_box_item'>
-      </div>
-      <div className='mid_border'>
-        <img src={require('./../../assets/img/border1.png')} alt="" />
-      </div>
-      <div className='data_box_item marginRight'>
-      </div>
-      <div className='data_box_item'>
-      </div>
-      <div className='data_box_item marginRight'>
-      </div>
-      <div className='data_box_item'>
+      <div className='data_box_item' style={{borderColor:'#15DD72'}}>
+        <p className='value'>894540154.6582</p>
+        <p className='title'>STAR锁仓量</p>
       </div>
     </div>
 

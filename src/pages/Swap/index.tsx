@@ -44,7 +44,25 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
-
+import styled from 'styled-components';
+const SwapPage = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 18px;
+  box-sizing: border-box;
+  position: relative;
+  margin-top: -70px;
+  .banner_view {
+    
+    width: 100%;
+    height: auto;
+    margin: auto;
+    img {
+      width: 100%
+    }
+  }
+`
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -271,7 +289,10 @@ export default function Swap() {
   ])
 
   return (
-    <>
+    <SwapPage>
+      <div className='banner_view'>
+        <img src={require('./../../assets/img/banner.png')} alt="banner"/>
+      </div>
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}
@@ -473,6 +494,6 @@ export default function Swap() {
         </Wrapper>
       </AppBody>
       <AdvancedSwapDetailsDropdown trade={trade} />
-    </>
+    </SwapPage>
   )
 }

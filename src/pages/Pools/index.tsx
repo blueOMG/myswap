@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 // import { Link, useLocation } from 'react-router-dom'
 const PoolsPage = styled.div`
@@ -107,6 +108,11 @@ const PoolsPage = styled.div`
       font-size: 15px;
       font-weight: 400;
       color: #FFFFFF;
+      a {
+        text-decoration: none;
+        color: #FFFFFF;
+      }
+      
     }
     .pool_balance {
       width: 269px;
@@ -204,17 +210,19 @@ export default function Pools() {
                 <p>USDT</p>
               </div>
             </div>
-            <div className='pool_btn'>进入矿池</div>
+            <div className='pool_btn'>
+              <Link to="/poolsDetail">进入矿池</Link>
+            </div>
           </div>
 
-          <div className='single_view' style={{marginTop: 50}}>
+          {/* <div className='single_view' style={{marginTop: 50}}>
             <div className='star_title'>NFT分红池</div>
             <div className='pool_balance'>
               <p>矿池存量：</p>
               <p>135415321.0000</p>
             </div>
             <div className='pool_btn'>进入矿池</div>
-          </div>
+          </div> */}
         </div>
       }
       

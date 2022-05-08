@@ -110,6 +110,7 @@ const Text = styled.p`
   font-weight: 500;
 `
 
+
 const NetworkIcon = styled(Activity)`
   margin-left: 0.25rem;
   margin-right: 0.5rem;
@@ -181,6 +182,7 @@ function Web3StatusInner() {
   if (account) {
     return (
       <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
+        {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
         {hasPendingTransactions ? (
           <RowBetween>
             <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
@@ -188,17 +190,17 @@ function Web3StatusInner() {
         ) : (
           <>
             {hasSocks ? SOCK : null}
-            <Text>{ENSName || shortenAddress(account)}</Text>
+            <p style={{fontSize:'14px',color:'#fff',marginLeft:'5px'}}>{ENSName || shortenAddress(account)}</p>
           </>
         )}
-        {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
+
       </Web3StatusConnected>
     )
   } else if (error) {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
+        <Text>{error instanceof UnsupportedChainIdError ? '错误的网络' : '错误'}</Text>
       </Web3StatusError>
     )
   } else {
