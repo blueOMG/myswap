@@ -93,7 +93,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
             // 当你添加了流动性，会收到对应的资金池的流动性代币代表你在池子中份额。这些代币会按比例自动赚取在这个资金池中交易的手续费，并且可以随时赎回对应比例的资金
             adding
               ? '当你添加了流动性，会收到对应的资金池的流动性代币代表你在池子中份额。这些代币会按比例自动赚取在这个资金池中交易的手续费，并且可以随时赎回对应比例的资金'
-              : 'Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.'
+              : '移除资金池的流动性代币将以当前的速度转换回基础代币，这与你在池中的份额成比例。应计费用包括在您收到的金额。'
           }
         />
       </RowBetween>

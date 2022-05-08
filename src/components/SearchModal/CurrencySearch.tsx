@@ -57,8 +57,8 @@ export function CurrencySearch({
   useEffect(() => {
     if (isAddressSearch) {
       ReactGA.event({
-        category: 'Currency Select',
-        action: 'Search by address',
+        category: '当前选中',
+        action: '地址搜索',
         label: isAddressSearch
       })
     }

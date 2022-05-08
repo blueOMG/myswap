@@ -156,24 +156,23 @@ export default function SettingsTab() {
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                in bad rates and lost funds.
+              专家模式将解除确认交易的提示，并允许兑换率高滑点的交易，从而可能导致不利的兑换率和资金损失
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.
+              只有在你知道自己在做什么的时候才使用这个模式。
               </Text>
               <ButtonError
                 error={true}
                 padding={'12px'}
                 onClick={() => {
-                  if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === 'confirm') {
+                  if (window.prompt(`请输入“确认”以启用专家模式`) === 'confirm') {
                     toggleExpertMode()
                     setShowConfirmation(false)
                   }
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  Turn On Expert Mode
+                开启专家模式
                 </Text>
               </ButtonError>
             </AutoColumn>

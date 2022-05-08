@@ -99,11 +99,11 @@ export default function AddressInputPanel({
           <AutoColumn gap="md">
             <RowBetween>
               <TYPE.black color={theme.text2} fontWeight={500} fontSize={14}>
-                Recipient
+                接收者
               </TYPE.black>
               {address && chainId && (
                 <ExternalLink href={getEtherscanLink(chainId, name ?? address, 'address')} style={{ fontSize: '14px' }}>
-                  (View on Etherscan)
+                  (在区块浏览器上查看)
                 </ExternalLink>
               )}
             </RowBetween>

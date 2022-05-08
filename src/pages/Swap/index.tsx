@@ -426,9 +426,9 @@ export default function Swap() {
                       Approving <Loader stroke="white" />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    'Approved'
+                    '已授权'
                   ) : (
-                    'Approve ' + currencies[Field.INPUT]?.symbol
+                    '授权 ' + currencies[Field.INPUT]?.symbol
                   )}
                 </ButtonConfirmed>
                 <ButtonError
@@ -454,7 +454,7 @@ export default function Swap() {
                 >
                   <Text fontSize={16} fontWeight={500}>
                     {priceImpactSeverity > 3 && !isExpertMode
-                      ? `Price Impact High`
+                      ? `价格影响高`
                       : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                   </Text>
                 </ButtonError>
@@ -482,7 +482,7 @@ export default function Swap() {
                   {swapInputError
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode
-                    ? `Price Impact Too High`
+                    ? `价格影响过高`
                     : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                 </Text>
               </ButtonError>
