@@ -1,6 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-// import { Link, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import Web3 from 'web3'
+
+import poolData from '../../poolAssets/poolConfig'
+import abi from '../../poolAssets/abi'
+import startools from '../../poolAssets/startools'
+// import { clearInterval } from 'timers'
 const PoolsPage = styled.div`
   width: 100%;
   max-width: 600px;
@@ -8,7 +15,7 @@ const PoolsPage = styled.div`
   padding: 0 18px;
   box-sizing: border-box;
   position: relative;
-  margin-top: -70px;
+  padding-top: 25px;
   * {
     margin: 0;
     padding: 0;
@@ -138,6 +145,15 @@ const PoolsPage = styled.div`
         display: block;
         margin: 0 auto;
       }
+      .can_use_text {
+        font-size: 12px;
+        width: 85%;
+        margin: 0 auto;
+        margin-top: 10px;
+        padding: 0 10px;
+        color: #366DFE;
+        text-align: right;
+      }
       .pledge_btn {
         margin: 0 auto;
         width: 50%;
@@ -156,41 +172,269 @@ const PoolsPage = styled.div`
   
 `
 export default function PoolsDetail() {
-  const [ stakeNum ] = useState(11); // setStakeNum
 
-  const [ showPledge, setShowPledge ] =useState(false);
+  const paramsData:any = useParams()
 
-  const [ showWithdraw, setShowWithdraw ] =useState(false);
+  const { account } = useWeb3React();
+
+  const [ poolInfo, setPoolInfo ] = useState<any>({}) // 矿池信息
+  
+  const [ contarctObj, setContarctObj ] = useState<any>({}) // 合约对象
+
+  const [ balanceObj, setBalanceObj ] = useState<any>({}) // 余额对象
+
+  const [ allownObj, setAllowObj ] = useState<any>({}) // 授权余额
+
+  const [ earnNum, setEarnNum ] = useState(0) // 可提取收益
+  const [ earnStatus, setEarnStatus ] = useState(0) // 提取状态
+
+  const [ stakeNum, setStakeNum ] = useState(0); // setStakeNum
+
+  const [ approveStaus, setapproveStaus ] = useState(0) // 授权状态
+  
+  const [ pledgeValue, setPledgeValue] = useState('')
+  const [ canStake, setCanStake ] = useState(false) // 能否质押  （余额 是否有值）
+  const [ stakestatus, setStakeStatus ] = useState(0) // 质押状态
+
+  const [ redeemValue, setRedeemValue ] = useState('')
+  const [ canRedeem, setCanRedeem ] = useState(false) // 能否赎回  （余额 是否有值）
+  const [ redeemstatus, setRedeemStatus ] = useState(0) // 赎回状态
+
+
+  const [ showPledge, setShowPledge ] =useState(false)
+
+  const [ showWithdraw, setShowWithdraw ] =useState(false)
+
+  useEffect(()=>{
+    const list = poolData[paramsData.type];
+    const res = list.filter((i:any)=>i.id === Number(paramsData.id))
+    if(res.length) {
+      setPoolInfo(res[0])
+    }
+  },[paramsData])
+
+  useEffect(()=>{
+    
+    if(poolInfo.id && account) {
+      initContract()
+    }
+
+  },[ poolInfo, account ]);
+
+  // 初始化web 创建合约对象
+  const initContract = async()=>{
+    const web3Obj:any = window.web3;
+    if (typeof web3Obj !== 'undefined') {
+      var web3js = new Web3(web3Obj.currentProvider);
+      const inContract = new web3js.eth.Contract(abi, poolInfo.coin_in, { from: account || '' });
+      const outContract = new web3js.eth.Contract(abi, poolInfo.coin_out, { from: account || '' });
+      const poolContract = new web3js.eth.Contract(abi, poolInfo.stake_pool, { from: account || '' });
+      const balance_in = await inContract.methods.balanceOf(account).call();
+      const balance_out = await outContract.methods.balanceOf(account).call();
+      const allow_in = await inContract.methods.allowance(account,poolInfo.stake_pool).call();
+      setContarctObj({
+        inContract, outContract, poolContract
+      });
+      console.log('balance_in*****',Number(startools.mathpow(allow_in,poolInfo.demical_out)))
+      setBalanceObj({
+        balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(3),
+        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(3)
+      })
+      setAllowObj({
+        allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
+      })
+    }
+  }
+
+  // 获取收益
+  useEffect(()=>{
+    let interval:any
+    if(contarctObj.poolContract) {
+      interval = setInterval(()=>{
+        contarctObj.poolContract.methods.earned(account).call()
+        .then((res:any)=>{
+          setEarnNum(Number(startools.mathpow(res,poolInfo.demical_out)))
+        })
+
+        contarctObj.poolContract.methods.balanceOf(account).call()
+        .then((res:any)=>{
+          setStakeNum(Number(startools.mathpow(res,poolInfo.demical_out)))
+        })
+
+      },3000)
+      
+      
+    }
+    return () => {
+      
+      interval && clearInterval(interval)
+    }
+    
+  },[contarctObj])
+
+  // approve
+  const apprveFn = async()=>{
+    console.log(approveStaus)
+    if(approveStaus === 1) {
+      return 
+    }
+    setapproveStaus(1)
+    try {
+      await contarctObj.inContract.methods.approve(poolInfo.stake_pool,'10000000000000000000000').send({ from: account || '' });
+      setapproveStaus(0);
+      setAllowObj({
+        allow_in: 10000
+      })
+      alert('授权成功')
+    } catch (error) {
+      setapproveStaus(0);
+    }
+  }
   // 质押输入框
-  const pledgeInput = (val:any) =>{
-    console.log(val)
+  const pledgeInput = (e:any) =>{
+    const value  = e.target.value;
+    setPledgeValue(value)
+    if(Number(value) > balanceObj.balance_in) {
+      setCanStake(false);
+    } else {
+      setCanStake(true);
+    }
   }
-  // 提现输入框
-  const widthdrawInput = (val:any) =>{
-    console.log(val)
+  // 质押
+  const stakeFn = async ()=>{
+    let showalet = false;
+    if(stakestatus !== 0 || !canStake) {
+      return 
+    }
+    setStakeStatus(1);
+    // const par = startools.mathlog(pledgeValue,poolInfo.demical_in_str);
+    const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
+    console.log(par)
+    contarctObj.poolContract.methods.deposit(par).send({from: account})
+    .on('transactionHash', ()=>{ // 交易hash
+      
+    })
+    .on('confirmation', ()=>{ // 
+      
+    })
+    .on('receipt', ()=>{ // 交易已广播
+      if(!showalet) {
+        setTimeout(()=>{
+          alert('质押成功!')
+          setPledgeValue('');
+          setStakeStatus(0);
+        },1000)
+      }
+    })
+    .on('error',(error:any, receipt:any)=>{
+      console.log(error,receipt)
+      alert('质押失败，请重试！')
+      setPledgeValue('');
+      setStakeStatus(0);
+    })
   }
+
+
+  // 赎回输入框
+  const widthdrawInput = (e:any) =>{
+    const value  = e.target.value;
+    setRedeemValue(value)
+    if(Number(value) > stakeNum) {
+      setCanRedeem(false);
+    } else {
+      setCanRedeem(true);
+    }
+  }
+  const redeemFn = async()=>{
+    let showalet = false;
+    if(redeemstatus !== 0 || !canRedeem) {
+      return 
+    }
+    setRedeemStatus(1);
+    // 临时处理 先能够使用
+    // const par = startools.mathlog(pledgeValue,poolInfo.demical_in_str);
+    const par:any = (Number(redeemValue || 0) *Math.pow(10,9)) + '000000000'
+    console.log(par)
+    contarctObj.poolContract.methods.withdraw(par).send({from: account})
+    .on('transactionHash', ()=>{ // 交易hash
+      
+    })
+    .on('confirmation', ()=>{ // 
+      
+    })
+    .on('receipt', ()=>{ // 交易已广播
+      if(!showalet) {
+        setTimeout(()=>{
+          alert('赎回成功!')
+          setRedeemValue('');
+          setRedeemStatus(0);
+          setStakeNum(0)
+        },1000)
+      }
+    })
+    .on('error',(error:any, receipt:any)=>{
+      console.log(error,receipt)
+      alert('赎回失败，请重试！')
+      setRedeemValue('');
+      setRedeemStatus(0);
+    })
+  }
+
+  const earnFn = async()=> {
+    // getReward
+    let showalet = false;
+    if(earnStatus !== 0 || earnNum === 0) {
+      return 
+    }
+    
+    setEarnStatus(1);
+    contarctObj.poolContract.methods.getReward().send({from: account})
+    .on('transactionHash', ()=>{ // 交易hash
+      
+    })
+    .on('confirmation', ()=>{ // 
+      
+    })
+    .on('receipt', ()=>{ // 交易已广播
+      if(!showalet) {
+        setTimeout(()=>{
+          alert('提取成功!')
+          setEarnNum(0);
+          setEarnStatus(0);
+        },1000)
+      }
+    })
+    .on('error',(error:any, receipt:any)=>{
+      console.log(error,receipt)
+      alert('提取失败，请重试！')
+      setEarnStatus(0);
+    })
+  }
+  
   return (
     <PoolsPage>
       <div className='pledge_view'>
         <p className='pledge_title'>GBT合作矿池</p>
         <img src={require('./../../assets/img/money.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>待提现挖矿收益</p>
-        <p className='pledge_value'>66666666666666.6666</p>
-        <div className='pledge_btn'>立即提现</div>
+        <p className='pledge_value'>{earnNum.toFixed(3)}</p>
+        <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
       </div>
 
       <div className='pledge_view'>
         <p className='pledge_title'>GBT合作矿池</p>
         <img src={require('./../../assets/img/money.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>已质押</p>
-        <p className='pledge_value'>66666666666666.6666</p>
-        {
-          stakeNum === 0
+        <p className='pledge_value'>{stakeNum.toFixed(3)}</p>
+        { 
+          (allownObj.allow_in || 0) === 0
+          ?<div className='pledge_btn' onClick={()=>apprveFn()}>{approveStaus===1 ? '授权中...' : `授权${poolInfo.name_in}`}</div>
+          :(stakeNum === 0
           ?<div className='pledge_btn' onClick={()=>setShowPledge(true)}>立即质押</div>
           :<div className='btn_view'>
             <div className='pledge_btn' onClick={()=>setShowWithdraw(true)}>取消质押</div>
-            <div className='add_btn'><img src={require('./../../assets/img/add.png')} alt="" /></div>
-          </div>
+            <div className='add_btn' onClick={()=>setShowPledge(true)}><img src={require('./../../assets/img/add.png')} alt="" /></div>
+          </div>)
         }
       </div>
       {
@@ -199,8 +443,11 @@ export default function PoolsDetail() {
           <div className='content_view'>
             <div className='close_img' onClick={()=>setShowPledge(false)}><img src={require('./../../assets/img/close.png')} alt="" /></div>
             <p className='title'>质押</p>
-            <input onChange={pledgeInput} placeholder="请输入数量" type='number' className='input_view'/>
-            <div className='pledge_btn'>确定</div>
+            <input onChange={pledgeInput} value={pledgeValue} placeholder="请输入数量" type='number' className='input_view'/>
+            <p className='can_use_text '>{balanceObj.balance_in} 可用</p>
+            <div className='pledge_btn' style={!canStake ? { opacity: 0.5} : {}} onClick={()=>stakeFn()}>
+             {  stakestatus ===0 ? '确定':'交易中...'}
+            </div>
           </div>
         </div>
       }
@@ -210,8 +457,11 @@ export default function PoolsDetail() {
           <div className='content_view'>
             <div className='close_img' onClick={()=>setShowWithdraw(false)}><img src={require('./../../assets/img/close.png')} alt="" /></div>
             <p className='title'>赎回</p>
-            <input onChange={widthdrawInput} placeholder="请输入数量" type='number' className='input_view'/>
-            <div className='pledge_btn'>确定</div>
+            <input onChange={widthdrawInput} value={redeemValue} placeholder="请输入数量" type='number' className='input_view'/>
+            <p className='can_use_text '>{stakeNum} 可用</p>
+            <div className='pledge_btn' style={!canRedeem ? { opacity: 0.5} : {}} onClick={()=>redeemFn()}>
+            {  redeemstatus ===0 ? '确定':'赎回中...'}
+            </div>
           </div>
         </div>
       }

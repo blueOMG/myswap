@@ -52,7 +52,7 @@ const SwapPage = styled.div`
   padding: 0 18px;
   box-sizing: border-box;
   position: relative;
-  margin-top: -70px;
+  padding-top: 25px;
   .banner_view {
     
     width: 100%;

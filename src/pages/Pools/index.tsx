@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
+import poolData from './../../poolAssets/poolConfig'
+
 // import { Link, useLocation } from 'react-router-dom'
 const PoolsPage = styled.div`
   width: 100%;
@@ -9,7 +12,7 @@ const PoolsPage = styled.div`
   padding: 0 18px;
   box-sizing: border-box;
   position: relative;
-  margin-top: -70px;
+  padding-top: 25px;
   * {
     margin: 0;
     padding: 0;
@@ -55,6 +58,7 @@ const PoolsPage = styled.div`
     
     width: 100%;
     min-height: 277px;
+    padding-bottom: 20px;
     background: #21305B;
     border-radius: 7px;
     .star_title {
@@ -74,7 +78,7 @@ const PoolsPage = styled.div`
       display: flex;
       align-items: center;
       padding: 0 16px;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
       .zuanqu {
         font-size: 15px;
         font-weight: 400;
@@ -96,6 +100,17 @@ const PoolsPage = styled.div`
           color: #FFFFFF;
         }
       }
+    }
+    .pool_info_text {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
+      text-align: left;
+      padding: 0 16px;
+    }
+    a {
+      color: none;
+      text-decoration: none;
     }
     .pool_btn {
       margin: 0 auto;
@@ -135,7 +150,8 @@ const PoolsPage = styled.div`
   }
 `
 export default function Pools() {
-  const [ tab, setTab ] = useState(1);
+  const { account } = useWeb3React();
+  const [ tab, setTab ] = useState(3);
   return (
     <PoolsPage>
       <div className='banner_view'>
@@ -158,62 +174,80 @@ export default function Pools() {
       {/* 单币质押 */}
       {
         tab === 1 &&
-        <div className='single_view'>
-          <div className='star_title'>STAR</div>
-          <div className='intro_view'>
-            <div className='coin_view'>
-              <img src={require('./../../assets/img/money.png')} alt="" />
-              <p>STAR</p>
-            </div>
-            <p className='zuanqu'>赚取</p>
-            <div className='coin_view'>
-              <img src={require('./../../assets/img/money.png')} alt="" />
-              <p>STAR</p>
-            </div>
-          </div>
-          <div className='pool_btn'>去挖矿</div>
-        </div>
+        <p style={{height:'100px',lineHeight:'100px',color:'#ccc',fontSize:'14px',textAlign:'center'}}>暂无矿池</p>
+        // <div className='single_view'>
+        //   <div className='star_title'>STAR</div>
+        //   <div className='intro_view'>
+        //     <div className='coin_view'>
+        //       <img src={require('./../../assets/img/money.png')} alt="" />
+        //       <p>STAR</p>
+        //     </div>
+        //     <p className='zuanqu'>赚取</p>
+        //     <div className='coin_view'>
+        //       <img src={require('./../../assets/img/money.png')} alt="" />
+        //       <p>STAR</p>
+        //     </div>
+        //   </div>
+        //   <div className='pool_btn'>去挖矿</div>
+        // </div>
       }
       {/* 流动性挖矿 */}
       {
         tab === 2 &&
-        <div className='single_view'>
-          <div className='star_title'>STAR</div>
-          <div className='intro_view'>
-            <div className='coin_view'>
-              <img src={require('./../../assets/img/money.png')} alt="" />
-              <p>STAR-STAR</p>
-            </div>
-            <p className='zuanqu'>赚取</p>
-            <div className='coin_view'>
-              <img src={require('./../../assets/img/money.png')} alt="" />
-              <p>STAR</p>
-            </div>
-          </div>
-          <div className='pool_btn'>选择</div>
-        </div>
+        <p style={{height:'100px',lineHeight:'100px',color:'#ccc',fontSize:'14px',textAlign:'center'}}>暂无矿池</p>
+        // <div className='single_view'>
+        //   <div className='star_title'>STAR</div>
+        //   <div className='intro_view'>
+        //     <div className='coin_view'>
+        //       <img src={require('./../../assets/img/money.png')} alt="" />
+        //       <p>STAR-STAR</p>
+        //     </div>
+        //     <p className='zuanqu'>赚取</p>
+        //     <div className='coin_view'>
+        //       <img src={require('./../../assets/img/money.png')} alt="" />
+        //       <p>STAR</p>
+        //     </div>
+        //   </div>
+        //   <div className='pool_btn'>选择</div>
+        // </div>
       }
       {/* 社区合作 */}
       {
         tab === 3 &&
         <div>
-          <div className='single_view'>
-            <div className='star_title'>GBT合作矿池</div>
-            <div className='intro_view'>
-              <div className='coin_view'>
-                <img src={require('./../../assets/img/money.png')} alt="" />
-                <p>GBT</p>
+          {
+            poolData.cooperate_pool.map((item:any)=>{
+              return <div className='single_view'>
+                <div className='star_title'>GBT合作矿池</div>
+                <div className='intro_view'>
+                  <div className='coin_view'>
+                    <img src={require('./../../assets/img/money.png')} alt="" />
+                    <p>{item.name_in}</p>
+                  </div>
+                  <p className='zuanqu'>赚取</p>
+                  <div className='coin_view'>
+                    <img src={require('./../../assets/img/money.png')} alt="" />
+                    <p>{item.name_out}</p>
+                  </div>
+                </div>
+                <p className='pool_info_text'>开始时间：{item.start}</p>
+                <p className='pool_info_text' style={{marginBottom: 60}}>总量：{item.total}</p>
+                {
+                  account
+                  ?<Link to={`/poolsDetail/cooperate_pool/${item.id}`}>
+                    <div className='pool_btn'>
+                      进入矿池
+                    </div>
+                  </Link>
+                  :<div className='pool_btn' onClick={()=>alert('请先到首页连接钱包！')}>
+                    进入矿池
+                  </div>
+                }
+                
               </div>
-              <p className='zuanqu'>赚取</p>
-              <div className='coin_view'>
-                <img src={require('./../../assets/img/money.png')} alt="" />
-                <p>USDT</p>
-              </div>
-            </div>
-            <div className='pool_btn'>
-              <Link to="/poolsDetail">进入矿池</Link>
-            </div>
-          </div>
+            })
+          }
+          
 
           {/* <div className='single_view' style={{marginTop: 50}}>
             <div className='star_title'>NFT分红池</div>
