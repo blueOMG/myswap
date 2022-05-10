@@ -3,7 +3,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import Header from '../components/HeaderNew'
-import Popups from '../components/Popups'
+// import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 import AddLiquidity from './AddLiquidity'
@@ -72,7 +72,7 @@ export default function App() {
             <Header />
           </HeaderWrapper>
           <BodyWrapper>
-            <Popups />
+            {/* <Popups /> */}
             <Web3ReactManager>
               <Switch>
                 <Route exact strict path="/home" component={Home} />
