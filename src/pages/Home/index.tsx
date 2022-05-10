@@ -36,7 +36,7 @@ const HomePage = styled.div`
     height: 33px;
     background: #427BFC;
     border-radius: 7px;
-    margin-bottom: 11px;
+    margin-bottom: 21px;
     display: flex;
     justify-content: center;
     .network_txt {

@@ -32,7 +32,7 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
 ) as any
 
 const white = '#FFFFFF'
-const black = '#000000'
+const black = '#ffffff'
 
 export function colors(darkMode: boolean): Colors {
   return {
@@ -41,19 +41,19 @@ export function colors(darkMode: boolean): Colors {
     black,
 
     // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
-    text2: darkMode ? '#C3C5CB' : '#565A69',
+    text1: darkMode ? '#FFFFFF' : '#FFFFFF',
+    text2: darkMode ? '#C3C5CB' : '#C3C5CB',
     text3: darkMode ? '#6C7284' : '#888D9B',
-    text4: darkMode ? '#565A69' : '#C3C5CB',
-    text5: darkMode ? '#2C2F36' : '#EDEEF2',
+    text4: darkMode ? '#C3C5CB' : '#C3C5CB',
+    text5: darkMode ? '#EDEEF2' : '#EDEEF2',
 
     // backgrounds / greys
     bg1: darkMode ? '#16224A' : '#16224A', // 背景
 
-    bg2: darkMode ? '#16224A' : '#16224A', // 背景
-    bg3: darkMode ? '#16224A' : '#16224A',
-    bg4: darkMode ? '#16224A' : '#16224A',
-    bg5: darkMode ? '#16224A' : '#16224A',
+    bg2: darkMode ? '#1f3065' : '#1f3065', // 背景
+    bg3: darkMode ? '#23346f' : '#23346f',
+    bg4: darkMode ? '#324891' : '#324891',
+    bg5: darkMode ? '#4267df' : '#4267df',
 
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',

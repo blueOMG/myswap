@@ -54,10 +54,10 @@ const SwapPage = styled.div`
   position: relative;
   padding-top: 25px;
   .banner_view {
-    
     width: 100%;
     height: auto;
     margin: auto;
+    margin-bottom: 20px
     img {
       width: 100%
     }

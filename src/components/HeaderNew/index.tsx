@@ -80,7 +80,7 @@ export default function HeaderNew() {
     console.log(path)
     if(path=== '/home') {
       setNavTab(1)
-    } else if(path=== '/swap') {
+    } else if(path=== '/swap'|| path==='/pool') {
       setNavTab(2)
     } else if(path === '/pools') {
       setNavTab(3)

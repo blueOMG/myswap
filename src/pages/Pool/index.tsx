@@ -20,7 +20,26 @@ import { usePairs } from '../../data/Reserves'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import AppBody from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
+import styled from 'styled-components'
 
+const PoolPage = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 18px;
+  box-sizing: border-box;
+  position: relative;
+  padding-top: 25px;
+  .banner_view {
+    width: 100%;
+    height: auto;
+    margin: auto;
+    margin-bottom: 20px
+    img {
+      width: 100%
+    }
+  }
+`
 export default function Pool() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
@@ -57,7 +76,10 @@ export default function Pool() {
   const hasV1Liquidity = useUserHasLiquidityInAllTokens()
 
   return (
-    <>
+    <PoolPage>
+      <div className='banner_view'>
+        <img src={require('./../../assets/img/banner.png')} alt="banner"/>
+      </div>
       <AppBody>
         <SwapPoolTabs active={'pool'} />
         <AutoColumn gap="lg" justify="center">
@@ -118,6 +140,6 @@ export default function Pool() {
           Migrate V1 Liquidity
         </ButtonSecondary> */}
       </div>
-    </>
+    </PoolPage>
   )
 }
