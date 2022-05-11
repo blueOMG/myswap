@@ -237,8 +237,8 @@ export default function PoolsDetail() {
       });
       console.log('balance_in*****',Number(startools.mathpow(allow_in,poolInfo.demical_out)))
       setBalanceObj({
-        balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(3),
-        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(3)
+        balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(4),
+        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4)
       })
       setAllowObj({
         allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
@@ -417,7 +417,7 @@ export default function PoolsDetail() {
         <p className='pledge_title'>GBT合作矿池</p>
         <img src={require('./../../assets/img/tq.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>待提现挖矿收益</p>
-        <p className='pledge_value'>{earnNum.toFixed(3)}</p>
+        <p className='pledge_value'>{earnNum.toFixed(4)}</p>
         <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
       </div>
 
@@ -425,7 +425,7 @@ export default function PoolsDetail() {
         <p className='pledge_title'>GBT合作矿池</p>
         <img src={require('./../../assets/img/gbt.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>已质押</p>
-        <p className='pledge_value'>{stakeNum.toFixed(3)}</p>
+        <p className='pledge_value'>{stakeNum.toFixed(4)}</p>
         { 
           (allownObj.allow_in || 0) === 0
           ?<div className='pledge_btn' onClick={()=>apprveFn()}>{approveStaus===1 ? '授权中...' : `授权${poolInfo.name_in}`}</div>

@@ -166,15 +166,11 @@ export default function Pools() {
   const goDetail = (item:any)=> {
     const now = (new Date().getTime()) *1 ;
     const start = (new Date(item.start).getTime())*1;
-    const end = (new Date(item.end).getTime())*1;
     if(start > now) {
       alert('挖矿未开始！')
       return 
     }
-    if(now > end) {
-      alert('挖矿已结束！')
-      return 
-    }
+   
     history.push(`/poolsDetail/cooperate_pool/${item.id}`)
   }
   return (
