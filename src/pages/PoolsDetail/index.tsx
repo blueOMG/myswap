@@ -25,7 +25,7 @@ const PoolsPage = styled.div`
   .pledge_view {
     width: 100%;
     min-height: 310px;
-    background: #21305B;
+    background: #294081;
     border-radius: 7px;
     padding: 30px 16px;
     margin-bottom: 47px;
@@ -61,7 +61,6 @@ const PoolsPage = styled.div`
       margin-bottom: 50px;
     }
     .pledge_btn {
-      flex: 1;
       width: 100%;
       height: 39px;
       background: #366DFE;
@@ -154,7 +153,7 @@ const PoolsPage = styled.div`
         color: #366DFE;
         text-align: right;
       }
-      .pledge_btn {
+      .pledge_btn1 {
         margin: 0 auto;
         width: 50%;
         height: 39px;
@@ -414,17 +413,17 @@ export default function PoolsDetail() {
   return (
     <PoolsPage>
       <div className='pledge_view'>
-        <p className='pledge_title'>GBT合作矿池</p>
+        {/* <p className='pledge_title'>GBT合作矿池</p> */}
         <img src={require('./../../assets/img/tq.png')} alt="" className='pledge_img'/>
-        <p className='pledge_txt'>待提现挖矿收益</p>
+        <p className='pledge_txt'>TQ挖矿收益</p>
         <p className='pledge_value'>{earnNum.toFixed(4)}</p>
         <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
       </div>
 
       <div className='pledge_view'>
-        <p className='pledge_title'>GBT合作矿池</p>
+        {/* <p className='pledge_title'>GBT合作矿池</p> */}
         <img src={require('./../../assets/img/gbt.png')} alt="" className='pledge_img'/>
-        <p className='pledge_txt'>已质押</p>
+        <p className='pledge_txt'>已质押LP</p>
         <p className='pledge_value'>{stakeNum.toFixed(4)}</p>
         { 
           (allownObj.allow_in || 0) === 0
@@ -445,7 +444,7 @@ export default function PoolsDetail() {
             <p className='title'>质押</p>
             <input onChange={pledgeInput} value={pledgeValue} placeholder="请输入数量" type='number' className='input_view'/>
             <p className='can_use_text '>{balanceObj.balance_in} 可质押</p>
-            <div className='pledge_btn' style={!canStake ? { opacity: 0.5} : {}} onClick={()=>stakeFn()}>
+            <div className='pledge_btn1' style={!canStake ? { opacity: 0.5} : {}} onClick={()=>stakeFn()}>
              {  stakestatus ===0 ? '确定':'交易中...'}
             </div>
           </div>
@@ -459,7 +458,7 @@ export default function PoolsDetail() {
             <p className='title'>赎回</p>
             <input onChange={widthdrawInput} value={redeemValue} placeholder="请输入数量" type='number' className='input_view'/>
             <p className='can_use_text '>{stakeNum} 可赎回</p>
-            <div className='pledge_btn' style={!canRedeem ? { opacity: 0.5} : {}} onClick={()=>redeemFn()}>
+            <div className='pledge_btn1' style={!canRedeem ? { opacity: 0.5} : {}} onClick={()=>redeemFn()}>
             {  redeemstatus ===0 ? '确定':'赎回中...'}
             </div>
           </div>

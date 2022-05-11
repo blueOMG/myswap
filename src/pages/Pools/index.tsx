@@ -59,7 +59,7 @@ const PoolsPage = styled.div`
     width: 100%;
     min-height: 277px;
     padding-bottom: 20px;
-    background: #21305B;
+    background: #294081;
     border-radius: 7px;
     margin-bottom: 25px;
     .star_title {
