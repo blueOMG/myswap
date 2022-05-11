@@ -42,7 +42,7 @@ const PoolsPage = styled.div`
       margin-bottom: 32px;
     }
     .pledge_img {
-      width: 40px;
+      height: 55px
       margin-bottom: 16px
     }
     .pledge_txt {
@@ -415,7 +415,7 @@ export default function PoolsDetail() {
     <PoolsPage>
       <div className='pledge_view'>
         <p className='pledge_title'>GBT合作矿池</p>
-        <img src={require('./../../assets/img/money.png')} alt="" className='pledge_img'/>
+        <img src={require('./../../assets/img/tq.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>待提现挖矿收益</p>
         <p className='pledge_value'>{earnNum.toFixed(3)}</p>
         <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
@@ -423,7 +423,7 @@ export default function PoolsDetail() {
 
       <div className='pledge_view'>
         <p className='pledge_title'>GBT合作矿池</p>
-        <img src={require('./../../assets/img/money.png')} alt="" className='pledge_img'/>
+        <img src={require('./../../assets/img/gbt.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>已质押</p>
         <p className='pledge_value'>{stakeNum.toFixed(3)}</p>
         { 
@@ -444,7 +444,7 @@ export default function PoolsDetail() {
             <div className='close_img' onClick={()=>setShowPledge(false)}><img src={require('./../../assets/img/close.png')} alt="" /></div>
             <p className='title'>质押</p>
             <input onChange={pledgeInput} value={pledgeValue} placeholder="请输入数量" type='number' className='input_view'/>
-            <p className='can_use_text '>{balanceObj.balance_in} 可用</p>
+            <p className='can_use_text '>{balanceObj.balance_in} 可质押</p>
             <div className='pledge_btn' style={!canStake ? { opacity: 0.5} : {}} onClick={()=>stakeFn()}>
              {  stakestatus ===0 ? '确定':'交易中...'}
             </div>
@@ -458,7 +458,7 @@ export default function PoolsDetail() {
             <div className='close_img' onClick={()=>setShowWithdraw(false)}><img src={require('./../../assets/img/close.png')} alt="" /></div>
             <p className='title'>赎回</p>
             <input onChange={widthdrawInput} value={redeemValue} placeholder="请输入数量" type='number' className='input_view'/>
-            <p className='can_use_text '>{stakeNum} 可用</p>
+            <p className='can_use_text '>{stakeNum} 可赎回</p>
             <div className='pledge_btn' style={!canRedeem ? { opacity: 0.5} : {}} onClick={()=>redeemFn()}>
             {  redeemstatus ===0 ? '确定':'赎回中...'}
             </div>

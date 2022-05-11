@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import poolData from './../../poolAssets/poolConfig'
@@ -80,33 +80,43 @@ const PoolsPage = styled.div`
       padding: 0 16px;
       margin-bottom: 40px;
       .zuanqu {
+        width: 45px;
+        height: 36px;
+        line-height: 36px;
         font-size: 15px;
         font-weight: 400;
-        color: #95A3CF;
-        margin: 0 25px;
+        color: #fff;
+        margin: 0 20px;
+        background: #132144;
+        text-align: center;
       }
       .coin_view {
         flex: 1;
         display: flex;
+        flex-direction: column;
         align-items: center;
         img {
-          width: 42px;
-          height: 42px;
-          margin-right: 7px
+          width: auto;
+          height: 34px;
+          margin-bottom: 10px
         }
         p {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: bold;
           color: #FFFFFF;
+          text-align: center;
         }
       }
     }
     .pool_info_text {
       font-size: 14px;
       color: #fff;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       text-align: left;
       padding: 0 16px;
+      span {
+        color: #95A3CF
+      }
     }
     a {
       color: none;
@@ -150,8 +160,23 @@ const PoolsPage = styled.div`
   }
 `
 export default function Pools() {
+  const history = useHistory();
   const { account } = useWeb3React();
   const [ tab, setTab ] = useState(3);
+  const goDetail = (item:any)=> {
+    const now = (new Date().getTime()) *1 ;
+    const start = (new Date(item.start).getTime())*1;
+    const end = (new Date(item.end).getTime())*1;
+    if(start > now) {
+      alert('挖矿未开始！')
+      return 
+    }
+    if(now > end) {
+      alert('挖矿已结束！')
+      return 
+    }
+    history.push(`/poolsDetail/cooperate_pool/${item.id}`)
+  }
   return (
     <PoolsPage>
       <div className='banner_view'>
@@ -221,24 +246,24 @@ export default function Pools() {
                 <div className='star_title'>GBT合作矿池</div>
                 <div className='intro_view'>
                   <div className='coin_view'>
-                    <img src={require('./../../assets/img/money.png')} alt="" />
+                    <img src={require('./../../assets/img/gbt.png')} alt="" />
                     <p>{item.name_in}</p>
                   </div>
                   <p className='zuanqu'>赚取</p>
                   <div className='coin_view'>
-                    <img src={require('./../../assets/img/money.png')} alt="" />
+                    <img src={require('./../../assets/img/tq.png')} alt="" />
                     <p>{item.name_out}</p>
                   </div>
                 </div>
-                <p className='pool_info_text'>开始时间：{item.start}</p>
-                <p className='pool_info_text' style={{marginBottom: 60}}>总量：{item.total}</p>
+                <p className='pool_info_text'><span>矿池总量：</span>{item.total}</p>
+                <p className='pool_info_text'><span>开始时间：</span>{item.start}</p>
+                <p className='pool_info_text'><span>结束时间：</span>{item.end}</p>
+                
                 {
                   account
-                  ?<Link to={`/poolsDetail/cooperate_pool/${item.id}`}>
-                    <div className='pool_btn'>
+                  ?<div className='pool_btn' onClick={()=>goDetail(item)}>
                       进入矿池
                     </div>
-                  </Link>
                   :<div className='pool_btn' onClick={()=>alert('请先到首页连接钱包！')}>
                     进入矿池
                   </div>
