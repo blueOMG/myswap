@@ -260,7 +260,7 @@ export default function PoolsDetail() {
           setStakeNum(Number(startools.mathpow(res,poolInfo.demical_out)))
         })
 
-      },3000)
+      },2000)
       
       
     }
@@ -273,7 +273,6 @@ export default function PoolsDetail() {
 
   // approve
   const apprveFn = async()=>{
-    console.log(approveStaus)
     if(approveStaus === 1) {
       return 
     }
@@ -306,9 +305,9 @@ export default function PoolsDetail() {
       return 
     }
     setStakeStatus(1);
-    // const par = startools.mathlog(pledgeValue,poolInfo.demical_in_str);
-    const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
-    console.log(par)
+    const par = startools.mathlog(pledgeValue,poolInfo.demical_in);
+    // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
+    alert(par)
     contarctObj.poolContract.methods.deposit(par).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
       
@@ -322,7 +321,8 @@ export default function PoolsDetail() {
           alert('质押成功!')
           setPledgeValue('');
           setStakeStatus(0);
-        },1000)
+        },1000);
+        regetBalance();
       }
     })
     .on('error',(error:any, receipt:any)=>{
@@ -351,8 +351,8 @@ export default function PoolsDetail() {
     }
     setRedeemStatus(1);
     // 临时处理 先能够使用
-    // const par = startools.mathlog(pledgeValue,poolInfo.demical_in_str);
-    const par:any = (Number(redeemValue || 0) *Math.pow(10,9)) + '000000000'
+    const par = startools.mathlog(pledgeValue,poolInfo.demical_in);
+    // const par:any = (Number(redeemValue || 0) *Math.pow(10,9)) + '000000000'
     console.log(par)
     contarctObj.poolContract.methods.withdraw(par).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
@@ -409,14 +409,29 @@ export default function PoolsDetail() {
       setEarnStatus(0);
     })
   }
-  
+  const regetBalance = async ()=>{
+    const balance_in = await contarctObj.inContract.methods.balanceOf(account).call();
+    // const balance_out = await contarctObj.outContract.methods.balanceOf(account).call();
+    const res = (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4);
+    if(res === balanceObj.balance_in) {
+      setTimeout(()=>{
+        regetBalance();
+      },2000)
+      return   
+    }
+    setBalanceObj({
+      ...balanceObj,
+      balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4)
+    })
+  }
+
   return (
     <PoolsPage>
       <div className='pledge_view'>
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
         <img src={require('./../../assets/img/tq.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>TQ挖矿收益</p>
-        <p className='pledge_value'>{earnNum.toFixed(4)}</p>
+        <p className='pledge_value'>{earnNum.toFixed(6)}</p>
         <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
       </div>
 
@@ -424,7 +439,7 @@ export default function PoolsDetail() {
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
         <img src={require('./../../assets/img/gbt.png')} alt="" className='pledge_img'/>
         <p className='pledge_txt'>已质押LP</p>
-        <p className='pledge_value'>{stakeNum.toFixed(4)}</p>
+        <p className='pledge_value'>{stakeNum.toFixed(6)}</p>
         { 
           (allownObj.allow_in || 0) === 0
           ?<div className='pledge_btn' onClick={()=>apprveFn()}>{approveStaus===1 ? '授权中...' : `授权${poolInfo.name_in}`}</div>
