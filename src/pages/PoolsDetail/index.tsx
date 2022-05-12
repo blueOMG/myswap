@@ -42,8 +42,8 @@ const PoolsPage = styled.div`
       margin-bottom: 32px;
     }
     .pledge_img {
-      height: 55px
-      margin-bottom: 16px
+      height: 55px;
+      margin-bottom: 16px;
     }
     .pledge_txt {
       font-size: 15px;
@@ -351,7 +351,8 @@ export default function PoolsDetail() {
     }
     setRedeemStatus(1);
     // 临时处理 先能够使用
-    const par = startools.mathlog(pledgeValue,poolInfo.demical_in);
+    const par = startools.mathlog(redeemValue,poolInfo.demical_in);
+
     // const par:any = (Number(redeemValue || 0) *Math.pow(10,9)) + '000000000'
     console.log(par)
     contarctObj.poolContract.methods.withdraw(par).send({from: account})
