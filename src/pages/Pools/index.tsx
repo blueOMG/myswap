@@ -240,15 +240,15 @@ export default function Pools() {
           {
             poolData.cooperate_pool.map((item:any)=>{
               return <div className='single_view'>
-                <div className='star_title'>GBT合作矿池</div>
+                <div className='star_title'>{item.title}</div>
                 <div className='intro_view'>
                   <div className='coin_view'>
-                    <img src={require('./../../assets/img/gbt.png')} alt="" />
+                    <img src={require(`./../../assets/img/${item.icon_in}.png`)} alt="" />
                     <p>{item.name_in}</p>
                   </div>
                   <p className='zuanqu'>赚取</p>
                   <div className='coin_view'>
-                    <img src={require('./../../assets/img/tq.png')} alt="" />
+                    <img src={require(`./../../assets/img/${item.icon_out}.png`)} alt="" />
                     <p>{item.name_out}</p>
                   </div>
                 </div>

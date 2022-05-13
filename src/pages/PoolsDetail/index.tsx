@@ -307,7 +307,7 @@ export default function PoolsDetail() {
     setStakeStatus(1);
     const par = startools.mathlog(pledgeValue,poolInfo.demical_in);
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
-    alert(par)
+    // alert(par)
     contarctObj.poolContract.methods.deposit(par).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
       
@@ -430,7 +430,7 @@ export default function PoolsDetail() {
     <PoolsPage>
       <div className='pledge_view'>
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
-        <img src={require('./../../assets/img/tq.png')} alt="" className='pledge_img'/>
+        <img src={poolInfo.icon_out && require(`./../../assets/img/${poolInfo.icon_out}.png`)} alt="" className='pledge_img'/>
         <p className='pledge_txt'>TQ挖矿收益</p>
         <p className='pledge_value'>{earnNum.toFixed(6)}</p>
         <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
@@ -438,7 +438,7 @@ export default function PoolsDetail() {
 
       <div className='pledge_view'>
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
-        <img src={require('./../../assets/img/gbt.png')} alt="" className='pledge_img'/>
+        <img src={poolInfo.icon_in && require(`./../../assets/img/${poolInfo.icon_in}.png`)} alt="" className='pledge_img'/>
         <p className='pledge_txt'>已质押LP</p>
         <p className='pledge_value'>{stakeNum.toFixed(6)}</p>
         { 
