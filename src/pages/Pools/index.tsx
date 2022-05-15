@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import poolData from './../../poolAssets/poolConfig'
-
+import otherabi from './../../poolAssets/otherabi'
+import Web3 from 'web3'
 // import { Link, useLocation } from 'react-router-dom'
 const PoolsPage = styled.div`
   width: 100%;
@@ -164,15 +165,62 @@ export default function Pools() {
   const history = useHistory();
   const { account } = useWeb3React();
   const [ tab, setTab ] = useState(3);
-  const goDetail = (item:any)=> {
-    const now = (new Date().getTime()) *1 ;
-    const start = (new Date(item.start).getTime())*1;
-    if(start > now) {
-      alert('挖矿未开始！')
+  const [ liquidityPoolList, setLiquidityPoolList ] = useState<any>([]);
+  useEffect(()=>{
+    getPoolList()
+  },[]);
+  // 获取流动性挖矿列表
+  const getPoolList = async ()=>{
+    const poolList_addr = '0x2586c611AcA2Cc6f659947C498E9EcCae25DaC99'; // 获取流动性挖矿列表的 合约地址
+    const poolStake_addr = '0x1FFA54298CC2EfF59286D09EEF4d63ADB2419f46';
+    const web3Obj:any = window.web3;
+    if (typeof web3Obj !== 'undefined') {
+      
+      var web3js = new Web3(web3Obj.currentProvider);
+      const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
+      const res = await listPoolContract.methods.getAllPoolInfo().call(); // 获取全部矿池列表
+      const res1 = await listPoolContract.methods.getAllPoolExtraInfo().call();  //  获取矿池的扩展信息
+      const result = res.lpToken.map((item:any,index:number)=>{
+        const lp0 = res1.lpToken0Symbol[index]
+        const lp1 = res1.lpToken1Symbol[index]
+        const reward = res1.rewardTokenSymbol[index];
+        return {
+          name_in: lp0 === lp1 ? lp0 : `${lp0}-${lp1}`,
+          name_out: reward,
+          total: res.amount[index],
+          start: res.startBlock[index],
+          end: res.endBlock[index],
+          id: index,
+          demical_in: res1.rewardTokenDecimals[index],
+          coin_in: item,
+          coin_out: res.rewardToken[index],
+          stake_pool: poolStake_addr
+        }
+      })
+      setLiquidityPoolList(result)
+    }
+  }
+  const goDetail = (item:any, type:number)=> {
+    // const now = (new Date().getTime()) *1 ;
+    // const start = (new Date(item.start).getTime())*1;
+    // if(start > now) {
+    //   alert('挖矿未开始！')
+    //   return 
+    // }
+   console.log(tab)
+    if(type === 1) {
       return 
     }
-   
-    history.push(`/poolsDetail/cooperate_pool/${item.id}`)
+    if(type === 2) {
+      localStorage.setItem('liquidityPoolInfo',JSON.stringify(item))
+      history.push(`/poolsDetail1/liquidity_pool/${item.id}`)
+      return 
+    }
+    if(type === 3) {
+      history.push(`/poolsDetail/cooperate_pool/${item.id}`)
+      return 
+    }
+    
   }
   return (
     <PoolsPage>
@@ -216,27 +264,45 @@ export default function Pools() {
       {/* 流动性挖矿 */}
       {
         tab === 2 &&
-        <p style={{height:'100px',lineHeight:'100px',color:'#ccc',fontSize:'14px',textAlign:'center'}}>暂无矿池</p>
-        // <div className='single_view'>
-        //   <div className='star_title'>STAR</div>
-        //   <div className='intro_view'>
-        //     <div className='coin_view'>
-        //       <img src={require('./../../assets/img/money.png')} alt="" />
-        //       <p>STAR-STAR</p>
-        //     </div>
-        //     <p className='zuanqu'>赚取</p>
-        //     <div className='coin_view'>
-        //       <img src={require('./../../assets/img/money.png')} alt="" />
-        //       <p>STAR</p>
-        //     </div>
-        //   </div>
-        //   <div className='pool_btn'>选择</div>
-        // </div>
+        <>
+          {
+            liquidityPoolList.map((item:any)=>{
+              return <div className='single_view'>
+                <div className='star_title'>{item.title}</div>
+                <div className='intro_view'>
+                  <div className='coin_view'>
+                    <img src={require('./../../assets/img/money.png')}  alt="" />
+                    <p>{item.name_in}</p>
+                  </div>
+                  <p className='zuanqu'>赚取</p>
+                  <div className='coin_view'>
+                    <img src={require('./../../assets/img/money.png')}  alt="" />
+                    <p>{item.name_out}</p>
+                  </div>
+                </div>
+                <p className='pool_info_text'><span>矿池总量：</span>{item.total}</p>
+                <p className='pool_info_text'><span>开始时间：</span>{item.start}</p>
+                <p className='pool_info_text'><span>结束时间：</span>{item.end}</p>
+                
+                {
+                  account
+                  ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
+                      进入矿池
+                    </div>
+                  :<div className='pool_btn' onClick={()=>alert('请先到首页连接钱包！')}>
+                    进入矿池
+                  </div>
+                }
+                
+              </div>
+            })
+          }
+        </>
       }
       {/* 社区合作 */}
       {
         tab === 3 &&
-        <div>
+        <>
           {
             poolData.cooperate_pool.map((item:any)=>{
               return <div className='single_view'>
@@ -258,7 +324,7 @@ export default function Pools() {
                 
                 {
                   account
-                  ?<div className='pool_btn' onClick={()=>goDetail(item)}>
+                  ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
                       进入矿池
                     </div>
                   :<div className='pool_btn' onClick={()=>alert('请先到首页连接钱包！')}>
@@ -279,7 +345,7 @@ export default function Pools() {
             </div>
             <div className='pool_btn'>进入矿池</div>
           </div> */}
-        </div>
+        </>
       }
       
     </PoolsPage>

@@ -628,4 +628,5 @@ const abi:any = [
     "type": "function"
   }
 ]
+
 export default abi;
