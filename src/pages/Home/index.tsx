@@ -1,22 +1,27 @@
-import React, {  } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChainId } from 'hlbscswap-sdk'
 // import { Text } from 'rebass'
 import { Link } from 'react-router-dom'
+import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components';
 import { useActiveWeb3React } from '../../hooks'
 // import { YellowCard } from '../../components/Card'
 import Web3Status from '../../components/Web3Status'
+import SwiperBanner from '../../components/SwiperBanner';
+import { Toast } from 'antd-mobile'
 // import { useDarkModeManager } from '../../state/user/hooks'
 // import { useETHBalances } from '../../state/wallet/hooks'
 // import { Link, useLocation } from 'react-router-dom'
 const HomePage = styled.div`
   width: 100%;
+  z-index: 10;
   max-width: 600px;
   margin: 0 auto;
   padding: 0 18px;
   box-sizing: border-box;
   position: relative;
   padding-top: 25px;
+  margin-top: -95px;
   * {
     margin: 0;
     padding: 0;
@@ -115,11 +120,76 @@ const HomePage = styled.div`
     width: 100%;
     background: #23305C;
     border-radius: 7px;
-    margin-bottom: 38px;
+    margin-bottom: 17px;
     padding: 16px;
     img {
       width: 100%;
       height: auto;
+    }
+  }
+  .invite_view {
+    width: 100%;
+    background: #23305C;
+    border-radius: 7px;
+    margin-bottom: 20px;
+    padding: 25px 12px;
+    position: relative;
+    .invite_top {
+      display: flex;
+      align-items: center;
+      img {
+        width: 97px;
+        height: auto;
+        margin-right: 10px;
+        flex-shrink: 0;
+      }
+      .invite_txt_view {
+        flex: 1;
+        p {
+          &:first-child {
+            width: 100%;
+            font-size: 15px;
+            font-weight: 500;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+          }
+          &:last-child {
+            width: 100%;
+            min-height: 40px;
+            padding: 5px 10px;
+            border-radius: 2px;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            background: #37477C;
+            word-break: break-all;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+        }
+      }
+    }
+    .copy_link {
+      width: 228px;
+      height: 38px;
+      background: linear-gradient(0deg, #2E63FD, #4782F6);
+      border-radius: 19px;
+      margin: 0 auto;
+      margin-top: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #FFFFFF;
+      text-align: center;
+      line-height: 38px;
+      
+    }
+    .copy_input {
+      position: absolute;
+      right: 0;
+      opacity: 0;
     }
   }
   .data_box_view {
@@ -183,13 +253,27 @@ const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
 export default function Home() {
 
   const { chainId } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
+  const [ inviteUrl, setInviteUrl ] = useState('')
+
+  useEffect(()=>{
+    if(account) {
+      setInviteUrl(`${window.location.origin}?invite=${account}`)
+    }
+  },[account])
   // const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+  const copy = ()=>{
+    var input:any = document.getElementById('copyText');
+    input.select();
+    document.execCommand("Copy");
+    Toast.show({
+      content: '复制成功！',
+    })
+  }
  return (
    <HomePage>
-    <div className='banner_view'>
-      <img src={require('./../../assets/img/banner.png')} alt="banner"/>
-    </div>
+    <SwiperBanner/>
     {/* 连接钱包交互区域 */}
     <div className='wallet_view'>
         
@@ -204,6 +288,18 @@ export default function Home() {
       <Link to="/pools">
         <div className='btn'>参与/进入矿池</div>
       </Link>
+    </div>
+    {/* 邀请 */}
+    <div className='invite_view'>
+      <div className='invite_top'>
+        <img src={require('./../../assets/img/invite.png')} alt="" />
+        <div className='invite_txt_view'>
+          <p>邀请好友挖矿可以获得超高的推广奖励，复制下面的推荐链接立即分享并获得奖励。</p>
+          <p>{inviteUrl}</p>
+        </div>
+      </div>
+      <div className='copy_link' onClick={()=>{copy()}}>复制链接</div>
+      <input value={inviteUrl} id="copyText" readOnly className='copy_input'/>
     </div>
     {/* 图标 */}
     <div className='chart_view'>

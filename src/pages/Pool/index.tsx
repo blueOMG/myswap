@@ -30,6 +30,8 @@ const PoolPage = styled.div`
   box-sizing: border-box;
   position: relative;
   padding-top: 25px;
+  margin-top: -95px;
+  z-index: 10;
   .banner_view {
     width: 100%;
     height: auto;

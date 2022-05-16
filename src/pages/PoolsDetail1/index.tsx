@@ -16,6 +16,8 @@ const PoolsPage = styled.div`
   box-sizing: border-box;
   position: relative;
   padding-top: 25px;
+  margin-top: -95px;
+  z-index: 10;
   * {
     margin: 0;
     padding: 0;
@@ -179,6 +181,7 @@ const PoolsPage = styled.div`
   
 `
 export default function PoolsDetail1() {
+  const inviteAddr = '';
   const history = useHistory();
 
   const { account } = useWeb3React();
@@ -257,7 +260,7 @@ export default function PoolsDetail1() {
     let interval:any
     if(contarctObj.poolContract) {
       interval = setInterval(()=>{
-        contarctObj.poolContract.methods.claim(account).call() // pid 还没获取到
+        contarctObj.poolContract.methods.claim(poolInfo.id).call()
         .then((res:any)=>{
           setEarnNum(Number(startools.mathpow(res,poolInfo.demical_in))) //  demical_out
         })
@@ -315,7 +318,7 @@ export default function PoolsDetail1() {
     const par = startools.mathlog(pledgeValue,poolInfo.demical_in);
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
     // alert(par)
-    contarctObj.poolContract.methods.deposit(par).send({from: account})// pid 还没获取到  邀请人地址
+    contarctObj.poolContract.methods.deposit(poolInfo.id,par,inviteAddr).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
       
     })
@@ -362,7 +365,7 @@ export default function PoolsDetail1() {
 
     // const par:any = (Number(redeemValue || 0) *Math.pow(10,9)) + '000000000'
     console.log(par)
-    contarctObj.poolContract.methods.withdraw(par).send({from: account})// pid 还没获取到
+    contarctObj.poolContract.methods.withdraw(poolInfo.id,par).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
       
     })
@@ -395,7 +398,7 @@ export default function PoolsDetail1() {
     }
     
     setEarnStatus(1);
-    contarctObj.poolContract.methods.getReward().send({from: account})
+    contarctObj.poolContract.methods.claim(poolInfo.id).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
       
     })

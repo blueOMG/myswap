@@ -14,6 +14,8 @@ const EarningsPage = styled.div`
   box-sizing: border-box;
   position: relative;
   padding-top: 25px;
+  margin-top: -95px;
+  z-index: 10;
   * {
     margin: 0;
     padding: 0;
