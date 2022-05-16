@@ -5,6 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import poolData from './../../poolAssets/poolConfig'
 import otherabi from './../../poolAssets/otherabi'
 import Web3 from 'web3'
+import { Modal } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
 const PoolsPage = styled.div`
   width: 100%;
@@ -163,10 +164,17 @@ const PoolsPage = styled.div`
     }
   }
 `
+const AlertTxt = styled.p`
+  height: 60px;
+  line-height: 60px;
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+`;
 export default function Pools() {
   const history = useHistory();
   const { account } = useWeb3React();
-  const [ tab, setTab ] = useState(3);
+  const [ tab, setTab ] = useState(2);
   const [ liquidityPoolList, setLiquidityPoolList ] = useState<any>([]);
   useEffect(()=>{
     getPoolList()
@@ -203,12 +211,7 @@ export default function Pools() {
     }
   }
   const goDetail = (item:any, type:number)=> {
-    // const now = (new Date().getTime()) *1 ;
-    // const start = (new Date(item.start).getTime())*1;
-    // if(start > now) {
-    //   alert('挖矿未开始！')
-    //   return 
-    // }
+    
    console.log(tab)
     if(type === 1) {
       return 
@@ -219,6 +222,16 @@ export default function Pools() {
       return 
     }
     if(type === 3) {
+      const now = (new Date().getTime()) *1 ;
+      const start = (new Date(item.start).getTime())*1;
+      if(start > now) {
+        Modal.show({
+          content: <AlertTxt>挖矿未开始!</AlertTxt>,
+          closeOnMaskClick: true,
+          showCloseButton: true,
+        })
+        return 
+      }
       history.push(`/poolsDetail/cooperate_pool/${item.id}`)
       return 
     }
@@ -268,8 +281,8 @@ export default function Pools() {
         tab === 2 &&
         <>
           {
-            liquidityPoolList.map((item:any)=>{
-              return <div className='single_view'>
+            liquidityPoolList.map((item:any,index:number)=>{
+              return <div className='single_view' key={index+'liquidityPoolList'}>
                 <div className='star_title'>{item.title}</div>
                 <div className='intro_view'>
                   <div className='coin_view'>
@@ -291,7 +304,13 @@ export default function Pools() {
                   ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
                       进入矿池
                     </div>
-                  :<div className='pool_btn' onClick={()=>alert('请先到首页连接钱包！')}>
+                  :<div className='pool_btn' onClick={()=>{
+                    Modal.show({
+                      content: <AlertTxt>请先到首页连接钱包!</AlertTxt>,
+                      closeOnMaskClick: true,
+                      showCloseButton: true,
+                    })
+                  }}>
                     进入矿池
                   </div>
                 }
@@ -306,8 +325,8 @@ export default function Pools() {
         tab === 3 &&
         <>
           {
-            poolData.cooperate_pool.map((item:any)=>{
-              return <div className='single_view'>
+            poolData.cooperate_pool.map((item:any,index:number)=>{
+              return <div className='single_view' key={index+'cooperate_pool'}>
                 <div className='star_title'>{item.title}</div>
                 <div className='intro_view'>
                   <div className='coin_view'>
@@ -329,7 +348,13 @@ export default function Pools() {
                   ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
                       进入矿池
                     </div>
-                  :<div className='pool_btn' onClick={()=>alert('请先到首页连接钱包！')}>
+                  :<div className='pool_btn' onClick={()=>{
+                    Modal.show({
+                      content: <AlertTxt>请先到首页连接钱包!</AlertTxt>,
+                      closeOnMaskClick: true,
+                      showCloseButton: true,
+                    })
+                  }}>
                     进入矿池
                   </div>
                 }

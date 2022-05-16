@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import Web3 from 'web3'
+import { Modal } from 'antd-mobile'
 
 import abi from '../../poolAssets/abi'
 import otherabi from './../../poolAssets/otherabi'
@@ -180,8 +181,16 @@ const PoolsPage = styled.div`
   }
   
 `
+const AlertTxt = styled.p`
+  height: 60px;
+  line-height: 60px;
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+`;
 export default function PoolsDetail1() {
-  const inviteAddr = '';
+  const inviteAddr = localStorage.getItem('INVITECODE') || '0';
+
   const history = useHistory();
 
   const { account } = useWeb3React();
@@ -197,7 +206,10 @@ export default function PoolsDetail1() {
   const [ earnNum, setEarnNum ] = useState(0) // 可提取收益
   const [ earnStatus, setEarnStatus ] = useState(0) // 提取状态
 
+  const [ inviteNum, setInviteNum ] = useState(0) // 邀请奖励
+
   const [ stakeNum, setStakeNum ] = useState(0); // setStakeNum
+
 
   const [ approveStaus, setapproveStaus ] = useState(0) // 授权状态
   
@@ -223,8 +235,7 @@ export default function PoolsDetail1() {
   },[])
 
   useEffect(()=>{
-    
-    if(poolInfo.id && account) {
+    if(poolInfo.id !== undefined && account) {
       initContract()
     }
 
@@ -232,17 +243,22 @@ export default function PoolsDetail1() {
 
   // 初始化web 创建合约对象
   const initContract = async()=>{
+    
+    const poolList_addr = '0x2586c611AcA2Cc6f659947C498E9EcCae25DaC99'; // 获取流动性挖矿列表的 合约地址
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
+      
       var web3js = new Web3(web3Obj.currentProvider);
       const inContract = new web3js.eth.Contract(abi, poolInfo.coin_in, { from: account || '' });
       const outContract = new web3js.eth.Contract(abi, poolInfo.coin_out, { from: account || '' });
       const poolContract = new web3js.eth.Contract(otherabi.poolabi, poolInfo.stake_pool, { from: account || '' });
+      const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
+     
       const balance_in = await inContract.methods.balanceOf(account).call();
       const balance_out = await outContract.methods.balanceOf(account).call();
       const allow_in = await inContract.methods.allowance(account,poolInfo.stake_pool).call();
       setContarctObj({
-        inContract, outContract, poolContract
+        inContract, outContract, poolContract,listPoolContract
       });
       console.log('balance_in*****',Number(startools.mathpow(allow_in,poolInfo.demical_in))) //  demical_out
       setBalanceObj({
@@ -260,16 +276,13 @@ export default function PoolsDetail1() {
     let interval:any
     if(contarctObj.poolContract) {
       interval = setInterval(()=>{
-        contarctObj.poolContract.methods.claim(poolInfo.id).call()
+        contarctObj.listPoolContract.methods.getUserAllPoolInfo(account).call()
         .then((res:any)=>{
-          setEarnNum(Number(startools.mathpow(res,poolInfo.demical_in))) //  demical_out
+          setEarnNum(Number(startools.mathpow(res.pending[poolInfo.id])))
+          setInviteNum(Number(startools.mathpow(res.inviteReward[poolInfo.id])))
+          setStakeNum(Number(startools.mathpow(res.amount[poolInfo.id])))
         })
-
-        contarctObj.poolContract.methods.balanceOf(account).call()
-        .then((res:any)=>{
-          setStakeNum(Number(startools.mathpow(res,poolInfo.demical_in))) //  demical_out
-        })
-
+        
       },2000)
       
       
@@ -293,7 +306,11 @@ export default function PoolsDetail1() {
       setAllowObj({
         allow_in: 10000
       })
-      alert('授权成功')
+      Modal.show({
+        content: <AlertTxt>授权成功!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
     } catch (error) {
       setapproveStaus(0);
     }
@@ -328,7 +345,11 @@ export default function PoolsDetail1() {
     .on('receipt', ()=>{ // 交易已广播
       if(!showalet) {
         setTimeout(()=>{
-          alert('质押成功!')
+          Modal.show({
+            content: <AlertTxt>质押成功!</AlertTxt>,
+            closeOnMaskClick: true,
+            showCloseButton: true,
+          })
           setPledgeValue('');
           setStakeStatus(0);
         },1000);
@@ -337,7 +358,12 @@ export default function PoolsDetail1() {
     })
     .on('error',(error:any, receipt:any)=>{
       console.log(error,receipt)
-      alert('质押失败，请重试！')
+      Modal.show({
+        content: <AlertTxt>质押失败，请重试!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
+      
       setPledgeValue('');
       setStakeStatus(0);
     })
@@ -375,7 +401,12 @@ export default function PoolsDetail1() {
     .on('receipt', ()=>{ // 交易已广播
       if(!showalet) {
         setTimeout(()=>{
-          alert('赎回成功!')
+          Modal.show({
+            content: <AlertTxt>赎回成功!</AlertTxt>,
+            closeOnMaskClick: true,
+            showCloseButton: true,
+          })
+          
           setRedeemValue('');
           setRedeemStatus(0);
           setStakeNum(0)
@@ -384,7 +415,12 @@ export default function PoolsDetail1() {
     })
     .on('error',(error:any, receipt:any)=>{
       console.log(error,receipt)
-      alert('赎回失败，请重试！')
+      Modal.show({
+        content: <AlertTxt>赎回失败，请重试!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
+      
       setRedeemValue('');
       setRedeemStatus(0);
     })
@@ -408,7 +444,11 @@ export default function PoolsDetail1() {
     .on('receipt', ()=>{ // 交易已广播
       if(!showalet) {
         setTimeout(()=>{
-          alert('提取成功!')
+          Modal.show({
+            content: <AlertTxt>提取成功!</AlertTxt>,
+            closeOnMaskClick: true,
+            showCloseButton: true,
+          })
           setEarnNum(0);
           setEarnStatus(0);
         },1000)
@@ -416,7 +456,12 @@ export default function PoolsDetail1() {
     })
     .on('error',(error:any, receipt:any)=>{
       console.log(error,receipt)
-      alert('提取失败，请重试！')
+      Modal.show({
+        content: <AlertTxt>提取失败，请重试!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
+     
       setEarnStatus(0);
     })
   }
@@ -450,9 +495,9 @@ export default function PoolsDetail1() {
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
         <img src={poolInfo.icon_out || require(`./../../assets/img/money.png`)} alt="" className='pledge_img'/>
         <p className='pledge_txt'>待提现挖矿收益</p>
-        <p className='pledge_value' style={{marginBottom: '27px'}}>{earnNum.toFixed(6)}</p>
-        <p className='my_team' onClick={()=>history.push('/earnings')}>我的团队</p>
-        <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
+        <p className='pledge_value' style={{marginBottom: '27px'}}>{inviteNum.toFixed(6)}</p>
+        <p className='my_team' onClick={()=>history.push(`/earnings/${poolInfo.id}`)}>我的团队</p>
+        <div className='pledge_btn' style={inviteNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
       </div>
 
       <div className='pledge_view'>

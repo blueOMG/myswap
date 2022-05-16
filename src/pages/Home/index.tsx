@@ -156,11 +156,12 @@ const HomePage = styled.div`
           &:last-child {
             width: 100%;
             min-height: 40px;
-            padding: 5px 10px;
+            padding: 0 10px;
             border-radius: 2px;
             text-align: center;
             line-height: 18px;
             font-size: 12px;
+            color: #fff;
             background: #37477C;
             word-break: break-all;
             overflow: hidden;
@@ -258,8 +259,20 @@ export default function Home() {
   const [ inviteUrl, setInviteUrl ] = useState('')
 
   useEffect(()=>{
+    const res = getInviteAddr('code');
+    console.log(res)
+    localStorage.setItem('INVITECODE',res || '');
+  },[])
+
+  const getInviteAddr = (name:string)=> {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
+  useEffect(()=>{
     if(account) {
-      setInviteUrl(`${window.location.origin}?invite=${account}`)
+      setInviteUrl(`https://www.starswap.cn?code=${account}`)
     }
   },[account])
   // const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']

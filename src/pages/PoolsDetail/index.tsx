@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import Web3 from 'web3'
+import { Modal } from 'antd-mobile'
 
 import poolData from '../../poolAssets/poolConfig'
 import abi from '../../poolAssets/abi'
@@ -172,6 +173,13 @@ const PoolsPage = styled.div`
   }
   
 `
+const AlertTxt = styled.p`
+  height: 60px;
+  line-height: 60px;
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+`;
 export default function PoolsDetail() {
 
   const paramsData:any = useParams()
@@ -285,7 +293,11 @@ export default function PoolsDetail() {
       setAllowObj({
         allow_in: 10000
       })
-      alert('授权成功')
+      Modal.show({
+        content: <AlertTxt>授权成功!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
     } catch (error) {
       setapproveStaus(0);
     }
@@ -320,7 +332,11 @@ export default function PoolsDetail() {
     .on('receipt', ()=>{ // 交易已广播
       if(!showalet) {
         setTimeout(()=>{
-          alert('质押成功!')
+          Modal.show({
+            content: <AlertTxt>质押成功!</AlertTxt>,
+            closeOnMaskClick: true,
+            showCloseButton: true,
+          })
           setPledgeValue('');
           setStakeStatus(0);
         },1000);
@@ -329,7 +345,11 @@ export default function PoolsDetail() {
     })
     .on('error',(error:any, receipt:any)=>{
       console.log(error,receipt)
-      alert('质押失败，请重试！')
+      Modal.show({
+        content: <AlertTxt>质押失败，请重试!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
       setPledgeValue('');
       setStakeStatus(0);
     })
@@ -367,7 +387,11 @@ export default function PoolsDetail() {
     .on('receipt', ()=>{ // 交易已广播
       if(!showalet) {
         setTimeout(()=>{
-          alert('赎回成功!')
+          Modal.show({
+            content: <AlertTxt>赎回成功!</AlertTxt>,
+            closeOnMaskClick: true,
+            showCloseButton: true,
+          })
           setRedeemValue('');
           setRedeemStatus(0);
           setStakeNum(0)
@@ -376,7 +400,11 @@ export default function PoolsDetail() {
     })
     .on('error',(error:any, receipt:any)=>{
       console.log(error,receipt)
-      alert('赎回失败，请重试！')
+      Modal.show({
+        content: <AlertTxt>赎回失败，请重试!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
       setRedeemValue('');
       setRedeemStatus(0);
     })
@@ -400,7 +428,11 @@ export default function PoolsDetail() {
     .on('receipt', ()=>{ // 交易已广播
       if(!showalet) {
         setTimeout(()=>{
-          alert('提取成功!')
+          Modal.show({
+            content: <AlertTxt>提取成功!</AlertTxt>,
+            closeOnMaskClick: true,
+            showCloseButton: true,
+          })
           setEarnNum(0);
           setEarnStatus(0);
         },1000)
@@ -408,7 +440,11 @@ export default function PoolsDetail() {
     })
     .on('error',(error:any, receipt:any)=>{
       console.log(error,receipt)
-      alert('提取失败，请重试！')
+      Modal.show({
+        content: <AlertTxt>提取失败，请重试!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
       setEarnStatus(0);
     })
   }

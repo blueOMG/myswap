@@ -82,7 +82,7 @@ export default function App() {
                 <Route exact strict path="/pools" component={Pools} />
                 <Route exact strict path="/poolsDetail/:type/:id" component={PoolsDetail} /> 
                 <Route exact strict path="/poolsDetail1/:type/:id" component={PoolsDetail1} /> 
-                <Route exact strict path="/earnings" component={Earnings} />
+                <Route exact strict path="/earnings/:id" component={Earnings} />
                 <Route exact strict path="/DAO" component={DAO} />
                 <Route exact strict path="/NFT" component={NFT} />
                 
