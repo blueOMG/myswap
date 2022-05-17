@@ -172,11 +172,22 @@ const AlertTxt = styled.p`
   text-align: center;
 `;
 export default function Pools() {
+
+  const getInviteAddr = (name:string)=> {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
+
+
   const history = useHistory();
   const { account } = useWeb3React();
   const [ tab, setTab ] = useState(2);
   const [ liquidityPoolList, setLiquidityPoolList ] = useState<any>([]);
   useEffect(()=>{
+    const res = getInviteAddr('code')
+    localStorage.setItem('INVITECODE',res || '')
     getPoolList()
   },[]);
   // 获取流动性挖矿列表
@@ -201,7 +212,7 @@ export default function Pools() {
           start: res.startBlock[index],
           end: res.endBlock[index],
           id: index,
-          demical_in: res1.rewardTokenDecimals[index],
+          demical_out: res1.rewardTokenDecimals[index],
           coin_in: item,
           coin_out: res.rewardToken[index],
           stake_pool: poolStake_addr

@@ -5,7 +5,7 @@ import otherabi from './../../poolAssets/otherabi'
 import Web3 from 'web3'
 import { Popup, Toast, SpinLoading } from 'antd-mobile'
 import { useParams } from 'react-router-dom'
-
+import startools from '../../poolAssets/startools'
 // import abi from '../../poolAssets/abi'
 // import startools from '../../poolAssets/startools'
 // import { clearInterval } from 'timers'
@@ -156,6 +156,8 @@ const NoData = styled.p`
   color: #999;
 `;
 export default function Earnings() {
+  const localData:any = JSON.parse(localStorage.getItem('liquidityPoolInfo') || '{"demical_out" : "10"}')
+
   const pageSize = 10
 
   const paramsData:any = useParams()
@@ -182,11 +184,11 @@ export default function Earnings() {
     }
   },[account,paramsData.id]);
   // 获取一级列表
-  const initContract = async (start?:any)=>{
+  const initContract = async ()=>{
     const poolList_addr = '0x2586c611AcA2Cc6f659947C498E9EcCae25DaC99'; // 获取流动性挖矿列表的 合约地址
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
-      var web3js = new Web3(web3Obj.currentProvider);
+      let web3js = new Web3(web3Obj.currentProvider);
       const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
       setlistPoolContract(listPoolContract)
     }
@@ -205,15 +207,27 @@ export default function Earnings() {
     const lenstart = start===null ? startLen1 : start;
     console.log(lenstart)
     const res = await listPoolContract.methods.getPoolBinderInfo(paramsData.id, account, lenstart, lenstart+pageSize).call(); // 一级得数据
-    const addrList:any = res.returnBinders || []
+    const addrList:any = (res.returnBinders || []);
     if(addrList.length) {
-      const list = addrList.map((item:string,index:number)=>({
-        addr: item,
-        stakeNum: res.returnBinderAmount[index],
-        income: res.returnBinderPending[index]
-      }))
-      setList(list);
-      (start!==null) && setStartLen1(start)
+      let list:any = [];
+      addrList.forEach((item:string,index:number)=>{
+        if(item !== "0x0000000000000000000000000000000000000000") {
+          list.push({
+            addr: item,
+            stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
+            income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+          })
+        }
+      })
+      if(list.length) {
+        setList(list);
+        (start!==null) && setStartLen1(start)
+      } else {
+        (start!==null) && Toast.show({
+          content: '已经是最后一页了！'
+        })
+      }
+      
     } else {
       Toast.show({
         content: '已经是最后一页了！'
@@ -238,23 +252,36 @@ export default function Earnings() {
     const lenstart = start===null ? startLen2 : start;
     console.log(lenstart)
     const res = await listPoolContract.methods.getPoolBinderInfo(paramsData.id, selectAddr, lenstart, lenstart+pageSize).call(); // 一级得数据
-    const addrList:any = res.returnBinders || []
+    const addrList:any = (res.returnBinders || []);
     if(addrList.length) {
-      const list = addrList.map((item:string,index:number)=>({
-        addr: item,
-        stakeNum: res.returnBinderAmount[index],
-        income: res.returnBinderPending[index]
-      }))
-      setList2(list);
-      (start!==null) && setStartLen2(start)
+      let list:any = [];
+      addrList.forEach((item:string,index:number)=>{
+        if(item !== "0x0000000000000000000000000000000000000000") {
+          list.push({
+            addr: item,
+            stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
+            income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+          })
+        }
+      })
+      console.log('sonlist>>>>>>',list)
+      if(list.length) {
+        setList2(list);
+        (start!==null) && setStartLen2(start)
+      } else {
+        (start!==null) && Toast.show({
+          content: '已经是最后一页了！'
+        })
+      }
+      
     } else {
-      Toast.show({
+      (start!==null) && Toast.show({
         content: '已经是最后一页了！'
       })
     }
     setTimeout(()=>{
       setLoading2(false)
-    },800)
+    },500)
   }
 
   return (
@@ -293,7 +320,12 @@ export default function Earnings() {
           <p onClick={()=>getFaList(startLen1 - pageSize)}>上一页</p>
           <span>第 {(startLen1 / pageSize) + 1 } 页</span>
           <p onClick={()=>{
-            console.log('startLen1 + pageSize',startLen1 + pageSize)
+            if(list.length < 10) {
+              Toast.show({
+                content: '已经是最后一页了！'
+              })
+              return 
+            }
             getFaList(startLen1 + pageSize)
           }}>下一页</p>
         </PageView>
@@ -312,7 +344,8 @@ export default function Earnings() {
             {
               loading2
               ? <LoadingView><SpinLoading color='primary' /></LoadingView>
-              :(list.length 
+              :(
+                list2.length 
                 ?list2.map((item:any,index:number)=>(
                   <ItemSon key={index}>
                     <p>{item.addr  && `${item.addr.slice(0,3)}***${item.addr.slice(-3)}`}</p>
@@ -328,7 +361,12 @@ export default function Earnings() {
             <p onClick={()=>getSonList(startLen2 - pageSize)}>上一页</p>
             <span>第 {(startLen2 / pageSize) + 1 } 页</span>
             <p onClick={()=>{
-              console.log('startLen2 + pageSize',startLen2 + pageSize)
+              if(list2.length < 10) {
+                Toast.show({
+                  content: '已经是最后一页了！'
+                })
+                return 
+              }
               getSonList(startLen2 + pageSize)
             }}>下一页</p>
           </PageView>

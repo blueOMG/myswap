@@ -260,13 +260,13 @@ export default function PoolsDetail1() {
       setContarctObj({
         inContract, outContract, poolContract,listPoolContract
       });
-      console.log('balance_in*****',Number(startools.mathpow(allow_in,poolInfo.demical_in))) //  demical_out
+      console.log('balance_in*****',Number(startools.mathpow(allow_in,poolInfo.demical_out))) 
       setBalanceObj({
-        balance_out: (startools.mathpow(balance_out,poolInfo.demical_in) * 1).toFixed(4), //  demical_out
-        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4)
+        balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(4),
+        balance_in: (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(4) // demical_in
       })
       setAllowObj({
-        allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_in)) //  demical_out
+        allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
       })
     }
   }
@@ -278,9 +278,10 @@ export default function PoolsDetail1() {
       interval = setInterval(()=>{
         contarctObj.listPoolContract.methods.getUserAllPoolInfo(account).call()
         .then((res:any)=>{
-          setEarnNum(Number(startools.mathpow(res.pending[poolInfo.id])))
-          setInviteNum(Number(startools.mathpow(res.inviteReward[poolInfo.id])))
-          setStakeNum(Number(startools.mathpow(res.amount[poolInfo.id])))
+          console.log('res....',res)
+          setEarnNum(Number(startools.mathpow(res.pending[poolInfo.id],poolInfo.demical_out)))
+          setInviteNum(Number(startools.mathpow(res.inviteReward[poolInfo.id],poolInfo.demical_out)))
+          setStakeNum(Number(startools.mathpow(res.amount[poolInfo.id],poolInfo.demical_out)))
         })
         
       },2000)
@@ -332,7 +333,7 @@ export default function PoolsDetail1() {
       return 
     }
     setStakeStatus(1);
-    const par = startools.mathlog(pledgeValue,poolInfo.demical_in);
+    const par = startools.mathlog(pledgeValue,poolInfo.demical_out); // demical_in
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
     contarctObj.poolContract.methods.deposit(poolInfo.id,par, inviteAddr).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
@@ -386,7 +387,7 @@ export default function PoolsDetail1() {
     }
     setRedeemStatus(1);
     // 临时处理 先能够使用
-    const par = startools.mathlog(redeemValue,poolInfo.demical_in);
+    const par = startools.mathlog(redeemValue,poolInfo.demical_out); // demical_in
 
     // const par:any = (Number(redeemValue || 0) *Math.pow(10,9)) + '000000000'
     console.log(par)
@@ -467,7 +468,7 @@ export default function PoolsDetail1() {
   const regetBalance = async ()=>{
     const balance_in = await contarctObj.inContract.methods.balanceOf(account).call();
     // const balance_out = await contarctObj.outContract.methods.balanceOf(account).call();
-    const res = (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4);
+    const res = (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(4);
     if(res === balanceObj.balance_in) {
       setTimeout(()=>{
         regetBalance();
@@ -476,7 +477,7 @@ export default function PoolsDetail1() {
     }
     setBalanceObj({
       ...balanceObj,
-      balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4)
+      balance_in: (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(4)
     })
   }
 
@@ -493,10 +494,10 @@ export default function PoolsDetail1() {
       <div className='pledge_view'>
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
         <img src={poolInfo.icon_out || require(`./../../assets/img/money.png`)} alt="" className='pledge_img'/>
-        <p className='pledge_txt'>待提现挖矿收益</p>
+        <p className='pledge_txt'>推广收益</p>
         <p className='pledge_value' style={{marginBottom: '27px'}}>{inviteNum.toFixed(6)}</p>
         <p className='my_team' onClick={()=>history.push(`/earnings/${poolInfo.id}`)}>我的团队</p>
-        <div className='pledge_btn' style={inviteNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
+        {/* <div className='pledge_btn' style={inviteNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div> */}
       </div>
 
       <div className='pledge_view'>
