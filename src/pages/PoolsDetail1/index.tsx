@@ -189,7 +189,7 @@ const AlertTxt = styled.p`
   text-align: center;
 `;
 export default function PoolsDetail1() {
-  const inviteAddr = localStorage.getItem('INVITECODE') || '0';
+  const inviteAddr = localStorage.getItem('INVITECODE') || '0x67800182B72466e1725A26f895672cf2C7b05D27'; // 没邀请人，用固定钱包
 
   const history = useHistory();
 
@@ -334,8 +334,7 @@ export default function PoolsDetail1() {
     setStakeStatus(1);
     const par = startools.mathlog(pledgeValue,poolInfo.demical_in);
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
-    // alert(par)
-    contarctObj.poolContract.methods.deposit(poolInfo.id,par,inviteAddr).send({from: account})
+    contarctObj.poolContract.methods.deposit(poolInfo.id,par, inviteAddr).send({from: account})
     .on('transactionHash', ()=>{ // 交易hash
       
     })
