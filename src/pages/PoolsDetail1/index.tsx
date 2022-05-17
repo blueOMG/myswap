@@ -496,8 +496,7 @@ export default function PoolsDetail1() {
         <img src={poolInfo.icon_out || require(`./../../assets/img/money.png`)} alt="" className='pledge_img'/>
         <p className='pledge_txt'>推广收益</p>
         <p className='pledge_value' style={{marginBottom: '27px'}}>{inviteNum.toFixed(6)}</p>
-        <p className='my_team' onClick={()=>history.push(`/earnings/${poolInfo.id}`)}>我的团队</p>
-        {/* <div className='pledge_btn' style={inviteNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div> */}
+        <div className='pledge_btn' onClick={()=>history.push(`/earnings/${poolInfo.id}`)}>我的团队</div>
       </div>
 
       <div className='pledge_view'>
