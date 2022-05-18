@@ -383,6 +383,9 @@ export default function PoolsDetail1() {
   }
   // 点击质押需要检查 是否未新用户 若是  则需确定邀请地址 是否可用
   const stakeFn = async ()=>{
+    if(stakestatus !== 0 || !canStake) {
+      return 
+    }
     if(isBindUser){
       pledge()
     } else {
@@ -426,9 +429,6 @@ export default function PoolsDetail1() {
   // 质押
   const pledge = async ()=>{
     let showalet = false;
-    if(stakestatus !== 0 || !canStake) {
-      return 
-    }
     setStakeStatus(1);
     const par = startools.mathlog(pledgeValue,poolInfo.demical_out); // demical_in
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
