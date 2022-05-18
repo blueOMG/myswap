@@ -147,12 +147,12 @@ const poolabi:any = [
           },
           {
               "internalType": "uint256",
-              "name": "startBlock",
+              "name": "startTime",
               "type": "uint256"
           },
           {
               "internalType": "uint256",
-              "name": "endBlock",
+              "name": "endTime",
               "type": "uint256"
           },
           {
@@ -168,6 +168,11 @@ const poolabi:any = [
           {
               "internalType": "uint256",
               "name": "inviteFee1",
+              "type": "uint256"
+          },
+          {
+              "internalType": "uint256",
+              "name": "timePerBlock",
               "type": "uint256"
           }
       ],
@@ -280,6 +285,16 @@ const poolabi:any = [
               "internalType": "uint256",
               "name": "inviteFee1",
               "type": "uint256"
+          },
+          {
+              "internalType": "uint256",
+              "name": "startBlock",
+              "type": "uint256"
+          },
+          {
+              "internalType": "uint256",
+              "name": "endBlock",
+              "type": "uint256"
           }
       ],
       "stateMutability": "view",
@@ -322,12 +337,12 @@ const poolabi:any = [
           },
           {
               "internalType": "uint256",
-              "name": "startBlock",
+              "name": "startTime",
               "type": "uint256"
           },
           {
               "internalType": "uint256",
-              "name": "endBlock",
+              "name": "endTime",
               "type": "uint256"
           }
       ],
@@ -386,6 +401,11 @@ const poolabi:any = [
           {
               "internalType": "uint256",
               "name": "binderCount",
+              "type": "uint256"
+          },
+          {
+              "internalType": "uint256",
+              "name": "depositNum",
               "type": "uint256"
           }
       ],
@@ -585,6 +605,25 @@ const listpoolabi:any = [
       "type": "constructor"
   },
   {
+      "anonymous": false,
+      "inputs": [
+          {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+          },
+          {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+          }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+  },
+  {
       "inputs": [],
       "name": "StarLPPool",
       "outputs": [
@@ -592,6 +631,25 @@ const listpoolabi:any = [
               "internalType": "contract IStarLPPool",
               "name": "",
               "type": "address"
+          }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "inputs": [
+          {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+          }
+      ],
+      "name": "_singleToken",
+      "outputs": [
+          {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
           }
       ],
       "stateMutability": "view",
@@ -635,6 +693,11 @@ const listpoolabi:any = [
               "internalType": "uint256[]",
               "name": "rewardTokenDecimals",
               "type": "uint256[]"
+          },
+          {
+              "internalType": "uint256[]",
+              "name": "lpTokenDecimals",
+              "type": "uint256[]"
           }
       ],
       "stateMutability": "view",
@@ -669,6 +732,24 @@ const listpoolabi:any = [
               "name": "reward",
               "type": "uint256[]"
           },
+          {
+              "internalType": "uint256[]",
+              "name": "startTime",
+              "type": "uint256[]"
+          },
+          {
+              "internalType": "uint256[]",
+              "name": "endTime",
+              "type": "uint256[]"
+          }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "inputs": [],
+      "name": "getAllPoolTimes",
+      "outputs": [
           {
               "internalType": "uint256[]",
               "name": "startBlock",
@@ -727,6 +808,11 @@ const listpoolabi:any = [
               "internalType": "uint256[]",
               "name": "returnBinderPending",
               "type": "uint256[]"
+          },
+          {
+              "internalType": "uint256[]",
+              "name": "binderCount",
+              "type": "uint256[]"
           }
       ],
       "stateMutability": "view",
@@ -760,9 +846,84 @@ const listpoolabi:any = [
       ],
       "stateMutability": "view",
       "type": "function"
+  },
+  {
+      "inputs": [
+          {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+          }
+      ],
+      "name": "getUserInviteInfo",
+      "outputs": [
+          {
+              "internalType": "address",
+              "name": "invitor",
+              "type": "address"
+          },
+          {
+              "internalType": "uint256",
+              "name": "binderCount",
+              "type": "uint256"
+          },
+          {
+              "internalType": "uint256",
+              "name": "depositNum",
+              "type": "uint256"
+          }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+          {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+          }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+  },
+  {
+      "inputs": [
+          {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+          },
+          {
+              "internalType": "bool",
+              "name": "enable",
+              "type": "bool"
+          }
+      ],
+      "name": "setSingleToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+  },
+  {
+      "inputs": [
+          {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+          }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
   }
 ]
+
 export default {
   poolabi,
-  listpoolabi
+  listpoolabi,
+
 }

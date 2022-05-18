@@ -3,11 +3,12 @@ import { useWeb3React } from '@web3-react/core'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import Web3 from 'web3'
-import { Modal } from 'antd-mobile'
+import { Modal, Dialog, Toast } from 'antd-mobile'
 
 import abi from '../../poolAssets/abi'
 import otherabi from './../../poolAssets/otherabi'
 import startools from '../../poolAssets/startools'
+import otherpoolConfig from './../../poolAssets/otherpoolConfig'
 // import { clearInterval } from 'timers'
 const PoolsPage = styled.div`
   width: 100%;
@@ -188,8 +189,57 @@ const AlertTxt = styled.p`
   color: #333;
   text-align: center;
 `;
+const InviteAlert = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  input {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    line-height: 40px;
+    font-size: 14px;
+    padding: 0 5px;
+    border: 1px solid #366DFE;
+    color: #366DFE;
+    margin-bottom: 15px;
+  }
+  span {
+    font-size: 13px;
+    color: red;
+  }
+`;
+
+let inviteAddr:any = localStorage.getItem('INVITECODE') || '';
+
+function InviteAlertContent () {
+  const [ value, setValue ] = useState(inviteAddr);
+  return (
+    <InviteAlert>
+      <p>请输入邀请地址以激活你的矿池</p>
+      <input 
+        value={value}
+        onChange={(e:any)=>{
+          console.log(inviteAddr)
+          inviteAddr = e.target.value
+          setValue(e.target.value)
+        }}
+      />
+      <span>激活操作需链上确认，请勿重复操作</span>
+    </InviteAlert>
+  )
+}
+
+
 export default function PoolsDetail1() {
-  const inviteAddr = localStorage.getItem('INVITECODE') || '0x67800182B72466e1725A26f895672cf2C7b05D27'; // 没邀请人，用固定钱包
+
+  // inviteAddr = localStorage.getItem('INVITECODE') || ''; // 没邀请人，用固定钱包
 
   const history = useHistory();
 
@@ -226,6 +276,8 @@ export default function PoolsDetail1() {
 
   const [ showWithdraw, setShowWithdraw ] =useState(false)
 
+  const [ isBindUser, setIsBindUser ] = useState(false) // 是否绑定邀请用户了
+
   useEffect(()=>{
     const local = localStorage.getItem('liquidityPoolInfo');
     if(local) {
@@ -244,7 +296,7 @@ export default function PoolsDetail1() {
   // 初始化web 创建合约对象
   const initContract = async()=>{
     
-    const poolList_addr = '0x2586c611AcA2Cc6f659947C498E9EcCae25DaC99'; // 获取流动性挖矿列表的 合约地址
+    const { poolList_addr } = otherpoolConfig; // 获取流动性挖矿列表的 合约地址
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
       
@@ -257,10 +309,13 @@ export default function PoolsDetail1() {
       const balance_in = await inContract.methods.balanceOf(account).call();
       const balance_out = await outContract.methods.balanceOf(account).call();
       const allow_in = await inContract.methods.allowance(account,poolInfo.stake_pool).call();
+
+      const inviteInfo = await poolContract.methods.getUserInviteInfo(account).call();
+
       setContarctObj({
         inContract, outContract, poolContract,listPoolContract
       });
-      console.log('balance_in*****',Number(startools.mathpow(allow_in,poolInfo.demical_out))) 
+
       setBalanceObj({
         balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(4),
         balance_in: (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(4) // demical_in
@@ -268,6 +323,7 @@ export default function PoolsDetail1() {
       setAllowObj({
         allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
       })
+      setIsBindUser(inviteInfo.depositNum !== '0')
     }
   }
 
@@ -278,7 +334,6 @@ export default function PoolsDetail1() {
       interval = setInterval(()=>{
         contarctObj.listPoolContract.methods.getUserAllPoolInfo(account).call()
         .then((res:any)=>{
-          console.log('res....',res)
           setEarnNum(Number(startools.mathpow(res.pending[poolInfo.id],poolInfo.demical_out)))
           setInviteNum(Number(startools.mathpow(res.inviteReward[poolInfo.id],poolInfo.demical_out)))
           setStakeNum(Number(startools.mathpow(res.amount[poolInfo.id],poolInfo.demical_out)))
@@ -326,8 +381,50 @@ export default function PoolsDetail1() {
       setCanStake(true);
     }
   }
-  // 质押
+  // 点击质押需要检查 是否未新用户 若是  则需确定邀请地址 是否可用
   const stakeFn = async ()=>{
+    if(isBindUser){
+      pledge()
+    } else {
+      Dialog.confirm({
+        title: '提示',
+        content: <InviteAlertContent />,
+        closeOnMaskClick: true,
+        confirmText: '确定',
+        cancelText: '取消',
+        onConfirm:()=>{
+          checkInvite()
+        },
+        onCancel:()=>{
+          
+        },
+      })
+    }
+  }
+  // 检查邀请地址 是否可用
+  const checkInvite = async ()=> {
+    try {
+      
+      const inviteInfo = await contarctObj.poolContract.methods.getUserInviteInfo(inviteAddr).call()
+
+      if(inviteInfo.depositNum !== '0') {
+        setIsBindUser(true);
+        pledge()
+      } else {
+        Toast.show({
+          content: '邀请地址无效！'
+        })
+      }
+    } catch (error) {
+      Toast.show({
+        content: '邀请地址无效！'
+      })
+    }
+    
+
+  }
+  // 质押
+  const pledge = async ()=>{
     let showalet = false;
     if(stakestatus !== 0 || !canStake) {
       return 
@@ -335,29 +432,43 @@ export default function PoolsDetail1() {
     setStakeStatus(1);
     const par = startools.mathlog(pledgeValue,poolInfo.demical_out); // demical_in
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
-    contarctObj.poolContract.methods.deposit(poolInfo.id,par, inviteAddr).send({from: account})
-    .on('transactionHash', ()=>{ // 交易hash
-      
-    })
-    .on('confirmation', ()=>{ // 
-      
-    })
-    .on('receipt', ()=>{ // 交易已广播
-      if(!showalet) {
-        setTimeout(()=>{
-          Modal.show({
-            content: <AlertTxt>质押成功!</AlertTxt>,
-            closeOnMaskClick: true,
-            showCloseButton: true,
-          })
-          setPledgeValue('');
-          setStakeStatus(0);
-        },1000);
-        regetBalance();
-      }
-    })
-    .on('error',(error:any, receipt:any)=>{
-      console.log(error,receipt)
+    console.log(par,inviteAddr)
+    try {
+      contarctObj.poolContract.methods.deposit(poolInfo.id, par, inviteAddr).send({from: account})
+      .on('transactionHash', ()=>{ // 交易hash
+        
+      })
+      .on('confirmation', ()=>{ // 
+        
+      })
+      .on('receipt', ()=>{ // 交易已广播
+        if(!showalet) {
+          setTimeout(()=>{
+            localStorage.setItem('INVITECODE',inviteAddr)
+            Modal.show({
+              content: <AlertTxt>质押成功!</AlertTxt>,
+              closeOnMaskClick: true,
+              showCloseButton: true,
+            })
+            setPledgeValue('');
+            setStakeStatus(0);
+          },1000);
+          regetBalance();
+        }
+      })
+      .on('error',(error:any, receipt:any)=>{
+        console.log(error,receipt)
+        Modal.show({
+          content: <AlertTxt>质押失败，请重试!</AlertTxt>,
+          closeOnMaskClick: true,
+          showCloseButton: true,
+        })
+        
+        setPledgeValue('');
+        setStakeStatus(0);
+      })
+    } catch (error) {
+      console.log(error)
       Modal.show({
         content: <AlertTxt>质押失败，请重试!</AlertTxt>,
         closeOnMaskClick: true,
@@ -365,8 +476,9 @@ export default function PoolsDetail1() {
       })
       
       setPledgeValue('');
-      setStakeStatus(0);
-    })
+      setStakeStatus(0);  
+    }
+
   }
 
 

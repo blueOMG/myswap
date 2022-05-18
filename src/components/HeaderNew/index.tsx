@@ -27,8 +27,8 @@ const HeaderFrame = styled.div`
   position: relative;
   padding: 0 20px;
   box-sizing: border-box;
-  padding-top: 76px;
-  padding-bottom: 137px;
+  padding-top: 26px;
+  padding-bottom: 107px;
   background: url(${require('./../../assets/img/headerbg.png')}) no-repeat;
   background-size: 100% 100%;
   p {

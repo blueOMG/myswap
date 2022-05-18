@@ -6,6 +6,7 @@ import Web3 from 'web3'
 import { Popup, Toast, SpinLoading } from 'antd-mobile'
 import { useParams } from 'react-router-dom'
 import startools from '../../poolAssets/startools'
+import otherpoolConfig from './../../poolAssets/otherpoolConfig'
 // import abi from '../../poolAssets/abi'
 // import startools from '../../poolAssets/startools'
 // import { clearInterval } from 'timers'
@@ -185,7 +186,7 @@ export default function Earnings() {
   },[account,paramsData.id]);
   // 获取一级列表
   const initContract = async ()=>{
-    const poolList_addr = '0x2586c611AcA2Cc6f659947C498E9EcCae25DaC99'; // 获取流动性挖矿列表的 合约地址
+    const { poolList_addr } = otherpoolConfig; // 获取流动性挖矿列表的 合约地址
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
       let web3js = new Web3(web3Obj.currentProvider);
@@ -205,37 +206,43 @@ export default function Earnings() {
     }
     setLoading1(true)
     const lenstart = start===null ? startLen1 : start;
-    console.log(lenstart)
-    const res = await listPoolContract.methods.getPoolBinderInfo(paramsData.id, account, lenstart, lenstart+pageSize).call(); // 一级得数据
-    const addrList:any = (res.returnBinders || []);
-    if(addrList.length) {
-      let list:any = [];
-      addrList.forEach((item:string,index:number)=>{
-        if(item !== "0x0000000000000000000000000000000000000000") {
-          list.push({
-            addr: item,
-            stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
-            income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+    console.log(paramsData.id, account)
+    console.log(lenstart, lenstart+pageSize)
+    try {
+      const res = await listPoolContract.methods.getPoolBinderInfo(paramsData.id, account, lenstart, lenstart+pageSize).call(); // 一级得数据
+      const addrList:any = (res.returnBinders || []);
+      if(addrList.length) {
+        let list:any = [];
+        addrList.forEach((item:string,index:number)=>{
+          if(item !== "0x0000000000000000000000000000000000000000") {
+            list.push({
+              addr: item,
+              stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
+              income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+            })
+          }
+        })
+        if(list.length) {
+          setList(list);
+          (start!==null) && setStartLen1(start)
+        } else {
+          (start!==null) && Toast.show({
+            content: '已经是最后一页了！'
           })
         }
-      })
-      if(list.length) {
-        setList(list);
-        (start!==null) && setStartLen1(start)
+        
       } else {
-        (start!==null) && Toast.show({
+        Toast.show({
           content: '已经是最后一页了！'
         })
       }
-      
-    } else {
-      Toast.show({
-        content: '已经是最后一页了！'
-      })
+    } catch (error) {
+      console.log(error)
     }
     setTimeout(()=>{
       setLoading1(false)
-    },800)
+    },500)
+    
   }
 
   useEffect(()=>{
@@ -250,34 +257,37 @@ export default function Earnings() {
     }
     setLoading2(true)
     const lenstart = start===null ? startLen2 : start;
-    console.log(lenstart)
-    const res = await listPoolContract.methods.getPoolBinderInfo(paramsData.id, selectAddr, lenstart, lenstart+pageSize).call(); // 一级得数据
-    const addrList:any = (res.returnBinders || []);
-    if(addrList.length) {
-      let list:any = [];
-      addrList.forEach((item:string,index:number)=>{
-        if(item !== "0x0000000000000000000000000000000000000000") {
-          list.push({
-            addr: item,
-            stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
-            income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+    try {
+      const res = await listPoolContract.methods.getPoolBinderInfo(paramsData.id, selectAddr, lenstart, lenstart+pageSize).call(); // 一级得数据
+      const addrList:any = (res.returnBinders || []);
+      if(addrList.length) {
+        let list:any = [];
+        addrList.forEach((item:string,index:number)=>{
+          if(item !== "0x0000000000000000000000000000000000000000") {
+            list.push({
+              addr: item,
+              stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
+              income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+            })
+          }
+        })
+        console.log('sonlist>>>>>>',list)
+        if(list.length) {
+          setList2(list);
+          (start!==null) && setStartLen2(start)
+        } else {
+          (start!==null) && Toast.show({
+            content: '已经是最后一页了！'
           })
         }
-      })
-      console.log('sonlist>>>>>>',list)
-      if(list.length) {
-        setList2(list);
-        (start!==null) && setStartLen2(start)
+        
       } else {
         (start!==null) && Toast.show({
           content: '已经是最后一页了！'
         })
       }
-      
-    } else {
-      (start!==null) && Toast.show({
-        content: '已经是最后一页了！'
-      })
+    } catch (error) {
+        
     }
     setTimeout(()=>{
       setLoading2(false)

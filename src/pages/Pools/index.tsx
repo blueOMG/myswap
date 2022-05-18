@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import poolData from './../../poolAssets/poolConfig'
 import otherabi from './../../poolAssets/otherabi'
+import otherpoolConfig from './../../poolAssets/otherpoolConfig'
 import Web3 from 'web3'
 import { Modal } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
@@ -172,15 +173,13 @@ const AlertTxt = styled.p`
   text-align: center;
 `;
 export default function Pools() {
-
+  // 获取url 邀请地址
   const getInviteAddr = (name:string)=> {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return null;
   }
-
-
   const history = useHistory();
   const { account } = useWeb3React();
   const [ tab, setTab ] = useState(2);
@@ -192,8 +191,9 @@ export default function Pools() {
   },[]);
   // 获取流动性挖矿列表
   const getPoolList = async ()=>{
-    const poolList_addr = '0x2586c611AcA2Cc6f659947C498E9EcCae25DaC99'; // 获取流动性挖矿列表的 合约地址
-    const poolStake_addr = '0x1FFA54298CC2EfF59286D09EEF4d63ADB2419f46';
+    // 获取流动性挖矿列表的 合约地址   质押地址
+    const { poolList_addr, poolStake_addr } = otherpoolConfig
+
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
       
@@ -201,6 +201,8 @@ export default function Pools() {
       const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
       const res = await listPoolContract.methods.getAllPoolInfo().call(); // 获取全部矿池列表
       const res1 = await listPoolContract.methods.getAllPoolExtraInfo().call();  //  获取矿池的扩展信息
+      console.log(res)
+      console.log(res1)
       const result = res.lpToken.map((item:any,index:number)=>{
         const lp0 = res1.lpToken0Symbol[index]
         const lp1 = res1.lpToken1Symbol[index]
@@ -209,10 +211,11 @@ export default function Pools() {
           name_in: lp0 === lp1 ? lp0 : `${lp0}-${lp1}`,
           name_out: reward,
           total: res.amount[index],
-          start: res.startBlock[index],
-          end: res.endBlock[index],
+          start: new Date(res.startTime[index]*1000).toLocaleString(),
+          end: new Date(res.endTime[index]*1000).toLocaleString(),
           id: index,
           demical_out: res1.rewardTokenDecimals[index],
+          demical_in: res1.lpTokenDecimals[index],
           coin_in: item,
           coin_out: res.rewardToken[index],
           stake_pool: poolStake_addr
