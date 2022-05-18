@@ -32,6 +32,17 @@ const EarningsPage = styled.div`
     border-radius: 7px;
     position: relative;
     padding-bottom: 40px;
+    .my_leader {
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+    }
     .list_flex {
       display: flex;
       align-items: center;
@@ -178,6 +189,7 @@ export default function Earnings() {
   const [ startLen2, setStartLen2 ] = useState(0); // setStartLen2
   const [ loading2, setLoading2 ] = useState(true);
   
+  const [ leaderAddr, setLeaderAddr ] = useState('') // 上级地址
 
   useEffect(()=>{
     if(account && paramsData.id) {
@@ -186,11 +198,14 @@ export default function Earnings() {
   },[account,paramsData.id]);
   // 获取一级列表
   const initContract = async ()=>{
-    const { poolList_addr } = otherpoolConfig; // 获取流动性挖矿列表的 合约地址
+    const { poolList_addr, poolStake_addr, empty_addr } = otherpoolConfig; // 获取流动性挖矿列表的 合约地址
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
       let web3js = new Web3(web3Obj.currentProvider);
       const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
+      const poolContract = new web3js.eth.Contract(otherabi.poolabi, poolStake_addr, { from: account || '' });
+      const inviteInfo = await poolContract.methods.getUserInviteInfo(account).call();
+      setLeaderAddr(inviteInfo.invitor===empty_addr ? '' : inviteInfo.invitor)
       setlistPoolContract(listPoolContract)
     }
   }
@@ -214,7 +229,7 @@ export default function Earnings() {
       if(addrList.length) {
         let list:any = [];
         addrList.forEach((item:string,index:number)=>{
-          if(item !== "0x0000000000000000000000000000000000000000") {
+          if(item !== otherpoolConfig.empty_addr) {
             list.push({
               addr: item,
               stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
@@ -263,7 +278,7 @@ export default function Earnings() {
       if(addrList.length) {
         let list:any = [];
         addrList.forEach((item:string,index:number)=>{
-          if(item !== "0x0000000000000000000000000000000000000000") {
+          if(item !== otherpoolConfig.empty_addr) {
             list.push({
               addr: item,
               stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
@@ -297,6 +312,7 @@ export default function Earnings() {
   return (
     <EarningsPage>
       <div className='earning_view'>
+        <p className='my_leader'>我的上级：{leaderAddr ? `${leaderAddr.slice(0,4)}***${leaderAddr.slice(-3)}` : ''}</p>
         <div className='list_flex list_title'>
           <p>直推</p>
           <p>质押量</p>
@@ -312,7 +328,7 @@ export default function Earnings() {
                   <div className='address_fa' onClick={()=>{
                     setSelectAddr(item.addr)
                   }}>
-                    <p>{item.addr  && `${item.addr.slice(0,3)}***${item.addr.slice(-3)}`}</p>
+                    <p>{item.addr  && `${item.addr.slice(0,4)}***${item.addr.slice(-3)}`}</p>
                     <img src={require('./../../assets/img/arrow_bottom.png')} alt="" />
                   </div>
                   <p>{item.stakeNum}</p>
@@ -349,7 +365,7 @@ export default function Earnings() {
           }}
           bodyStyle={{ height: 'calc(100% - 250px)',background:'#294081',paddingBottom: '40px',}}
         >
-          <SonListTitle>{`${selectAddr.slice(0,3)}***${selectAddr.slice(-3)}`} 的下级</SonListTitle>
+          <SonListTitle>{`${selectAddr.slice(0,4)}***${selectAddr.slice(-3)}`} 的下级</SonListTitle>
           <SonList>
             {
               loading2
@@ -358,7 +374,7 @@ export default function Earnings() {
                 list2.length 
                 ?list2.map((item:any,index:number)=>(
                   <ItemSon key={index}>
-                    <p>{item.addr  && `${item.addr.slice(0,3)}***${item.addr.slice(-3)}`}</p>
+                    <p>{item.addr  && `${item.addr.slice(0,4)}***${item.addr.slice(-3)}`}</p>
                     <p>{item.stakeNum}</p>
                     <p>{item.income}</p>
                   </ItemSon>
