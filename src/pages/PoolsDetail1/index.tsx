@@ -434,7 +434,7 @@ export default function PoolsDetail1() {
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
     console.log(par,inviteAddr)
     try {
-      contarctObj.poolContract.methods.deposit(poolInfo.id, par, inviteAddr).send({from: account})
+      contarctObj.poolContract.methods.deposit(poolInfo.id, par, inviteAddr || account).send({from: account})
       .on('transactionHash', ()=>{ // 交易hash
         
       })
