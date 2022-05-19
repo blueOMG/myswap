@@ -6,9 +6,9 @@ import Web3 from 'web3'
 import { Modal, Dialog, Toast } from 'antd-mobile'
 
 import abi from '../../poolAssets/abi'
-import otherabi from './../../poolAssets/otherabi'
+import liquidityabi from './../../poolAssets/liquidityabi'
 import startools from '../../poolAssets/startools'
-import otherpoolConfig from './../../poolAssets/otherpoolConfig'
+import liquidityPoolConfig from './../../poolAssets/liquidityPoolConfig'
 // import { clearInterval } from 'timers'
 const PoolsPage = styled.div`
   width: 100%;
@@ -296,15 +296,15 @@ export default function PoolsDetail1() {
   // 初始化web 创建合约对象
   const initContract = async()=>{
     
-    const { poolList_addr } = otherpoolConfig; // 获取流动性挖矿列表的 合约地址
+    const { poolList_addr } = liquidityPoolConfig; // 获取流动性挖矿列表的 合约地址
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
       
       var web3js = new Web3(web3Obj.currentProvider);
       const inContract = new web3js.eth.Contract(abi, poolInfo.coin_in, { from: account || '' });
       const outContract = new web3js.eth.Contract(abi, poolInfo.coin_out, { from: account || '' });
-      const poolContract = new web3js.eth.Contract(otherabi.poolabi, poolInfo.stake_pool, { from: account || '' });
-      const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
+      const poolContract = new web3js.eth.Contract(liquidityabi.poolabi, poolInfo.stake_pool, { from: account || '' });
+      const listPoolContract = new web3js.eth.Contract(liquidityabi.listpoolabi, poolList_addr, { from: account || '' });
      
       const balance_in = await inContract.methods.balanceOf(account).call();
       const balance_out = await outContract.methods.balanceOf(account).call();

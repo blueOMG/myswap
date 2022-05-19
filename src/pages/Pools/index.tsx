@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import poolData from './../../poolAssets/poolConfig'
-import otherabi from './../../poolAssets/otherabi'
-import otherpoolConfig from './../../poolAssets/otherpoolConfig'
+import liquidityabi from './../../poolAssets/liquidityabi'
+import liquidityPoolConfig from './../../poolAssets/liquidityPoolConfig'
 import Web3 from 'web3'
 import { Modal } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
@@ -193,13 +193,13 @@ export default function Pools() {
   // 获取流动性挖矿列表
   const getPoolList = async ()=>{
     // 获取流动性挖矿列表的 合约地址   质押地址
-    const { poolList_addr, poolStake_addr } = otherpoolConfig
+    const { poolList_addr, poolStake_addr } = liquidityPoolConfig
 
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
       
       var web3js = new Web3(web3Obj.currentProvider);
-      const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
+      const listPoolContract = new web3js.eth.Contract(liquidityabi.listpoolabi, poolList_addr, { from: account || '' });
       const res = await listPoolContract.methods.getAllPoolInfo().call(); // 获取全部矿池列表
       const res1 = await listPoolContract.methods.getAllPoolExtraInfo().call();  //  获取矿池的扩展信息
       console.log(res)

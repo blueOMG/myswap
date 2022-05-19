@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import otherabi from './../../poolAssets/otherabi'
+import liquidityabi from './../../poolAssets/liquidityabi'
 import Web3 from 'web3'
 import { Popup, Toast, SpinLoading } from 'antd-mobile'
 import { useParams } from 'react-router-dom'
 import startools from '../../poolAssets/startools'
-import otherpoolConfig from './../../poolAssets/otherpoolConfig'
+import liquidityPoolConfig from './../../poolAssets/liquidityPoolConfig'
 // import abi from '../../poolAssets/abi'
 // import startools from '../../poolAssets/startools'
 // import { clearInterval } from 'timers'
@@ -198,12 +198,12 @@ export default function Earnings() {
   },[account,paramsData.id]);
   // 获取一级列表
   const initContract = async ()=>{
-    const { poolList_addr, poolStake_addr, empty_addr } = otherpoolConfig; // 获取流动性挖矿列表的 合约地址
+    const { poolList_addr, poolStake_addr, empty_addr } = liquidityPoolConfig; // 获取流动性挖矿列表的 合约地址
     const web3Obj:any = window.web3;
     if (typeof web3Obj !== 'undefined') {
       let web3js = new Web3(web3Obj.currentProvider);
-      const listPoolContract = new web3js.eth.Contract(otherabi.listpoolabi, poolList_addr, { from: account || '' });
-      const poolContract = new web3js.eth.Contract(otherabi.poolabi, poolStake_addr, { from: account || '' });
+      const listPoolContract = new web3js.eth.Contract(liquidityabi.listpoolabi, poolList_addr, { from: account || '' });
+      const poolContract = new web3js.eth.Contract(liquidityabi.poolabi, poolStake_addr, { from: account || '' });
       const inviteInfo = await poolContract.methods.getUserInviteInfo(account).call();
       setLeaderAddr(inviteInfo.invitor===empty_addr ? '' : inviteInfo.invitor)
       setlistPoolContract(listPoolContract)
@@ -229,7 +229,7 @@ export default function Earnings() {
       if(addrList.length) {
         let list:any = [];
         addrList.forEach((item:string,index:number)=>{
-          if(item !== otherpoolConfig.empty_addr) {
+          if(item !== liquidityPoolConfig.empty_addr) {
             list.push({
               addr: item,
               stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
@@ -278,7 +278,7 @@ export default function Earnings() {
       if(addrList.length) {
         let list:any = [];
         addrList.forEach((item:string,index:number)=>{
-          if(item !== otherpoolConfig.empty_addr) {
+          if(item !== liquidityPoolConfig.empty_addr) {
             list.push({
               addr: item,
               stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),

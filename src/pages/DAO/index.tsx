@@ -1,11 +1,12 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 // import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-// import poolData from './../../poolAssets/poolConfig'
-// import otherabi from './../../poolAssets/otherabi'
-// import Web3 from 'web3'
-import { Modal } from 'antd-mobile'
+import daoPoolConfig from './../../poolAssets/daoPoolConfig'
+import daoabi from './../../poolAssets/daoabi'
+import Web3 from 'web3'
+import startools from '../../poolAssets/startools'
+import { Modal, Toast } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
 const HomePage = styled.div`
   width: 100%;
@@ -130,6 +131,18 @@ const HomePage = styled.div`
         font-size: 12px;
       }
     }
+    .can_get_title {
+      font-size: 12px;
+      color: #95A3CF;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .can_get_value {
+      color: #FEAA3D;
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
     .get_btn {
       width: 142px;
       height: 39px;
@@ -149,6 +162,14 @@ const HomePage = styled.div`
       color: #95A3CF;
       margin-bottom: 23px;
       padding-left: 23px;
+      text-align: center;
+    }
+    /* .nft_stakenum {
+      font-size: 13px;
+      font-weight: 400;
+      color: #95A3CF;
+      margin-bottom: 23px;
+      padding-left: 23px;
       text-align: left;
     }
     .pool_btn {
@@ -163,7 +184,7 @@ const HomePage = styled.div`
       font-weight: 400;
       color: #FFFFFF;
       
-    }
+    } */
   }
 `
 const AlertTxt = styled.p`
@@ -178,7 +199,105 @@ export default function DAO() {
   const { account } = useWeb3React();
   console.log(account)
   const [ tab, setTab ] = useState(1);
-  const extract = ()=>{
+
+  const [ listPoolContract, setListPoolContract ] = useState<any>();
+
+  const [ list, setList ] = useState<any>([]);
+
+  const [ getStatus, setGetStatus ] = useState(0) // 领取状态
+
+  useEffect(()=>{
+    if(account) {
+      initContract()
+      // console.log(web3jsObj)
+    }
+
+  },[ account ]);
+  
+  // 初始化
+  const initContract = async()=>{
+    
+    const { poolList_addr } = daoPoolConfig; // 获取流动性挖矿列表的 合约地址
+    const web3Obj:any = window.web3;
+    if (typeof web3Obj !== 'undefined') {
+      var web3js = new Web3(web3Obj.currentProvider);
+      // const poolContract = new web3js.eth.Contract(daoabi.poolabi, poolList_addr, { from: account || '' });
+      const listPoolContract = new web3js.eth.Contract(daoabi.poolList_abi, poolList_addr, { from: account || '' })
+      const res1 = await listPoolContract.methods.getAllPoolInfo().call()
+      const res2 = await listPoolContract.methods.getUserAllPoolInfo(account).call()
+      console.log(res2)
+      if(res1.rewardToken && res1.rewardToken.length) {
+        const listResult = res1.rewardToken.map((item:any,index:number)=>{
+          const decimal = res1.rewardTokenDecimals[index];
+          return {
+            coin_out: res1.rewardToken[index],
+            decimal_out: res1.rewardTokenDecimals[index],
+            name_out: res1.rewardTokenSymbol[index],
+            // aNftPrize: res1.rewardPerNFT[index],
+            start: res1.startTime[index],
+            end: res1.endTime[index],
+            // prizeCycle: res1.durationPerReward[index],
+            nftBalance: res2.amount[index],
+            willGetPrize: (startools.mathpow(res2.pending[index],decimal) * 1).toFixed(4),
+            getedPrize: (startools.mathpow(res2.claimed[index],decimal) * 1).toFixed(4),
+            nextPrizeTime: new Date(res2.newRewardTime[index]*1000).toLocaleString(),
+            pid: index
+          }
+        })
+        setList(listResult)
+        setListPoolContract(listPoolContract)
+      }
+    }
+  }
+
+  const regetData = async(item:any)=>{
+    const res1 = await listPoolContract.methods.getAllPoolInfo().call()
+    const res2 = await listPoolContract.methods.getUserAllPoolInfo(account).call()
+    if(res1.rewardToken && res1.rewardToken.length) {
+      const itemDecimal:any = res1.rewardTokenDecimals[item.pid]
+      const itemWillGet:any = (startools.mathpow(res2.pending[item.pid],itemDecimal) * 1).toFixed(4)
+      if(itemWillGet === item.willGetPrize) { // 数据相同则重新请求数据
+        setTimeout(()=>{
+          regetData(item)
+        },1000)
+        return 
+      }
+
+      const listResult = res1.rewardToken.map((item:any,index:number)=>{
+        const decimal = res1.rewardTokenDecimals[index];
+        return {
+          coin_out: res1.rewardToken[index],
+          decimal_out: res1.rewardTokenDecimals[index],
+          name_out: res1.rewardTokenSymbol[index],
+          // aNftPrize: res1.rewardPerNFT[index],
+          start: res1.startTime[index],
+          end: res1.endTime[index],
+          // prizeCycle: res1.durationPerReward[index],
+          nftBalance: res2.amount[index],
+          willGetPrize: (startools.mathpow(res2.pending[index],decimal) * 1).toFixed(4),
+          getedPrize: (startools.mathpow(res2.claimed[index],decimal) * 1).toFixed(4),
+          nextPrizeTime: new Date(res2.newRewardTime[index]*1000).toLocaleString(),
+          pid: index
+        }
+      })
+      setList(listResult)
+    }
+  }
+
+  // 是否展示下次领取时间
+  const showNextTime = (item:any)=> {
+    const noEnd = new Date().getTime() < item.end*1000
+
+    const hasNft = (item.amount * 1) > 0
+
+    const hasIncome =  (item.willGetPrize * 1) > 0
+
+    return noEnd && hasNft && hasIncome
+  }
+
+
+  const getPrize = (item:any)=>{
+    let showalet = false;
     if(!account) {
       Modal.show({
         content: <AlertTxt>请先到首页连接钱包!</AlertTxt>,
@@ -187,6 +306,43 @@ export default function DAO() {
       })
       return 
     }
+    if(getStatus != 0) {
+      return 
+    }
+    if(!((item.willGetPrize * 1) > 0)) {
+      Toast.show({
+        content: '暂无可领取数量！'
+      })
+      return 
+    }
+    setGetStatus(1)
+    listPoolContract.methods.claim(item.pid).send({from: account})
+    .on('transactionHash', ()=>{ })
+    .on('confirmation', ()=>{  })
+    .on('receipt', ()=>{ // 交易已广播
+      if(!showalet) {
+        setTimeout(()=>{
+          Modal.show({
+            content: <AlertTxt>领取成功!</AlertTxt>,
+            closeOnMaskClick: true,
+            showCloseButton: true,
+          })
+          setGetStatus(0)
+          regetData(item)
+        },1000)
+        
+        showalet = true;
+      }
+    })
+    .on('error',(error:any, receipt:any)=>{
+      console.log(error,receipt)
+      Modal.show({
+        content: <AlertTxt>领取失败，请重试!!</AlertTxt>,
+        closeOnMaskClick: true,
+        showCloseButton: true,
+      })
+    })
+
   }
   return (
     <HomePage>
@@ -206,31 +362,41 @@ export default function DAO() {
       </div>
       {
         tab === 1 &&
-        <div className='single_view'>
-          <div className='star_title'>股东NFT分红池</div>
-          <div className='coin_view'>
-            <img src={require('./../../assets/img/money.png')} alt="" />
-            <p>STAR</p>
-          </div>
+        list.map((item:any,index:number)=>{
+          return (
+            <div className='single_view' key={index}>
+              <div className='star_title'>股东NFT分红池</div>
+              <div className='coin_view'>
+                <img src={require('./../../assets/img/money.png')} alt="" />
+                <p>{item.name_out}</p>
+              </div>
 
-          <div className='nft_income_info'>
-            <div>
-              <p className='income_title'>已奖励金额</p>
-              <p className='income_value'>2000</p>
+              <div className='nft_income_info'>
+                <div>
+                  <p className='income_title'>已奖励金额</p>
+                  <p className='income_value'>{item.getedPrize}</p>
+                </div>
+                {/* <div>
+                  <p className='income_title'>当日奖励金额</p>  
+                  <p className='income_value'>2000</p>
+                </div> */}
+                <div>
+                  <p className='income_title'>NFT 数量</p>
+                  <p className='income_value'>{item.nftBalance}</p>
+                </div>
+              </div>
+              <p className='can_get_title'>可领取金额</p>
+              <p className='can_get_value'>{item.willGetPrize} {item.name_out}</p>
+              <div className='get_btn' onClick={()=>getPrize(item)}>{getStatus==1 ? '领取中...' :'领取'}</div>
+              {
+                showNextTime(item) && 
+                <p className='nft_stakenum'>下次领取时间：{item.nextPrizeTime}</p>
+              }
+              {/* <p className='nft_stakenum'>已质押:</p>
+              <div className='pool_btn' onClick={()=>getPrize()}>提取</div> */}
             </div>
-            <div>
-              <p className='income_title'>当日奖励金额</p>  
-              <p className='income_value'>2000</p>
-            </div>
-            <div>
-              <p className='income_title'>STAR</p>
-              <p className='income_value'>2000</p>
-            </div>
-          </div>
-          <div className='get_btn'>领取</div>
-          <p className='nft_stakenum'>已质押:</p>
-          <div className='pool_btn' onClick={()=>extract()}>提取</div>
-        </div>
+          )
+        })
       }
       {
         tab === 2 &&  <p className='nodata'>敬请期待</p>
