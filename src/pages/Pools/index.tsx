@@ -185,6 +185,7 @@ export default function Pools() {
   const [ tab, setTab ] = useState(2);
   const [ liquidityPoolList, setLiquidityPoolList ] = useState<any>([]);
   useEffect(()=>{
+    localStorage.removeItem('INVITECODE');
     const res = getInviteAddr('code')
     localStorage.setItem('INVITECODE',res || '')
     getPoolList()

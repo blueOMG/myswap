@@ -432,7 +432,6 @@ export default function PoolsDetail1() {
     setStakeStatus(1);
     const par = startools.mathlog(pledgeValue,poolInfo.demical_out); // demical_in
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
-    console.log(par,inviteAddr)
     try {
       contarctObj.poolContract.methods.deposit(poolInfo.id, par, inviteAddr || account).send({from: account})
       .on('transactionHash', ()=>{ // 交易hash
@@ -444,7 +443,6 @@ export default function PoolsDetail1() {
       .on('receipt', ()=>{ // 交易已广播
         if(!showalet) {
           setTimeout(()=>{
-            localStorage.setItem('INVITECODE',inviteAddr)
             Modal.show({
               content: <AlertTxt>质押成功!</AlertTxt>,
               closeOnMaskClick: true,

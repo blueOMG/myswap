@@ -257,19 +257,7 @@ export default function Home() {
   const { account } = useWeb3React()
 
   const [ inviteUrl, setInviteUrl ] = useState('')
-
-  useEffect(()=>{
-    const res = getInviteAddr('code');
-    console.log(res)
-    localStorage.setItem('INVITECODE',res || '');
-  },[])
-
-  const getInviteAddr = (name:string)=> {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]);
-    return null;
-  }
+  
   useEffect(()=>{
     if(account) {
       setInviteUrl(`https://www.starswap.cn?code=${account}`)

@@ -361,7 +361,8 @@ export default function Earnings() {
           onMaskClick={() => {
             setSelectAddr('');
             setLoading2(true);
-            setStartLen2(0)
+            setStartLen2(0);
+            setList2([]);
           }}
           bodyStyle={{ height: 'calc(100% - 250px)',background:'#294081',paddingBottom: '40px',}}
         >
