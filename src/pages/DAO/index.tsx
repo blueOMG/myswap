@@ -225,7 +225,7 @@ export default function DAO() {
       const listPoolContract = new web3js.eth.Contract(daoabi.poolList_abi, poolList_addr, { from: account || '' })
       const res1 = await listPoolContract.methods.getAllPoolInfo().call()
       const res2 = await listPoolContract.methods.getUserAllPoolInfo(account).call()
-      console.log(res2)
+      console.log(res1)
       if(res1.rewardToken && res1.rewardToken.length) {
         const listResult = res1.rewardToken.map((item:any,index:number)=>{
           const decimal = res1.rewardTokenDecimals[index];
@@ -290,9 +290,9 @@ export default function DAO() {
 
     const hasNft = (item.amount * 1) > 0
 
-    const hasIncome =  (item.willGetPrize * 1) > 0
+    const noIncome =  !((item.willGetPrize * 1) > 0)
 
-    return noEnd && hasNft && hasIncome
+    return noEnd && hasNft && noIncome
   }
 
 
