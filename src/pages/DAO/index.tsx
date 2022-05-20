@@ -6,6 +6,7 @@ import daoPoolConfig from './../../poolAssets/daoPoolConfig'
 import daoabi from './../../poolAssets/daoabi'
 import Web3 from 'web3'
 import startools from '../../poolAssets/startools'
+import CountDown from '../../components/CountDown'
 import { Modal, Toast } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
 const HomePage = styled.div`
@@ -156,7 +157,7 @@ const HomePage = styled.div`
       margin: 0 auto;
       margin-bottom: 27px;
     }
-    .nft_stakenum {
+    .next_get_countdown {
       font-size: 13px;
       font-weight: 400;
       color: #95A3CF;
@@ -197,10 +198,9 @@ const AlertTxt = styled.p`
 
 export default function DAO() {
   const { account } = useWeb3React();
-  console.log(account)
   const [ tab, setTab ] = useState(1);
 
-  const [ listPoolContract, setListPoolContract ] = useState<any>();
+  const [ poolContract, setPoolContract ] = useState<any>(null);
 
   const [ list, setList ] = useState<any>([]);
 
@@ -238,25 +238,27 @@ export default function DAO() {
             end: res1.endTime[index],
             // prizeCycle: res1.durationPerReward[index],
             nftBalance: res2.amount[index],
-            willGetPrize: (startools.mathpow(res2.pending[index],decimal) * 1).toFixed(4),
+            willGetPrize: 0, //(startools.mathpow(res2.pending[index],decimal) * 1).toFixed(4),
             getedPrize: (startools.mathpow(res2.claimed[index],decimal) * 1).toFixed(4),
-            nextPrizeTime: new Date(res2.newRewardTime[index]*1000).toLocaleString(),
+            nextPrizeTime: new Date().getTime() + 10000,
             pid: index
           }
         })
         setList(listResult)
-        setListPoolContract(listPoolContract)
+        setPoolContract(listPoolContract)
       }
     }
   }
 
-  const regetData = async(item:any)=>{
-    const res1 = await listPoolContract.methods.getAllPoolInfo().call()
-    const res2 = await listPoolContract.methods.getUserAllPoolInfo(account).call()
+  const regetData = async(item:any,contractObj?:any)=>{
+    alert(contractObj)
+    const res1 = await (contractObj || poolContract).methods.getAllPoolInfo().call()
+    const res2 = await (contractObj || poolContract).methods.getUserAllPoolInfo(account).call()
     if(res1.rewardToken && res1.rewardToken.length) {
       const itemDecimal:any = res1.rewardTokenDecimals[item.pid]
       const itemWillGet:any = (startools.mathpow(res2.pending[item.pid],itemDecimal) * 1).toFixed(4)
-      if(itemWillGet === item.willGetPrize) { // 数据相同则重新请求数据
+      const itemNext = res2.newRewardTime[item.pid]*1000
+      if((itemWillGet === item.willGetPrize) || (itemNext===item.nextPrizeTime)) { // 数据相同则重新请求数据
         setTimeout(()=>{
           regetData(item)
         },1000)
@@ -298,6 +300,7 @@ export default function DAO() {
 
 
   const getPrize = (item:any)=>{
+    alert(poolContract)
     let showalet = false;
     if(!account) {
       Modal.show({
@@ -317,7 +320,7 @@ export default function DAO() {
       return 
     }
     setGetStatus(1)
-    listPoolContract.methods.claim(item.pid).send({from: account})
+    poolContract.methods.claim(item.pid).send({from: account})
     .on('transactionHash', ()=>{ })
     .on('confirmation', ()=>{  })
     .on('receipt', ()=>{ // 交易已广播
@@ -344,6 +347,9 @@ export default function DAO() {
       })
     })
 
+  }
+  const downCallback = (data:any)=>{
+    alert(data)
   }
   return (
     <HomePage>
@@ -391,10 +397,12 @@ export default function DAO() {
               <div className='get_btn' onClick={()=>getPrize(item)}>{getStatus==1 ? '领取中...' :'领取'}</div>
               {
                 showNextTime(item) && 
-                <p className='nft_stakenum'>下次领取时间：{item.nextPrizeTime}</p>
+                <div className='next_get_countdown'>
+                  <p>距下次领取还有：</p>
+                  <CountDown time={item.nextPrizeTime} callBack={(data:any)=>downCallback(data)} contract={poolContract}/>
+                </div>
               }
-              {/* <p className='nft_stakenum'>已质押:</p>
-              <div className='pool_btn' onClick={()=>getPrize()}>提取</div> */}
+            
             </div>
           )
         })

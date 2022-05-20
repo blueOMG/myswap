@@ -303,9 +303,9 @@ export default function Home() {
       <input value={inviteUrl} id="copyText" readOnly className='copy_input'/>
     </div>
     {/* 图标 */}
-    <div className='chart_view'>
+    {/* <div className='chart_view'>
       <img src={require('./../../assets/img/charts.png')} alt="" />
-    </div>
+    </div> */}
     {/* 数据 */}
     <div className='data_box_view'>
       <div className='data_box_item marginRight' style={{borderColor:'#E7C047'}}>
