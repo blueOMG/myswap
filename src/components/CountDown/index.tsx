@@ -13,20 +13,21 @@ const CountDownPage = styled.div`
     text-align: center;
   }
 `
-
+let intervalObj:any = null;
 export default function CountDown(props:any) {
-  const { styleobj, time, callBack,contract } = props
+  const { styleobj, time, callBack, contract } = props
+  
   const [ timeTxt, setTimeTxt ] = useState<any>({})
 
-  const [ intervalObj, setIntervalObj ] = useState<any>(null)
 
   useEffect(()=>{
-    if(time) {
+    console.log(time)
+    if(time && contract) {
       
       const now = new Date().getTime()
-      startDown(time - now)
+      startDown(time - now, contract)
     }
-  },[time])
+  },[time,contract])
 
   useEffect(()=>{
     return ()=>{
@@ -34,7 +35,7 @@ export default function CountDown(props:any) {
     }
   },[])
 
-  const startDown = (nums:number)=>{
+  const startDown = (nums:number,contractobj:any)=>{
       let clock = setInterval(() => {
           nums-=1000;
           if(nums > 0){
@@ -50,10 +51,10 @@ export default function CountDown(props:any) {
             })
           }else{
             intervalObj && clearInterval(intervalObj);
-            callBack && callBack(contract)
+            callBack && callBack(contractobj)
           }
       },1000);
-      setIntervalObj(clock)
+      intervalObj = clock;
   }
   return (
     <CountDownPage>

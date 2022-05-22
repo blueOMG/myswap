@@ -213,7 +213,7 @@ export default function DAO() {
     }
 
   },[ account ]);
-  
+
   // 初始化
   const initContract = async()=>{
     
@@ -240,7 +240,7 @@ export default function DAO() {
             nftBalance: res2.amount[index],
             willGetPrize: 0, //(startools.mathpow(res2.pending[index],decimal) * 1).toFixed(4),
             getedPrize: (startools.mathpow(res2.claimed[index],decimal) * 1).toFixed(4),
-            nextPrizeTime: new Date().getTime() + 10000,
+            nextPrizeTime: new Date(res2.newRewardTime[index]*1000),
             pid: index
           }
         })
@@ -251,7 +251,6 @@ export default function DAO() {
   }
 
   const regetData = async(item:any,contractObj?:any)=>{
-    alert(contractObj)
     const res1 = await (contractObj || poolContract).methods.getAllPoolInfo().call()
     const res2 = await (contractObj || poolContract).methods.getUserAllPoolInfo(account).call()
     if(res1.rewardToken && res1.rewardToken.length) {
@@ -278,7 +277,7 @@ export default function DAO() {
           nftBalance: res2.amount[index],
           willGetPrize: (startools.mathpow(res2.pending[index],decimal) * 1).toFixed(4),
           getedPrize: (startools.mathpow(res2.claimed[index],decimal) * 1).toFixed(4),
-          nextPrizeTime: new Date(res2.newRewardTime[index]*1000).toLocaleString(),
+          nextPrizeTime: new Date(res2.newRewardTime[index]*1000),
           pid: index
         }
       })
@@ -300,7 +299,6 @@ export default function DAO() {
 
 
   const getPrize = (item:any)=>{
-    alert(poolContract)
     let showalet = false;
     if(!account) {
       Modal.show({
@@ -348,8 +346,8 @@ export default function DAO() {
     })
 
   }
-  const downCallback = (data:any)=>{
-    alert(data)
+  const downCallback = (item:any,data:any)=>{
+    regetData(item,data)
   }
   return (
     <HomePage>
@@ -399,7 +397,7 @@ export default function DAO() {
                 showNextTime(item) && 
                 <div className='next_get_countdown'>
                   <p>距下次领取还有：</p>
-                  <CountDown time={item.nextPrizeTime} callBack={(data:any)=>downCallback(data)} contract={poolContract}/>
+                  <CountDown time={item.nextPrizeTime} callBack={(data:any)=>downCallback(item,data)} contract={poolContract}/>
                 </div>
               }
             
