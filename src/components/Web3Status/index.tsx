@@ -185,7 +185,7 @@ function Web3StatusInner() {
         {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
         {hasPendingTransactions ? (
           <RowBetween>
-            <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
+            <Text color="#fff">{pending?.length} Pending</Text> <Loader stroke="white" />
           </RowBetween>
         ) : (
           <>
@@ -200,13 +200,13 @@ function Web3StatusInner() {
     return (
       <Web3StatusError onClick={toggleWalletModal}>
         <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? '错误的网络' : '错误'}</Text>
+        <Text color="#fff">{error instanceof UnsupportedChainIdError ? '错误的网络' : '错误'}</Text>
       </Web3StatusError>
     )
   } else {
     return (
       <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
-        <Text>{'连接钱包'}</Text>
+        <Text color="#fff">{'连接钱包'}</Text>
       </Web3StatusConnect>
     )
   }

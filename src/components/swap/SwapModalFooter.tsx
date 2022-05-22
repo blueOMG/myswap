@@ -116,7 +116,7 @@ export default function SwapModalFooter({
           style={{ margin: '10px 0 0 0' }}
           id="confirm-swap-or-send"
         >
-          <Text fontSize={20} fontWeight={500}>
+          <Text fontSize={20} fontWeight={500} color="#fff">
             {severity > 2 ? '确认兑换' : '确认兑换'}
           </Text>
         </ButtonError>

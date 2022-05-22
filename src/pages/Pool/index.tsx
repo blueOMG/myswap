@@ -3,6 +3,7 @@ import { ThemeContext } from 'styled-components'
 import { Pair } from 'hlbscswap-sdk'
 import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
+import Settings from '../../components/Settings'
 
 import Question from '../../components/QuestionHelper'
 import FullPositionCard from '../../components/PositionCard'
@@ -36,7 +37,7 @@ const PoolPage = styled.div`
     width: 100%;
     height: auto;
     margin: auto;
-    margin-bottom: 20px
+    margin-bottom: 10px
     img {
       width: 100%
     }
@@ -82,11 +83,12 @@ export default function Pool() {
       <div className='banner_view'>
         <img src={require('./../../assets/img/banner.png')} alt="banner"/>
       </div>
+      <div style={{display:'flex',justifyContent:'flex-end',marginBottom: 10}}><Settings/></div>
       <AppBody>
         <SwapPoolTabs active={'pool'} />
         <AutoColumn gap="lg" justify="center">
           <ButtonPrimary id="join-pool-button" as={Link} style={{ padding: 16 }} to="/add/ETH">
-            <Text fontWeight={500} fontSize={20}>
+            <Text fontWeight={500} fontSize={20} color="#fff">
               添加流动性
             </Text>
           </ButtonPrimary>
@@ -126,7 +128,7 @@ export default function Pool() {
             )}
 
             <div>
-              <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }}>
+              <Text textAlign="center" fontSize={14} style={{ padding: '.5rem 0 .5rem 0' }} color="#fff">
                 {hasV1Liquidity ? 'Uniswap V1 liquidity found!' : "没有发现你参与的流动性资金池?"}{' '}
                 <StyledInternalLink id="import-pool-link" to={hasV1Liquidity ? '/migrate/v1' : '/find'}>
                   {hasV1Liquidity ? 'Migrate now.' : '导入'}

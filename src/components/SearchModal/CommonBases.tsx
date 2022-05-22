@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'rebass'
-import { ChainId, Currency, currencyEquals, ETHER, Token } from 'hlbscswap-sdk'
+import { ChainId, Currency, Token } from 'hlbscswap-sdk'
 import styled from 'styled-components'
 
 import { SUGGESTED_BASES } from '../../constants'
@@ -37,13 +37,13 @@ export default function CommonBases({
   return (
     <AutoColumn gap="md">
       <AutoRow>
-        <Text fontWeight={500} fontSize={14}>
+        <Text fontWeight={500} fontSize={14} color="#fff">
           常用代币
         </Text>
         <QuestionHelper text="这些代币通常与其他代币配对" />
       </AutoRow>
       <AutoRow gap="4px">
-        <BaseWrapper
+        {/* <BaseWrapper
           onClick={() => {
             if (!selectedCurrency || !currencyEquals(selectedCurrency, ETHER)) {
               onSelect(ETHER)
@@ -55,13 +55,13 @@ export default function CommonBases({
           <Text fontWeight={500} fontSize={16}>
             ETH
           </Text>
-        </BaseWrapper>
+        </BaseWrapper> */}
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
           const selected = selectedCurrency instanceof Token && selectedCurrency.address === token.address
           return (
             <BaseWrapper onClick={() => !selected && onSelect(token)} disable={selected} key={token.address}>
-              <CurrencyLogo currency={token} style={{ marginRight: 8 }} />
-              <Text fontWeight={500} fontSize={16}>
+              <CurrencyLogo currency={token} style={{ marginRight: 8,color:'#fff' }} />
+              <Text fontWeight={500} fontSize={16} color="#fff">
                 {token.symbol}
               </Text>
             </BaseWrapper>

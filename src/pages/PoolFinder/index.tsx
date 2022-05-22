@@ -70,7 +70,7 @@ export default function PoolFinder() {
 
   const prerequisiteMessage = (
     <LightCard padding="45px 10px">
-      <Text textAlign="center">
+      <Text textAlign="center" color="#fff">
         {!account ? '连接钱包来找资金池' : '选择一个代币找对应的流动性'}
       </Text>
     </LightCard>
@@ -88,13 +88,13 @@ export default function PoolFinder() {
         >
           {currency0 ? (
             <Row>
-              <CurrencyLogo currency={currency0} />
-              <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
+              <CurrencyLogo currency={currency0} style={{color:'#fff'}}/>
+              <Text fontWeight={500} fontSize={20} marginLeft={'12px'} color="#fff">
                 {currency0.symbol}
               </Text>
             </Row>
           ) : (
-            <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
+            <Text fontWeight={500} fontSize={20} marginLeft={'12px'} color="#fff">
               选择一个代币
             </Text>
           )}
@@ -112,13 +112,13 @@ export default function PoolFinder() {
         >
           {currency1 ? (
             <Row>
-              <CurrencyLogo currency={currency1} />
-              <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
+              <CurrencyLogo currency={currency1} style={{color:'#fff'}}/>
+              <Text fontWeight={500} fontSize={20} marginLeft={'12px'} color="#fff">
                 {currency1.symbol}
               </Text>
             </Row>
           ) : (
-            <Text fontWeight={500} fontSize={20} marginLeft={'12px'}>
+            <Text fontWeight={500} fontSize={20} marginLeft={'12px'} color="#fff">
               选择一个代币
             </Text>
           )}
@@ -128,7 +128,7 @@ export default function PoolFinder() {
           <ColumnCenter
             style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }}
           >
-            <Text textAlign="center" fontWeight={500}>
+            <Text textAlign="center" fontWeight={500} color="#fff">
               Pool Found!
             </Text>
           </ColumnCenter>
@@ -141,9 +141,9 @@ export default function PoolFinder() {
             ) : (
               <LightCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
-                  <Text textAlign="center">You don’t have liquidity in this pool yet.</Text>
+                  <Text textAlign="center">你在这个资金池</Text>
                   <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                    <Text textAlign="center">Add liquidity.</Text>
+                    <Text textAlign="center" color="#fff">添加流动性.</Text>
                   </StyledInternalLink>
                 </AutoColumn>
               </LightCard>
@@ -151,25 +151,25 @@ export default function PoolFinder() {
           ) : validPairNoLiquidity ? (
             <LightCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
-                <Text textAlign="center">No pool found.</Text>
+                <Text textAlign="center" color="#fff">没找到资金池.</Text>
                 <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                  Create pool.
+                  创建资金池.
                 </StyledInternalLink>
               </AutoColumn>
             </LightCard>
           ) : pairState === PairState.INVALID ? (
             <LightCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
-                <Text textAlign="center" fontWeight={500}>
-                  Invalid pair.
+                <Text textAlign="center" fontWeight={500} color="#fff">
+                  无效币对.
                 </Text>
               </AutoColumn>
             </LightCard>
           ) : pairState === PairState.LOADING ? (
             <LightCard padding="45px 10px">
               <AutoColumn gap="sm" justify="center">
-                <Text textAlign="center">
-                  Loading
+                <Text textAlign="center" color="#fff">
+                  加载中
                   <Dots />
                 </Text>
               </AutoColumn>

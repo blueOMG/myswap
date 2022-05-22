@@ -60,7 +60,7 @@ export default function ListUpdatePopup({
         ) : (
           <>
             <div>
-              <Text>
+              <Text color="#fff">
                 An update is available for the token list &quot;{oldList.name}&quot; (
                 {listVersionLabel(oldList.version)} to {listVersionLabel(newList.version)}).
               </Text>

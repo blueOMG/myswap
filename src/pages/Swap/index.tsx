@@ -19,6 +19,7 @@ import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
+import Settings from '../../components/Settings'
 
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { getTradeVersion, isTradeBetter } from '../../data/V1'
@@ -59,7 +60,7 @@ const SwapPage = styled.div`
     width: 100%;
     height: auto;
     margin: auto;
-    margin-bottom: 20px
+    margin-bottom: 10px
     img {
       width: 100%
     }
@@ -295,6 +296,7 @@ export default function Swap() {
       <div className='banner_view'>
         <img src={require('./../../assets/img/banner.png')} alt="banner"/>
       </div>
+      <div style={{display:'flex',justifyContent:'flex-end',marginBottom: 10}}><Settings/></div>
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}
@@ -454,7 +456,7 @@ export default function Swap() {
                   }
                   error={isValid && priceImpactSeverity > 2}
                 >
-                  <Text fontSize={16} fontWeight={500}>
+                  <Text fontSize={16} fontWeight={500} color="#fff">
                     {priceImpactSeverity > 3 && !isExpertMode
                       ? `价格影响高`
                       : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
@@ -480,7 +482,7 @@ export default function Swap() {
                 disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
-                <Text fontSize={20} fontWeight={500}>
+                <Text fontSize={20} fontWeight={500} color="#fff">
                   {swapInputError
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode

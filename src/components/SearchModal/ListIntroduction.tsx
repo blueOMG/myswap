@@ -27,7 +27,7 @@ export default function ListIntroduction({ onSelectList }: { onSelectList: () =>
             src="https://cloudflare-ipfs.com/ipfs/QmRf1rAJcZjV3pwKTHfPdJh4RxR8yvRHkdLjZCsmp7T6hA"
             alt="token-list-preview"
           />
-          <Text style={{ marginBottom: '8px', textAlign: 'center' }}>
+          <Text style={{ marginBottom: '8px', textAlign: 'center' }}  color="#fff">
             Startswap 暂无可支持的代币列表. 你可以添加自定义的代币列表(IPFS,、HTTPS、ENS).{' '}
           </Text>
           <ButtonPrimary onClick={onSelectList} id="list-introduction-choose-a-list">

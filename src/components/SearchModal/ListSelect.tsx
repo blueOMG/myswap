@@ -163,6 +163,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             fontWeight={isSelected ? 500 : 400}
             fontSize={16}
             style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+            color="#fff"
           >
             {list.name}
           </Text>
@@ -327,7 +328,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
           <div>
             <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} />
           </div>
-          <Text fontWeight={500} fontSize={20}>
+          <Text fontWeight={500} fontSize={20} color="#fff">
             管理列表
           </Text>
           <CloseIcon onClick={onDismiss} />
@@ -337,7 +338,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       <Separator />
 
       <PaddedColumn gap="14px">
-        <Text fontWeight={600}>
+        <Text fontWeight={600} color="#fff">
           添加一个列表{' '}
           <QuestionHelper text="代币列表是ERC20代币列表的开放规范。您可以通过在下面输入任何代币列表的URL来使用它。请注意第三方代币列表可能包含虚假或恶意的ERC20代币。" />
         </Text>

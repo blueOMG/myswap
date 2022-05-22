@@ -63,7 +63,7 @@ export function V1LiquidityInfo({
   return (
     <>
       <AutoRow style={{ justifyContent: 'flex-start', width: 'fit-content' }}>
-        <CurrencyLogo size="24px" currency={token} />
+        <CurrencyLogo size="24px" currency={token} style={{color:'#fff'}}/>
         <div style={{ marginLeft: '.75rem' }}>
           <TYPE.mediumHeader>
             {<FormattedPoolCurrencyAmount currencyAmount={liquidityTokenAmount} />}{' '}
@@ -73,25 +73,25 @@ export function V1LiquidityInfo({
       </AutoRow>
 
       <RowBetween my="1rem">
-        <Text fontSize={16} fontWeight={500}>
+        <Text fontSize={16} fontWeight={500} color="#fff">
           Pooled {chainId && token.equals(WETH[chainId]) ? 'WETH' : token.symbol}:
         </Text>
         <RowFixed>
-          <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+          <Text fontSize={16} fontWeight={500} marginLeft={'6px'} color="#fff">
             {tokenWorth.toSignificant(4)}
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={token} />
+          <CurrencyLogo size="20px" style={{ marginLeft: '8px',color:'#fff' }} currency={token} />
         </RowFixed>
       </RowBetween>
       <RowBetween mb="1rem">
-        <Text fontSize={16} fontWeight={500}>
+        <Text fontSize={16} fontWeight={500} color="#fff">
           Pooled ETH:
         </Text>
         <RowFixed>
-          <Text fontSize={16} fontWeight={500} marginLeft={'6px'}>
+          <Text fontSize={16} fontWeight={500} marginLeft={'6px'} color="#fff">
             <FormattedPoolCurrencyAmount currencyAmount={ethWorth} />
           </Text>
-          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={Currency.ETHER} />
+          <CurrencyLogo size="20px" style={{ marginLeft: '8px',color:'#fff' }} currency={Currency.ETHER} />
         </RowFixed>
       </RowBetween>
     </>
