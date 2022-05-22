@@ -5,6 +5,8 @@ import { useWeb3React } from '@web3-react/core'
 import poolData from './../../poolAssets/poolConfig'
 import liquidityabi from './../../poolAssets/liquidityabi'
 import liquidityPoolConfig from './../../poolAssets/liquidityPoolConfig'
+import startools from '../../poolAssets/startools'
+
 import Web3 from 'web3'
 import { Modal } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
@@ -211,7 +213,7 @@ export default function Pools() {
         return {
           name_in: lp0 === lp1 ? lp0 : `${lp0}-${lp1}`,
           name_out: reward,
-          total: res.amount[index],
+          total:  Number(startools.mathpow(res.amount[index],res1.rewardTokenDecimals[index])),
           start: new Date(res.startTime[index]*1000).toLocaleString(),
           end: new Date(res.endTime[index]*1000).toLocaleString(),
           id: index,
@@ -219,7 +221,8 @@ export default function Pools() {
           demical_in: res1.lpTokenDecimals[index],
           coin_in: item,
           coin_out: res.rewardToken[index],
-          stake_pool: poolStake_addr
+          stake_pool: poolStake_addr,
+          title: 'STAR官方测试矿池'
         }
       })
       setLiquidityPoolList(result)
@@ -297,40 +300,43 @@ export default function Pools() {
         <>
           {
             liquidityPoolList.map((item:any,index:number)=>{
-              return <div className='single_view' key={index+'liquidityPoolList'}>
-                <div className='star_title'>{item.title}</div>
-                <div className='intro_view'>
-                  <div className='coin_view'>
-                    <img src={require('./../../assets/img/money.png')}  alt="" />
-                    <p>{item.name_in}</p>
+              return( item.total 
+                ?<div className='single_view' key={index+'liquidityPoolList'}>
+                  <div className='star_title'>{item.title}</div>
+                  <div className='intro_view'>
+                    <div className='coin_view'>
+                      <img src={require('./../../assets/img/money.png')}  alt="" />
+                      <p>{item.name_in}</p>
+                    </div>
+                    <p className='zuanqu'>赚取</p>
+                    <div className='coin_view'>
+                      <img src={require('./../../assets/img/money.png')}  alt="" />
+                      <p>{item.name_out}</p>
+                    </div>
                   </div>
-                  <p className='zuanqu'>赚取</p>
-                  <div className='coin_view'>
-                    <img src={require('./../../assets/img/money.png')}  alt="" />
-                    <p>{item.name_out}</p>
-                  </div>
-                </div>
-                <p className='pool_info_text'><span>矿池总量：</span>{item.total}</p>
-                <p className='pool_info_text'><span>开始时间：</span>{item.start}</p>
-                <p className='pool_info_text'><span>结束时间：</span>{item.end}</p>
-                
-                {
-                  account
-                  ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
+                  <p className='pool_info_text'><span>矿池总量：</span>{item.total}</p>
+                  <p className='pool_info_text'><span>开始时间：</span>{item.start}</p>
+                  <p className='pool_info_text'><span>结束时间：</span>{item.end}</p>
+                  
+                  {
+                    account
+                    ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
+                        进入矿池
+                      </div>
+                    :<div className='pool_btn' onClick={()=>{
+                      Modal.show({
+                        content: <AlertTxt>请先到首页连接钱包!</AlertTxt>,
+                        closeOnMaskClick: true,
+                        showCloseButton: true,
+                      })
+                    }}>
                       进入矿池
                     </div>
-                  :<div className='pool_btn' onClick={()=>{
-                    Modal.show({
-                      content: <AlertTxt>请先到首页连接钱包!</AlertTxt>,
-                      closeOnMaskClick: true,
-                      showCloseButton: true,
-                    })
-                  }}>
-                    进入矿池
-                  </div>
-                }
-                
-              </div>
+                  }
+                  
+                </div>
+                :<></>
+              )
             })
           }
         </>
