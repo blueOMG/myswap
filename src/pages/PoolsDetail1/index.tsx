@@ -318,7 +318,7 @@ export default function PoolsDetail1() {
 
       setBalanceObj({
         balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(4),
-        balance_in: (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(4) // demical_in
+        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4) // demical_in
       })
       setAllowObj({
         allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
@@ -357,7 +357,7 @@ export default function PoolsDetail1() {
     }
     setapproveStaus(1)
     try {
-      await contarctObj.inContract.methods.approve(poolInfo.stake_pool,'10000000000000000000000').send({ from: account || '' });
+      await contarctObj.inContract.methods.approve(poolInfo.stake_pool,startools.mathlog('1000000000',poolInfo.demical_in)).send({ from: account || '' });
       setapproveStaus(0);
       setAllowObj({
         allow_in: 10000
@@ -430,7 +430,7 @@ export default function PoolsDetail1() {
   const pledge = async ()=>{
     let showalet = false;
     setStakeStatus(1);
-    const par = startools.mathlog(pledgeValue,poolInfo.demical_out); // demical_in
+    const par = startools.mathlog(pledgeValue,poolInfo.demical_in); // demical_in
     // const par:any = (Number(pledgeValue || 0) *Math.pow(10,9)) + '000000000'
     try {
       contarctObj.poolContract.methods.deposit(poolInfo.id, par, inviteAddr || account).send({from: account})
@@ -497,7 +497,7 @@ export default function PoolsDetail1() {
     }
     setRedeemStatus(1);
     // 临时处理 先能够使用
-    const par = startools.mathlog(redeemValue,poolInfo.demical_out); // demical_in
+    const par = startools.mathlog(redeemValue,poolInfo.demical_in); // demical_in
 
     // const par:any = (Number(redeemValue || 0) *Math.pow(10,9)) + '000000000'
     console.log(par)
