@@ -241,7 +241,7 @@ const HomePage = styled.div`
       }
     }
   }
-  /* .shenji_title {
+  .shenji_title {
     text-align: center;
     font-size: 17px;
     font-family: Source Han Sans CN;
@@ -250,6 +250,7 @@ const HomePage = styled.div`
     margin-bottom: 22px;
     margin-top: 37px;
   }
+  /*
   .shenji_item {
     width: 50%;
     height: 40px;
