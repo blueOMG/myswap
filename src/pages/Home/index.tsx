@@ -241,7 +241,7 @@ const HomePage = styled.div`
       }
     }
   }
-  .shenji_title {
+  /* .shenji_title {
     text-align: center;
     font-size: 17px;
     font-family: Source Han Sans CN;
@@ -261,7 +261,7 @@ const HomePage = styled.div`
       width: 100%;
       height: 100%
     }
-  }
+  } */
   .hezuo_list {
     display: flex;
     flex-wrap: wrap;
@@ -350,7 +350,7 @@ export default function Home() {
       <img src={require('./../../assets/img/charts.png')} alt="" />
     </div> */}
     {/* 数据 */}
-    <div className='data_box_view'>
+    {/* <div className='data_box_view'>
       <div className='data_box_item marginRight' style={{borderColor:'#E7C047'}}>
         <p className='value' style={{color:'#E58932'}}>$0.468921</p>
         <p className='title'>STAR 价格</p>
@@ -367,12 +367,12 @@ export default function Home() {
         <p className='value'>894540154.6582</p>
         <p className='title'>STAR锁仓量</p>
       </div>
-    </div>
+    </div> */}
     {/* 审计 */}
-    <p className='shenji_title'>审计机构</p>
+    {/* <p className='shenji_title'>审计机构</p>
     <div className='shenji_item'>
       <img src={require('./../../assets/img/shenji.png')} alt="" />
-    </div>
+    </div> */}
     <p className='shenji_title'>合作伙伴</p>
     <div className='hezuo_list'>
       <div className='hezuo_item'>

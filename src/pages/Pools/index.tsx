@@ -314,11 +314,11 @@ export default function Pools() {
           {tab === 2 && <img src={require('./../../assets/img/pool_tab_bg.png')} alt="" className='tab_item_border'/>}
         </div>
         <div className='tab_item' onClick={()=>setTab(3)}>
-          <p className={`tab_item_txt ${tab===3 && 'choose_tab'}`}>社区合作矿池</p>
+          <p className={`tab_item_txt ${tab===3 && 'choose_tab'}`}>社区合作</p>
           {tab === 3 && <img src={require('./../../assets/img/pool_tab_bg.png')} alt="" className='tab_item_border'/>}
         </div>
         <div className='tab_item' onClick={()=>setTab(4)}>
-          <p className={`tab_item_txt ${tab===4 && 'choose_tab'}`}>已结束矿池</p>
+          <p className={`tab_item_txt ${tab===4 && 'choose_tab'}`}>已结束</p>
           {tab === 4 && <img src={require('./../../assets/img/pool_tab_bg.png')} alt="" className='tab_item_border'/>}
         </div>
       </div>
