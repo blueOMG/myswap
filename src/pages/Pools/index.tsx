@@ -471,7 +471,7 @@ export default function Pools() {
                   
                   {
                     account
-                    ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
+                    ?<div className='pool_btn' onClick={()=>goDetail(item,2)}>
                         进入矿池
                       </div>
                     :<div className='pool_btn' onClick={()=>{

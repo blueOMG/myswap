@@ -8,7 +8,7 @@ import Web3 from 'web3'
 import startools from '../../poolAssets/startools'
 import CountDown from '../../components/CountDown'
 import SwiperBanner from '../../components/SwiperBanner';
-import { Modal, Toast } from 'antd-mobile'
+import { Modal, Toast, SpinLoading } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
 const HomePage = styled.div`
   width: 100%;
@@ -186,6 +186,13 @@ const HomePage = styled.div`
     } */
   }
 `
+const LoadingView = styled.div`
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const AlertTxt = styled.p`
   height: 60px;
   line-height: 60px;
@@ -203,6 +210,8 @@ export default function DAO() {
   const [ list, setList ] = useState<any>([]);
 
   const [ getStatus, setGetStatus ] = useState(0) // 领取状态
+
+  const [ loading, setLoading ] = useState(true)
 
   useEffect(()=>{
     if(account) {
@@ -243,6 +252,7 @@ export default function DAO() {
           }
         })
         setList(listResult)
+        setLoading(false)
         setPoolContract(listPoolContract)
       }
     }
@@ -365,7 +375,9 @@ export default function DAO() {
       </div>
       {
         tab === 1 &&
-        list.map((item:any,index:number)=>{
+        loading
+        ?<LoadingView><SpinLoading color='primary' /></LoadingView>
+        :list.map((item:any,index:number)=>{
           return (
             <div className='single_view' key={index}>
               <div className='star_title'>股东NFT分红池</div>

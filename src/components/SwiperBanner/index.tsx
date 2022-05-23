@@ -19,7 +19,7 @@ export default function SwiperBanner(props:any) {
  const data:any = [{img:require('./../../assets/img/banner.png') },{img:require('./../../assets/img/banner1.png')},{img:require('./../../assets/img/banner2.png')},{img:require('./../../assets/img/banner3.png')}];
  return (
    <BannerCom>
-    <Swiper autoplay={true} loop={true} style={{borderRadius: 10}}>
+    <Swiper autoplay={true} loop={true} autoplayInterval={1000} style={{borderRadius: 10}}>
       {
         (list || data).map((item:any, index:number) => (
           <Swiper.Item key={index} >
