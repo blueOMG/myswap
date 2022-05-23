@@ -7,7 +7,7 @@ import Column, { AutoColumn } from '../Column'
 import { PaddedColumn } from './styleds'
 import { useDarkModeManager } from '../../state/user/hooks'
 
-import listLight from '../../assets/images/token-list/lists-light.png'
+// import listLight from '../../assets/images/token-list/lists-light.png'
 import listDark from '../../assets/images/token-list/lists-dark.png'
 
 export default function ListIntroduction({ onSelectList }: { onSelectList: () => void }) {
@@ -19,7 +19,7 @@ export default function ListIntroduction({ onSelectList }: { onSelectList: () =>
         <AutoColumn gap="14px">
           <img
             style={{ width: '120px', margin: '0 auto' }}
-            src={isDark ? listDark : listLight}
+            src={isDark ? listDark : listDark}
             alt="token-list-preview"
           />
           <img
@@ -28,7 +28,7 @@ export default function ListIntroduction({ onSelectList }: { onSelectList: () =>
             alt="token-list-preview"
           />
           <Text style={{ marginBottom: '8px', textAlign: 'center' }}  color="#fff">
-            Startswap 暂无可支持的代币列表. 你可以添加自定义的代币列表(IPFS,、HTTPS、ENS).{' '}
+            StarSwap 暂无可支持的代币列表. 你可以添加自定义的代币列表(IPFS,、HTTPS、ENS).{' '}
           </Text>
           <ButtonPrimary onClick={onSelectList} id="list-introduction-choose-a-list">
             选择一个列表

@@ -6,9 +6,10 @@ import poolData from './../../poolAssets/poolConfig'
 import liquidityabi from './../../poolAssets/liquidityabi'
 import liquidityPoolConfig from './../../poolAssets/liquidityPoolConfig'
 import startools from '../../poolAssets/startools'
+import SwiperBanner from '../../components/SwiperBanner';
 
 import Web3 from 'web3'
-import { Modal } from 'antd-mobile'
+import { Modal, SpinLoading } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
 const PoolsPage = styled.div`
   width: 100%;
@@ -29,9 +30,7 @@ const PoolsPage = styled.div`
     width: 100%;
     margin: auto;
     margin-bottom: 46px;
-    img {
-      width: 100%
-    }
+    
   }
   .tab_view {
     display: flex;
@@ -166,6 +165,30 @@ const PoolsPage = styled.div`
       }
     }
   }
+  .secound_tab {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    p {
+      flex: 1;
+      line-height: 40px;
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
+      position: relative;
+    }
+    .select_liqui {
+      border-bottom: 1px solid #fff;
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      margin-left: -20px;
+      width: 40px;
+    }
+  }
 `
 const AlertTxt = styled.p`
   height: 60px;
@@ -174,6 +197,20 @@ const AlertTxt = styled.p`
   color: #333;
   text-align: center;
 `;
+const LoadingView = styled.div`
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const NoData = styled.p`
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #ccc;
+`
 export default function Pools() {
   // 获取url 邀请地址
   const getInviteAddr = (name:string)=> {
@@ -185,7 +222,8 @@ export default function Pools() {
   const history = useHistory();
   const { account } = useWeb3React();
   const [ tab, setTab ] = useState(2);
-  const [ liquidityPoolList, setLiquidityPoolList ] = useState<any>([]);
+  const [ liquidityPool, setLiquidityPool ] = useState<any>({end:[],doing:[]});
+  const [ liquidityLoading, setLiquidityLoading ] = useState(true)
   useEffect(()=>{
     localStorage.removeItem('INVITECODE');
     const res = getInviteAddr('code')
@@ -194,6 +232,7 @@ export default function Pools() {
   },[]);
   // 获取流动性挖矿列表
   const getPoolList = async ()=>{
+
     // 获取流动性挖矿列表的 合约地址   质押地址
     const { poolList_addr, poolStake_addr } = liquidityPoolConfig
 
@@ -204,13 +243,11 @@ export default function Pools() {
       const listPoolContract = new web3js.eth.Contract(liquidityabi.listpoolabi, poolList_addr, { from: account || '' });
       const res = await listPoolContract.methods.getAllPoolInfo().call(); // 获取全部矿池列表
       const res1 = await listPoolContract.methods.getAllPoolExtraInfo().call();  //  获取矿池的扩展信息
-      console.log(res)
-      console.log(res1)
-      const result = res.lpToken.map((item:any,index:number)=>{
+      const result = res.lpToken.reduce((acc:any,item:any,index:number)=>{
         const lp0 = res1.lpToken0Symbol[index]
         const lp1 = res1.lpToken1Symbol[index]
         const reward = res1.rewardTokenSymbol[index];
-        return {
+        const itemobj = {
           name_in: lp0 === lp1 ? lp0 : `${lp0}-${lp1}`,
           name_out: reward,
           total:  Number(startools.mathpow(res.amount[index],res1.rewardTokenDecimals[index])),
@@ -224,8 +261,15 @@ export default function Pools() {
           stake_pool: poolStake_addr,
           title: 'STAR官方测试矿池'
         }
-      })
-      setLiquidityPoolList(result)
+        if(Number(res.rewardPerBlock[index]) === 0 || (new Date().getTime() > new Date(res.endTime[index]*1000).getTime()) ) {
+          acc.end.push(itemobj)
+        } else {
+          acc.doing.push(itemobj)
+        }
+        return acc
+      },{end: [],doing:[]})
+      setLiquidityPool(result)
+      setLiquidityLoading(false)
     }
   }
   const goDetail = (item:any, type:number)=> {
@@ -258,7 +302,7 @@ export default function Pools() {
   return (
     <PoolsPage>
       <div className='banner_view'>
-        <img src={require('./../../assets/img/banner.png')} alt="banner"/>
+        <SwiperBanner />
       </div>
       <div className='tab_view'>
         <div className='tab_item' onClick={()=>setTab(1)}>
@@ -273,11 +317,15 @@ export default function Pools() {
           <p className={`tab_item_txt ${tab===3 && 'choose_tab'}`}>社区合作矿池</p>
           {tab === 3 && <img src={require('./../../assets/img/pool_tab_bg.png')} alt="" className='tab_item_border'/>}
         </div>
+        <div className='tab_item' onClick={()=>setTab(4)}>
+          <p className={`tab_item_txt ${tab===4 && 'choose_tab'}`}>已结束矿池</p>
+          {tab === 4 && <img src={require('./../../assets/img/pool_tab_bg.png')} alt="" className='tab_item_border'/>}
+        </div>
       </div>
       {/* 单币质押 */}
       {
         tab === 1 &&
-        <p style={{height:'100px',lineHeight:'100px',color:'#ccc',fontSize:'14px',textAlign:'center'}}>暂无矿池</p>
+        <NoData>暂无矿池</NoData>
         // <div className='single_view'>
         //   <div className='star_title'>STAR</div>
         //   <div className='intro_view'>
@@ -299,9 +347,11 @@ export default function Pools() {
         tab === 2 &&
         <>
           {
-            liquidityPoolList.map((item:any,index:number)=>{
-              return( item.total 
-                ?<div className='single_view' key={index+'liquidityPoolList'}>
+            liquidityLoading
+            ?<LoadingView><SpinLoading color='primary' /></LoadingView>
+            :liquidityPool.doing.map((item:any,index:number)=>{
+              return(
+                <div className='single_view' key={index+'liquidityPoolList'}>
                   <div className='star_title'>{item.title}</div>
                   <div className='intro_view'>
                     <div className='coin_view'>
@@ -335,7 +385,7 @@ export default function Pools() {
                   }
                   
                 </div>
-                :<></>
+              
               )
             })
           }
@@ -393,6 +443,53 @@ export default function Pools() {
             </div>
             <div className='pool_btn'>进入矿池</div>
           </div> */}
+        </>
+      }
+      {
+        tab === 4 &&
+        <>
+          {
+            liquidityPool.end.length
+            ?liquidityPool.end.map((item:any,index:number)=>{
+              return(
+                <div className='single_view' key={index+'liquidityPoolList'}>
+                  <div className='star_title'>{item.title}</div>
+                  <div className='intro_view'>
+                    <div className='coin_view'>
+                      <img src={require('./../../assets/img/money.png')}  alt="" />
+                      <p>{item.name_in}</p>
+                    </div>
+                    <p className='zuanqu'>赚取</p>
+                    <div className='coin_view'>
+                      <img src={require('./../../assets/img/money.png')}  alt="" />
+                      <p>{item.name_out}</p>
+                    </div>
+                  </div>
+                  <p className='pool_info_text'><span>矿池总量：</span>{item.total}</p>
+                  <p className='pool_info_text'><span>开始时间：</span>{item.start}</p>
+                  <p className='pool_info_text'><span>结束时间：</span>{item.end}</p>
+                  
+                  {
+                    account
+                    ?<div className='pool_btn' onClick={()=>goDetail(item,tab)}>
+                        进入矿池
+                      </div>
+                    :<div className='pool_btn' onClick={()=>{
+                      Modal.show({
+                        content: <AlertTxt>请先到首页连接钱包!</AlertTxt>,
+                        closeOnMaskClick: true,
+                        showCloseButton: true,
+                      })
+                    }}>
+                      进入矿池
+                    </div>
+                  }
+                  
+                </div>
+              
+              )})
+            :<NoData>暂无矿池</NoData>
+          }
         </>
       }
       

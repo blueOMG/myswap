@@ -1,5 +1,6 @@
 import React, { } from 'react'
 import styled from 'styled-components'
+import SwiperBanner from '../../components/SwiperBanner';
 // import { Link, useLocation } from 'react-router-dom'
 const HomePage = styled.div`
   width: 100%;
@@ -20,9 +21,6 @@ const HomePage = styled.div`
     width: 100%;
     height: auto;
     margin: auto;
-    img {
-      width: 100%
-    }
   }
   .nodata {
     width: 100%;
@@ -37,7 +35,7 @@ export default function NFT() {
  return (
    <HomePage>
     <div className='banner_view'>
-      <img src={require('./../../assets/img/banner.png')} alt="banner"/>
+      <SwiperBanner />
     </div>
     <p className='nodata'>敬请期待</p>
    </HomePage>

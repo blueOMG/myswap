@@ -241,6 +241,49 @@ const HomePage = styled.div`
       }
     }
   }
+  .shenji_title {
+    text-align: center;
+    font-size: 17px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    color: #939FC7;
+    margin-bottom: 22px;
+    margin-top: 37px;
+  }
+  .shenji_item {
+    width: 50%;
+    height: 40px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 100%;
+      height: 100%
+    }
+  }
+  .hezuo_list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .hezuo_item {
+      flex: 1;
+      min-width: 40%;
+      max-width: 50%;
+      height: 40px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:nth-child(even) {
+        margin-left: 10px;
+      }
+      img {
+        width: 100%;
+        height: 100%
+      }
+    }
+  }
 `
 const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.MAINNET]: null,
@@ -323,6 +366,29 @@ export default function Home() {
       <div className='data_box_item' style={{borderColor:'#15DD72'}}>
         <p className='value'>894540154.6582</p>
         <p className='title'>STAR锁仓量</p>
+      </div>
+    </div>
+    {/* 审计 */}
+    <p className='shenji_title'>审计机构</p>
+    <div className='shenji_item'>
+      <img src={require('./../../assets/img/shenji.png')} alt="" />
+    </div>
+    <p className='shenji_title'>合作伙伴</p>
+    <div className='hezuo_list'>
+      <div className='hezuo_item'>
+        <img src={require('./../../assets/img/partner1.png')} alt="" />
+      </div>
+      <div className='hezuo_item'>
+        <img src={require('./../../assets/img/partner2.png')} alt="" />
+      </div>
+      <div className='hezuo_item'>
+        <img src={require('./../../assets/img/partner3.png')} alt="" />
+      </div>
+      <div className='hezuo_item'>
+        <img src={require('./../../assets/img/partner4.png')} alt="" />
+      </div>
+      <div className='hezuo_item'>
+        <img src={require('./../../assets/img/partner5.png')} alt="" />
       </div>
     </div>
 

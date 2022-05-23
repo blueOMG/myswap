@@ -7,6 +7,7 @@ import daoabi from './../../poolAssets/daoabi'
 import Web3 from 'web3'
 import startools from '../../poolAssets/startools'
 import CountDown from '../../components/CountDown'
+import SwiperBanner from '../../components/SwiperBanner';
 import { Modal, Toast } from 'antd-mobile'
 // import { Link, useLocation } from 'react-router-dom'
 const HomePage = styled.div`
@@ -28,9 +29,6 @@ const HomePage = styled.div`
     width: 100%;
     height: auto;
     margin: auto;
-    img {
-      width: 100%
-    }
   }
   .nodata {
     width: 100%;
@@ -352,7 +350,7 @@ export default function DAO() {
   return (
     <HomePage>
       <div className='banner_view'>
-        <img src={require('./../../assets/img/banner.png')} alt="banner"/>
+        <SwiperBanner />
       </div>
       <div className='tab_view'>
         <div className='tab_item' onClick={()=>setTab(1)}>

@@ -326,7 +326,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
       <PaddedColumn>
         <RowBetween>
           <div>
-            <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} />
+            <ArrowLeft style={{ cursor: 'pointer',color:'#fff' }} onClick={onBack} />
           </div>
           <Text fontWeight={500} fontSize={20} color="#fff">
             管理列表

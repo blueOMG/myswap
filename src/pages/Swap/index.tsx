@@ -20,6 +20,7 @@ import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import Settings from '../../components/Settings'
+import SwiperBanner from '../../components/SwiperBanner';
 
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { getTradeVersion, isTradeBetter } from '../../data/V1'
@@ -61,9 +62,6 @@ const SwapPage = styled.div`
     height: auto;
     margin: auto;
     margin-bottom: 10px
-    img {
-      width: 100%
-    }
   }
 `
 export default function Swap() {
@@ -294,7 +292,7 @@ export default function Swap() {
   return (
     <SwapPage>
       <div className='banner_view'>
-        <img src={require('./../../assets/img/banner.png')} alt="banner"/>
+        <SwiperBanner />
       </div>
       <div style={{display:'flex',justifyContent:'flex-end',marginBottom: 10}}><Settings/></div>
       <TokenWarningModal

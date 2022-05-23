@@ -21,6 +21,7 @@ import { usePairs } from '../../data/Reserves'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import AppBody from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
+import SwiperBanner from '../../components/SwiperBanner';
 import styled from 'styled-components'
 
 const PoolPage = styled.div`
@@ -38,9 +39,7 @@ const PoolPage = styled.div`
     height: auto;
     margin: auto;
     margin-bottom: 10px
-    img {
-      width: 100%
-    }
+    
   }
 `
 export default function Pool() {
@@ -81,7 +80,7 @@ export default function Pool() {
   return (
     <PoolPage>
       <div className='banner_view'>
-        <img src={require('./../../assets/img/banner.png')} alt="banner"/>
+        <SwiperBanner />
       </div>
       <div style={{display:'flex',justifyContent:'flex-end',marginBottom: 10}}><Settings/></div>
       <AppBody>
