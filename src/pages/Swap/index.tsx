@@ -379,7 +379,7 @@ export default function Swap() {
                   {Boolean(trade) && (
                     <RowBetween align="center">
                       <Text fontWeight={500} fontSize={14} color={theme.text2}>
-                        Price
+                        价格
                       </Text>
                       <TradePrice
                         price={trade?.executionPrice}
@@ -425,7 +425,7 @@ export default function Swap() {
                 >
                   {approval === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
-                      Approving <Loader stroke="white" />
+                      授权中 <Loader stroke="white" />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                     '已授权'
@@ -457,7 +457,8 @@ export default function Swap() {
                   <Text fontSize={16} fontWeight={500} color="#fff">
                     {priceImpactSeverity > 3 && !isExpertMode
                       ? `价格影响高`
-                      : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                      // anyway
+                      : `兑换${priceImpactSeverity > 2 ? '' : ''}`}
                   </Text>
                 </ButtonError>
               </RowBetween>
@@ -485,7 +486,8 @@ export default function Swap() {
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode
                     ? `价格影响过高`
-                    : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                    // anyway
+                    : `兑换${priceImpactSeverity > 2 ? '' : ''}`}
                 </Text>
               </ButtonError>
             )}
