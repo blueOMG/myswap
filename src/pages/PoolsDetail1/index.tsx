@@ -357,7 +357,7 @@ export default function PoolsDetail1() {
     }
     setapproveStaus(1)
     try {
-      await contarctObj.inContract.methods.approve(poolInfo.stake_pool,startools.mathlog('1000000000',poolInfo.demical_in)).send({ from: account || '' });
+      await contarctObj.inContract.methods.approve(poolInfo.stake_pool,startools.mathlog('1000000000000',poolInfo.demical_in)).send({ from: account || '' });
       setapproveStaus(0);
       setAllowObj({
         allow_in: 10000
