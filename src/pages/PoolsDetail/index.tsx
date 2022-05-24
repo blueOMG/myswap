@@ -158,6 +158,7 @@ const PoolsPage = styled.div`
           text-align: center;
           font-size: 15px;
           color: #366DFE;
+          flex-shrink: 0;
         }
       }
       .can_use_text {
