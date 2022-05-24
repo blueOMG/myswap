@@ -144,17 +144,30 @@ const PoolsPage = styled.div`
         color: #333;
       }
       .input_view {
-        width: 85%;
-        height: 40px;
-        border-radius: 19px;
-        padding: 0 10px;
-        font-size: 14px;
-        color: #333;
-        background: rgba(54, 109, 254, 0.1);
-        border: 1px solid rgba(54, 109, 254, 0.1);
-        outline: none;
-        display: block;
+        width: 90%;
         margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        input {
+          flex: 1;
+          height: 40px;
+          border-radius: 19px;
+          padding: 0 10px;
+          font-size: 14px;
+          color: #333;
+          background: rgba(54, 109, 254, 0.1);
+          border: 1px solid rgba(54, 109, 254, 0.1);
+          outline: none;
+        }
+        p {
+          width: 50px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          font-size: 15px;
+          color: #366DFE;
+        }
       }
       .can_use_text {
         font-size: 12px;
@@ -317,8 +330,8 @@ export default function PoolsDetail1() {
       });
 
       setBalanceObj({
-        balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(4),
-        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(4) // demical_in
+        balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(6),
+        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(6) // demical_in
       })
       setAllowObj({
         allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
@@ -578,7 +591,7 @@ export default function PoolsDetail1() {
   const regetBalance = async ()=>{
     const balance_in = await contarctObj.inContract.methods.balanceOf(account).call();
     // const balance_out = await contarctObj.outContract.methods.balanceOf(account).call();
-    const res = (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(4);
+    const res = (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(6);
     if(res === balanceObj.balance_in) {
       setTimeout(()=>{
         regetBalance();
@@ -587,7 +600,7 @@ export default function PoolsDetail1() {
     }
     setBalanceObj({
       ...balanceObj,
-      balance_in: (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(4)
+      balance_in: (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(6)
     })
   }
 
@@ -631,7 +644,12 @@ export default function PoolsDetail1() {
           <div className='content_view'>
             <div className='close_img' onClick={()=>setShowPledge(false)}><img src={require('./../../assets/img/close.png')} alt="" /></div>
             <p className='title'>质押</p>
-            <input onChange={pledgeInput} value={pledgeValue} placeholder="请输入数量" type='number' className='input_view'/>
+
+            <div className='input_view'>
+              <input onChange={pledgeInput} value={pledgeValue} placeholder="请输入数量" type='number' />
+              <p onClick={()=>pledgeInput({target:{value:balanceObj.balance_in}})}>全部</p>
+            </div>
+
             <p className='can_use_text '>{balanceObj.balance_in} 可质押</p>
             <div className='pledge_btn1' style={!canStake ? { opacity: 0.5} : {}} onClick={()=>stakeFn()}>
              {  stakestatus ===0 ? '确定':'交易中...'}
@@ -645,8 +663,11 @@ export default function PoolsDetail1() {
           <div className='content_view'>
             <div className='close_img' onClick={()=>setShowWithdraw(false)}><img src={require('./../../assets/img/close.png')} alt="" /></div>
             <p className='title'>赎回</p>
-            <input onChange={widthdrawInput} value={redeemValue} placeholder="请输入数量" type='number' className='input_view'/>
-            <p className='can_use_text '>{stakeNum} 可赎回</p>
+            <div className='input_view'>
+              <input onChange={widthdrawInput} value={redeemValue} placeholder="请输入数量" type='number' />
+              <p onClick={()=>widthdrawInput({target:{value:stakeNum+''}})}>全部</p>
+            </div>
+            <p className='can_use_text '>{stakeNum.toFixed(6)} 可赎回</p>
             <div className='pledge_btn1' style={!canRedeem ? { opacity: 0.5} : {}} onClick={()=>redeemFn()}>
             {  redeemstatus ===0 ? '确定':'赎回中...'}
             </div>

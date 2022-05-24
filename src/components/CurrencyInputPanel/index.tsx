@@ -91,15 +91,17 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
 `
 
 const StyledBalanceMax = styled.button`
-  height: 28px;
-  background-color: ${({ theme }) => theme.primary5};
-  border: 1px solid ${({ theme }) => theme.primary5};
+  padding: 0 2px;
+  margin: 0;
+  height: 20px;
+  background: none;
+  background-color: none;
+  border: none;
+  /* border: 1px solid ${({ theme }) => theme.primary5}; */
   border-radius: 0.5rem;
-  font-size: 0.875rem;
-
+  font-size: 0.6rem;
   font-weight: 500;
   cursor: pointer;
-  margin-right: 0.5rem;
   color: ${({ theme }) => theme.primaryText1};
   :hover {
     border: 1px solid ${({ theme }) => theme.primary1};

@@ -316,7 +316,7 @@ export default function DAO() {
       })
       return 
     }
-    if(getStatus != 0) {
+    if(getStatus !== 0) {
       return 
     }
     if(!((item.willGetPrize * 1) > 0)) {
@@ -402,7 +402,7 @@ export default function DAO() {
               </div>
               <p className='can_get_title'>可领取金额</p>
               <p className='can_get_value'>{item.willGetPrize} {item.name_out}</p>
-              <div className='get_btn' onClick={()=>getPrize(item)}>{getStatus==1 ? '领取中...' :'领取'}</div>
+              <div className='get_btn' onClick={()=>getPrize(item)}>{getStatus===1 ? '领取中...' :'领取'}</div>
               {
                 showNextTime(item) && 
                 <div className='next_get_countdown'>
