@@ -213,8 +213,8 @@ export default function AddLiquidity({
     return noLiquidity ? (
       <AutoColumn gap="20px">
         <LightCard mt="20px" borderRadius="20px">
-          <RowFlat>
-            <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10} color="#fff">
+          <RowFlat style={{alignItems:'center'}}>
+            <Text fontSize="24px" fontWeight={500} lineHeight="42px" marginRight={10} color="#fff">
               {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
             </Text>
             <DoubleCurrencyLogo
@@ -405,7 +405,7 @@ export default function AddLiquidity({
                           width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
                         >
                           {approvalA === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                            <Dots>授权 {currencies[Field.CURRENCY_A]?.symbol}</Dots>
                           ) : (
                             '授权 ' + currencies[Field.CURRENCY_A]?.symbol
                           )}
@@ -418,7 +418,7 @@ export default function AddLiquidity({
                           width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
                         >
                           {approvalB === ApprovalState.PENDING ? (
-                            <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                            <Dots>授权 {currencies[Field.CURRENCY_B]?.symbol}</Dots>
                           ) : (
                             '授权 ' + currencies[Field.CURRENCY_B]?.symbol
                           )}

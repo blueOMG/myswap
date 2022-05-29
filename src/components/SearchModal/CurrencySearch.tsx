@@ -4,7 +4,7 @@ import ReactGA from 'react-ga'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
+// import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens, useToken } from '../../hooks/Tokens'
 import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon, LinkStyledButton, TYPE } from '../../theme'
@@ -14,7 +14,7 @@ import Column from '../Column'
 import ListLogo from '../ListLogo'
 import QuestionHelper from '../QuestionHelper'
 import Row, { RowBetween } from '../Row'
-import CommonBases from './CommonBases'
+// import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { filterTokens } from './filtering'
 import SortButton from './SortButton'
@@ -36,13 +36,13 @@ export function CurrencySearch({
   selectedCurrency,
   onCurrencySelect,
   otherSelectedCurrency,
-  showCommonBases,
+  // showCommonBases,
   onDismiss,
   isOpen,
   onChangeList
 }: CurrencySearchProps) {
   
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
   const fixedList = useRef<FixedSizeList>()
@@ -155,9 +155,9 @@ export function CurrencySearch({
           onChange={handleInput}
           onKeyDown={handleEnter}
         />
-        {showCommonBases && (
+        {/* {showCommonBases && (
           <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
-        )}
+        )} */}
         <RowBetween>
           <Text fontSize={14} fontWeight={500}  color="#fff">
             代币名称

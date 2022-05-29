@@ -290,7 +290,7 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
               onClick={approve}
             >
               {approval === ApprovalState.PENDING ? (
-                <Dots>Approving</Dots>
+                <Dots>授权中</Dots>
               ) : approval === ApprovalState.APPROVED ? (
                 'Approved'
               ) : (

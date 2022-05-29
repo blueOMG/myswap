@@ -653,7 +653,7 @@ export default function RemoveLiquidity({
                     fontSize={16}
                   >
                     {approval === ApprovalState.PENDING ? (
-                      <Dots>Approving</Dots>
+                      <Dots>授权中</Dots>
                     ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
                       '已授权'
                     ) : (
