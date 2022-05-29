@@ -21,10 +21,11 @@ const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
 
 export default function AdvancedSwapDetailsDropdown({ trade, ...rest }: AdvancedSwapDetailsProps) {
   const lastTrade = useLastTruthy(trade)
-
+  //  trade ?? lastTrade ?? undefined  去掉 lastTrade 的判断
+  console.log('lastTrade',lastTrade)
   return (
     <AdvancedDetailsFooter show={Boolean(trade)}>
-      <AdvancedSwapDetails {...rest} trade={trade ?? lastTrade ?? undefined} />
+      <AdvancedSwapDetails {...rest} trade={trade ?? undefined} />
     </AdvancedDetailsFooter>
   )
 }

@@ -7,6 +7,8 @@ import {
   SerializableTransactionReceipt
 } from './actions'
 
+import { Dialog } from 'antd-mobile'
+
 const now = () => new Date().getTime()
 
 export interface TransactionDetails {
@@ -54,11 +56,23 @@ export default createReducer(initialState, builder =>
       }
     })
     .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+      
       const tx = transactions[chainId]?.[hash]
+
+      console.log('finalizeTransaction',tx)
       if (!tx) {
         return
       }
       tx.receipt = receipt
       tx.confirmedTime = now()
+      setTimeout(()=>{ // 监听交易hash 操作成功
+        Dialog.alert({
+          content: '操作成功！',
+          onConfirm: () => {
+            console.log('Confirmed')
+          },
+        })
+      },3000)
+      
     })
 )

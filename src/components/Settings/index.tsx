@@ -165,10 +165,8 @@ export default function SettingsTab() {
                 error={true}
                 padding={'12px'}
                 onClick={() => {
-                  if (window.prompt(`请输入“确认”以启用专家模式`) === 'confirm') {
                     toggleExpertMode()
                     setShowConfirmation(false)
-                  }
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode" color="#fff">

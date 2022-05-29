@@ -138,14 +138,20 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
       action: '移除列表',
       label: listUrl
     })
-    if (window.prompt(`请输入remove来确认要移除此列表`) === `REMOVE`) {
+    // if (window.prompt(`请输入remove来确认要移除此列表`) === `REMOVE`) {
+    //   ReactGA.event({
+    //     category: '列表',
+    //     action: '确认移除',
+    //     label: listUrl
+    //   })
+    //   dispatch(removeList(listUrl))
+    // }
       ReactGA.event({
         category: '列表',
         action: '确认移除',
         label: listUrl
       })
       dispatch(removeList(listUrl))
-    }
   }, [dispatch, listUrl])
 
   if (!list) return null
@@ -170,7 +176,8 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
         </Row>
         <Row
           style={{
-            marginTop: '4px'
+            marginTop: '4px',
+            color: "#fff"
           }}
         >
           <StyledListUrlText title={listUrl}>
@@ -202,7 +209,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
               移除列表
             </UnpaddedLinkStyledButton>
             {pending && (
-              <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>Update list</UnpaddedLinkStyledButton>
+              <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>更新列表</UnpaddedLinkStyledButton>
             )}
           </PopoverContainer>
         )}
