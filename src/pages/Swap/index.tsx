@@ -210,9 +210,9 @@ export default function Swap() {
 
   const handleSwap = useCallback(() => {
     // if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
-    if (priceImpactWithoutFee) {
-      return
-    }
+    // if (priceImpactWithoutFee) {
+    //   return
+    // }
     if (!swapCallback) {
       return
     }
