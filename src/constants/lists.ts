@@ -5,7 +5,7 @@ export const DEFAULT_TOKEN_LIST_URL = 'https://www.starswap.cn/starswapstatic/to
 export const DEFAULT_LIST_OF_LISTS: string[] = [
   DEFAULT_TOKEN_LIST_URL,
   'https://www.starswap.cn/starswapstatic/tokenlist.json', // kleros
-  'https://tokens.pancakeswap.finance/pancakeswap-extended.json', // 1inch
+  // 'https://tokens.pancakeswap.finance/pancakeswap-extended.json', // 1inch
   // 'synths.snx.eth',
   // 'tokenlist.dharma.eth',
   // 'defi.cmc.eth',

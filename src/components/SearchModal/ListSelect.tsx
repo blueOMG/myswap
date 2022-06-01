@@ -208,9 +208,9 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             <UnpaddedLinkStyledButton onClick={handleRemoveList} disabled={Object.keys(listsByUrl).length === 1}>
               移除列表
             </UnpaddedLinkStyledButton>
-            {pending && (
+            {/* {pending && ( */}
               <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>更新列表</UnpaddedLinkStyledButton>
-            )}
+            {/* )} */}
           </PopoverContainer>
         )}
       </StyledMenu>

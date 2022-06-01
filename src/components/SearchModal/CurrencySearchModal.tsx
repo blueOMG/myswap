@@ -1,5 +1,5 @@
 import { Currency } from 'hlbscswap-sdk'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ReactGA from 'react-ga'
 import useLast from '../../hooks/useLast'
 import { useSelectedListUrl } from '../../state/lists/hooks'
@@ -7,7 +7,10 @@ import Modal from '../Modal'
 import { CurrencySearch } from './CurrencySearch'
 import ListIntroduction from './ListIntroduction'
 import { ListSelect } from './ListSelect'
-
+import { useDispatch,  } from 'react-redux'
+import { selectList } from '../../state/lists/actions'
+import { AppDispatch,  } from '../../state'
+import { DEFAULT_TOKEN_LIST_URL } from './../../constants/lists'
 interface CurrencySearchModalProps {
   isOpen: boolean
   onDismiss: () => void
@@ -27,6 +30,15 @@ export default function CurrencySearchModal({
 }: CurrencySearchModalProps) {
   const [listView, setListView] = useState<boolean>(false)
   const lastOpen = useLast(isOpen)
+  const dispatch = useDispatch<AppDispatch>()
+  const mounting = useRef(true)
+  useEffect(()=>{
+    if(mounting.current) {
+      dispatch(selectList(DEFAULT_TOKEN_LIST_URL)) // 设置 tokenlist  
+      mounting.current = false
+      return 
+    }
+  })
 
   useEffect(() => {
     if (isOpen && !lastOpen) {
