@@ -108,7 +108,7 @@
   "dependencies": {
     "antd-mobile": "^5.12.3",
     "bignumber.js": "^9.0.2",
-    "hlbscswap-sdk": "^1.0.5",
+    "hlbscswap-sdk": "^1.0.8",
     "web3": "^1.7.3"
   }
 }
