@@ -616,7 +616,7 @@ export default function PoolsDetail1() {
     <PoolsPage>
       <div className='pledge_view'>
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
-        <img src={poolInfo.icon_out || require(`./../../assets/img/money.png`)} alt="" className='pledge_img'/>
+        <img src={poolInfo.icon_out || require(`./../../assets/img/money0_out.png`)} alt="" className='pledge_img'/>
         <p className='pledge_txt'>{poolInfo.name_out}挖矿收益</p>
         <p className='pledge_value'>{earnNum.toFixed(6)}</p>
         <div className='pledge_btn' style={earnNum === 0 ? { opacity: 0.5} : {}} onClick={()=>earnFn()}>{earnStatus === 0 ? '立即提现' : '提现中...'}</div>
@@ -624,7 +624,7 @@ export default function PoolsDetail1() {
 
       <div className='pledge_view'>
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
-        <img src={poolInfo.icon_out || require(`./../../assets/img/money.png`)} alt="" className='pledge_img'/>
+        <img src={poolInfo.icon_out || require(`./../../assets/img/money0_out.png`)} alt="" className='pledge_img'/>
         <p className='pledge_txt'>推广收益</p>
         <p className='pledge_value' style={{marginBottom: '27px'}}>{inviteNum.toFixed(6)}</p>
         <div className='pledge_btn' onClick={()=>history.push(`/earnings/${poolInfo.id}`)}>我的团队</div>
@@ -632,7 +632,7 @@ export default function PoolsDetail1() {
 
       <div className='pledge_view'>
         {/* <p className='pledge_title'>GBT合作矿池</p> */}
-        <img src={poolInfo.icon_in || require(`./../../assets/img/money.png`)} alt="" className='pledge_img'/>
+        <img src={poolInfo.icon_in || require(`./../../assets/img/money0_in.png`)} alt="" className='pledge_img'/>
         <p className='pledge_txt'>已质押LP</p>
         <p className='pledge_value'>{stakeNum.toFixed(6)}</p>
         { 
