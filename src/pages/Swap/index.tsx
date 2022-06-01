@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from 'hlbscswap-sdk'
+import { CurrencyAmount, JSBI, Token, Trade, ChainId } from 'hlbscswap-sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -46,6 +46,7 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
+import Web3Status from '../../components/Web3Status'
 import styled from 'styled-components';
 const SwapPage = styled.div`
   width: 100%;
@@ -63,7 +64,44 @@ const SwapPage = styled.div`
     margin: auto;
     margin-bottom: 10px
   }
+  .wallet_view {
+    flex: 1;
+    height: 33px;
+    background: #427BFC;
+    border-radius: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    .network_txt {
+      font-size: 12px;
+      color: #fff;
+      line-height: 33px;
+      flex-shrink: 0;
+      margin-left: 15px;
+    }
+    button {
+      height: 33px;
+      width: auto;
+      background: none;
+      border: none;
+      outline: none;
+      &:focus {
+        background: none;
+        border: none;
+      }
+    }
+  }
 `
+const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
+  [ChainId.MAINNET]: null,
+  [ChainId.RINKEBY]: 'Rinkeby',
+  [ChainId.ROPSTEN]: 'Ropsten',
+  [ChainId.GÖRLI]: 'Görli',
+  [ChainId.KOVAN]: 'Kovan',
+  [ChainId.BSCTEST]: 'BSCTEST', // 需要修改
+  [ChainId.BSC]: 'BSC',
+}
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -289,12 +327,22 @@ export default function Swap() {
     onCurrencySelection
   ])
 
+
+  const { chainId } = useActiveWeb3React()
+
   return (
     <SwapPage>
       <div className='banner_view'>
         <SwiperBanner />
       </div>
-      <div style={{display:'flex',justifyContent:'flex-end',marginBottom: 10}}><Settings/></div>
+      
+      <div style={{display:'flex',marginBottom: 10}}>
+        <div className='wallet_view'>
+          <Web3Status/>
+          { chainId && NETWORK_LABELS[chainId] && <p className='network_txt'>已连接至 { chainId && (NETWORK_LABELS[chainId] && NETWORK_LABELS[chainId])}</p>}
+        </div>
+        <Settings/>
+      </div>
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}
