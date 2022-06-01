@@ -149,8 +149,10 @@ const PoolsPage = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
         input {
           flex: 1;
+          width: 100px;
           height: 40px;
           border-radius: 19px;
           padding: 0 10px;
