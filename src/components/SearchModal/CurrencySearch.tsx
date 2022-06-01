@@ -140,7 +140,7 @@ export function CurrencySearch({
   const selectedListInfo = useSelectedListInfo()
   
   const dispatch = useDispatch()
-
+  
   useEffect(()=>{
     if(selectedListInfo?.current?.name == 'Uniswap Default List') {
       ReactGA.event({
@@ -151,6 +151,7 @@ export function CurrencySearch({
       dispatch(acceptListUpdate(DEFAULT_TOKEN_LIST_URL))
     }
   },[selectedListInfo])
+  
 
   return (
     <Column style={{ width: '100%', flex: '1 1' }}>
@@ -215,7 +216,7 @@ export function CurrencySearch({
               <TYPE.main id="currency-search-selected-list-name">{selectedListInfo.current.name}</TYPE.main>
             </Row>
           ) : null}
-          <div style={{ fontWeight: 500, color: theme.text2, fontSize: 14, minWidth: 100 }}>更新列表</div>
+          {/* <div style={{ fontWeight: 500, color: theme.text2, fontSize: 14, minWidth: 100 }}>更新列表</div> */}
           <LinkStyledButton
             style={{ fontWeight: 500, color: theme.text2, fontSize: 14, minWidth: 70 }}
             onClick={onChangeList}
