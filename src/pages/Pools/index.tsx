@@ -105,7 +105,8 @@ const PoolsPage = styled.div`
         img {
           width: auto;
           height: 34px;
-          margin-bottom: 10px
+          margin-bottom: 10px;
+          /* border-radius: 50%; */
         }
         p {
           font-size: 14px;
@@ -242,6 +243,7 @@ export default function Pools() {
       var web3js = new Web3(web3Obj.currentProvider);
       const listPoolContract = new web3js.eth.Contract(liquidityabi.listpoolabi, poolList_addr, { from: account || '' });
       const res = await listPoolContract.methods.getAllPoolInfo().call(); // 获取全部矿池列表
+      console.log('zzzzzz',res)
       const res1 = await listPoolContract.methods.getAllPoolExtraInfo().call();  //  获取矿池的扩展信息
       const result = res.lpToken.reduce((acc:any,item:any,index:number)=>{
         const lp0 = res1.lpToken0Symbol[index]
@@ -259,7 +261,7 @@ export default function Pools() {
           coin_in: item,
           coin_out: res.rewardToken[index],
           stake_pool: poolStake_addr,
-          title: 'STAR官方测试矿池'
+          title: 'STAR官方矿池'
         }
         if(Number(res.rewardPerBlock[index]) === 0 || (new Date().getTime() > new Date(res.endTime[index]*1000).getTime()) ) {
           acc.end.push(itemobj)
@@ -355,12 +357,12 @@ export default function Pools() {
                   <div className='star_title'>{item.title}</div>
                   <div className='intro_view'>
                     <div className='coin_view'>
-                      <img src={require('./../../assets/img/money.png')}  alt="" />
+                      <img src={require(`./../../assets/img/money${index}_in.png`)}  alt="" />
                       <p>{item.name_in}</p>
                     </div>
                     <p className='zuanqu'>赚取</p>
                     <div className='coin_view'>
-                      <img src={require('./../../assets/img/money.png')}  alt="" />
+                      <img src={require(`./../../assets/img/money${index}_out.png`)}  alt="" />
                       <p>{item.name_out}</p>
                     </div>
                   </div>
