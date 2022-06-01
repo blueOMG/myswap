@@ -13,7 +13,7 @@ export default function confirmPriceImpactWithoutFee(priceImpactWithoutFee: Perc
         `这次兑换对价格至少有 ${PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN.toFixed(
           0
         )}%的影响. 请键入“确认”来继续这个兑换`
-      ) === 'confirm'
+      ) === '确认'
     )
   } else if (!priceImpactWithoutFee.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) {
     return window.confirm(

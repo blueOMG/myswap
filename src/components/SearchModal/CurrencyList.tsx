@@ -134,7 +134,7 @@ function CurrencyRow({
           ) : null}
           {!isOnSelectedList && !customAdded ? (
             <TYPE.main fontWeight={500}>
-              Found by address
+              按地址查找
               <LinkStyledButton
                 onClick={event => {
                   event.stopPropagation()
