@@ -202,7 +202,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
               移除列表
             </UnpaddedLinkStyledButton>
             {/* {pending && ( */}
-              <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>Update list</UnpaddedLinkStyledButton>
+              <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>更新列表</UnpaddedLinkStyledButton>
             {/* )} */}
           </PopoverContainer>
         )}

@@ -21,6 +21,9 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { useDispatch } from 'react-redux'
+import { acceptListUpdate } from '../../state/lists/actions'
+import { DEFAULT_TOKEN_LIST_URL } from './../../constants/lists'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -135,6 +138,19 @@ export function CurrencySearch({
   )
 
   const selectedListInfo = useSelectedListInfo()
+  
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    if(selectedListInfo?.current?.name == 'Uniswap Default List') {
+      ReactGA.event({
+        category: '列表',
+        action: '更新选择的列表',
+        label: DEFAULT_TOKEN_LIST_URL
+      })
+      dispatch(acceptListUpdate(DEFAULT_TOKEN_LIST_URL))
+    }
+  },[selectedListInfo])
 
   return (
     <Column style={{ width: '100%', flex: '1 1' }}>
@@ -199,8 +215,9 @@ export function CurrencySearch({
               <TYPE.main id="currency-search-selected-list-name">{selectedListInfo.current.name}</TYPE.main>
             </Row>
           ) : null}
+          <div style={{ fontWeight: 500, color: theme.text2, fontSize: 14, minWidth: 100 }}>更新列表</div>
           <LinkStyledButton
-            style={{ fontWeight: 500, color: theme.text2, fontSize: 16, minWidth: 80 }}
+            style={{ fontWeight: 500, color: theme.text2, fontSize: 14, minWidth: 70 }}
             onClick={onChangeList}
             id="currency-search-change-list-button"
           >

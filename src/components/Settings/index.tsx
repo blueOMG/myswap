@@ -27,7 +27,20 @@ const StyledMenuIcon = styled(Settings)`
   > * {
     stroke: ${({ theme }) => theme.text1};
   }
+  
 `
+const ClearBtn = styled.div`
+  width: 150px;
+  height: 30px;
+  border-radius: 5px;
+  background: #366DFE;
+  font-size: 14px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  margin: 10px auto;
+`
+
 
 const StyledCloseIcon = styled(X)`
   height: 20px;
@@ -227,6 +240,13 @@ export default function SettingsTab() {
                 }
               />
             </RowBetween>
+            <ClearBtn 
+              onClick={()=>{
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.reload();
+              }}
+            >清除缓存并刷新</ClearBtn>
             {/* <RowBetween>
               <RowFixed>
                 <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
