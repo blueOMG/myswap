@@ -309,6 +309,12 @@ export default function PoolsDetail1() {
 
   },[ poolInfo, account ]);
 
+  //处理小数  不四舍五入
+  const saveNumber = (str:string,index:number)=>{
+    const list:any = str.split('.');
+    return `${list[0]}.${list[1].slice(0,index)}`
+  }
+
   // 初始化web 创建合约对象
   const initContract = async()=>{
     
@@ -325,7 +331,6 @@ export default function PoolsDetail1() {
       const balance_in = await inContract.methods.balanceOf(account).call();
       const balance_out = await outContract.methods.balanceOf(account).call();
       const allow_in = await inContract.methods.allowance(account,poolInfo.stake_pool).call();
-
       const inviteInfo = await poolContract.methods.getUserInviteInfo(account).call();
 
       setContarctObj({
@@ -334,7 +339,7 @@ export default function PoolsDetail1() {
 
       setBalanceObj({
         balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(6),
-        balance_in: (startools.mathpow(balance_in,poolInfo.demical_in) * 1).toFixed(6) // demical_in
+        balance_in: saveNumber(startools.mathpow(balance_in,poolInfo.demical_in),6) // demical_in
       })
       setAllowObj({
         allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
@@ -352,7 +357,7 @@ export default function PoolsDetail1() {
         .then((res:any)=>{
           setEarnNum(Number(startools.mathpow(res.pending[poolInfo.id],poolInfo.demical_out)))
           setInviteNum(Number(startools.mathpow(res.inviteReward[poolInfo.id],poolInfo.demical_out)))
-          setStakeNum(Number(startools.mathpow(res.amount[poolInfo.id],poolInfo.demical_out)))
+          setStakeNum(Number(startools.mathpow(res.amount[poolInfo.id],poolInfo.demical_in)))
         })
         
       },2000)
@@ -603,7 +608,7 @@ export default function PoolsDetail1() {
     }
     setBalanceObj({
       ...balanceObj,
-      balance_in: (startools.mathpow(balance_in,poolInfo.demical_out) * 1).toFixed(6)
+      balance_in: saveNumber(startools.mathpow(balance_in,poolInfo.demical_in),6)
     })
   }
 
