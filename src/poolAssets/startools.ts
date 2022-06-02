@@ -61,5 +61,11 @@ const startools:any = {
       return 0
     }
   },
+  // 保留小数  不去四舍五入
+  saveNumber(str:string,index:number = 6){
+    if(!str.includes('.')) return str
+    const list:any = str.split('.');
+    return `${list[0]}.${list[1].slice(0,index)}`
+  }
 }
 export default startools

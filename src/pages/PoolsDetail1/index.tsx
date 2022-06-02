@@ -309,11 +309,7 @@ export default function PoolsDetail1() {
 
   },[ poolInfo, account ]);
 
-  //处理小数  不四舍五入
-  const saveNumber = (str:string,index:number)=>{
-    const list:any = str.split('.');
-    return `${list[0]}.${list[1].slice(0,index)}`
-  }
+ 
 
   // 初始化web 创建合约对象
   const initContract = async()=>{
@@ -339,7 +335,7 @@ export default function PoolsDetail1() {
 
       setBalanceObj({
         balance_out: (startools.mathpow(balance_out,poolInfo.demical_out) * 1).toFixed(6),
-        balance_in: saveNumber(startools.mathpow(balance_in,poolInfo.demical_in),6) // demical_in
+        balance_in: startools.saveNumber(startools.mathpow(balance_in,poolInfo.demical_in),6) // demical_in
       })
       setAllowObj({
         allow_in: Number(startools.mathpow(allow_in,poolInfo.demical_out))
@@ -608,7 +604,7 @@ export default function PoolsDetail1() {
     }
     setBalanceObj({
       ...balanceObj,
-      balance_in: saveNumber(startools.mathpow(balance_in,poolInfo.demical_in),6)
+      balance_in: startools.saveNumber(startools.mathpow(balance_in,poolInfo.demical_in),6)
     })
   }
 

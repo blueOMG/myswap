@@ -232,8 +232,8 @@ export default function Earnings() {
           if(item !== liquidityPoolConfig.empty_addr) {
             list.push({
               addr: item,
-              stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
-              income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+              stakeNum: startools.saveNumber(startools.mathpow(res.returnBinderAmount[index],localData.demical_in),6),
+              income: startools.saveNumber(startools.mathpow(res.returnBinderPending[index],localData.demical_out),4)
             })
           }
         })
@@ -281,8 +281,8 @@ export default function Earnings() {
           if(item !== liquidityPoolConfig.empty_addr) {
             list.push({
               addr: item,
-              stakeNum: (startools.mathpow(res.returnBinderAmount[index],localData.demical_out) * 1).toFixed(4),
-              income: (startools.mathpow(res.returnBinderPending[index],localData.demical_out) * 1).toFixed(4)
+              stakeNum: startools.saveNumber(startools.mathpow(res.returnBinderAmount[index],localData.demical_in),6),
+              income: startools.saveNumber(startools.mathpow(res.returnBinderPending[index],localData.demical_out),4)
             })
           }
         })
