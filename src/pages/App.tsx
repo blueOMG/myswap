@@ -25,6 +25,7 @@ import Home from './Home'
 import Pools from './Pools'
 import PoolsDetail from './PoolsDetail'
 import PoolsDetail1 from './PoolsDetail1'
+import PoolsDetailSingle from './PoolsDetailSingle'
 import Earnings from './Earnings'
 import DAO from './DAO'
 import NFT from './NFT'
@@ -82,6 +83,7 @@ export default function App() {
                 <Route exact strict path="/pools" component={Pools} />
                 <Route exact strict path="/poolsDetail/:type/:id" component={PoolsDetail} /> 
                 <Route exact strict path="/poolsDetail1/:type/:id" component={PoolsDetail1} /> 
+                <Route exact strict path="/poolsDetailSingle/:type/:id" component={PoolsDetailSingle} /> 
                 <Route exact strict path="/earnings/:id" component={Earnings} />
                 <Route exact strict path="/DAO" component={DAO} />
                 <Route exact strict path="/NFT" component={NFT} />

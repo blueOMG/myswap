@@ -10,6 +10,7 @@ import SwiperBanner from '../../components/SwiperBanner';
 
 import Web3 from 'web3'
 import { Modal, SpinLoading } from 'antd-mobile'
+import SingleCoin from './SingleCoin'
 // import { Link, useLocation } from 'react-router-dom'
 const PoolsPage = styled.div`
   width: 100%;
@@ -327,22 +328,7 @@ export default function Pools() {
       {/* 单币质押 */}
       {
         tab === 1 &&
-        <NoData>暂无矿池</NoData>
-        // <div className='single_view'>
-        //   <div className='star_title'>STAR</div>
-        //   <div className='intro_view'>
-        //     <div className='coin_view'>
-        //       <img src={require('./../../assets/img/money.png')} alt="" />
-        //       <p>STAR</p>
-        //     </div>
-        //     <p className='zuanqu'>赚取</p>
-        //     <div className='coin_view'>
-        //       <img src={require('./../../assets/img/money.png')} alt="" />
-        //       <p>STAR</p>
-        //     </div>
-        //   </div>
-        //   <div className='pool_btn'>去挖矿</div>
-        // </div>
+        <SingleCoin />
       }
       {/* 流动性挖矿 */}
       {
