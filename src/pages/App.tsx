@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
+import Footer from './../components/Footer'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import Header from '../components/HeaderNew'
 // import Popups from '../components/Popups'
@@ -29,6 +30,7 @@ import PoolsDetailSingle from './PoolsDetailSingle'
 import Earnings from './Earnings'
 import DAO from './DAO'
 import NFT from './NFT'
+
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -58,11 +60,21 @@ const BodyWrapper = styled.div`
   `}; */
 
   z-index: 1;
+  padding-bottom: 60px;
 `
 
 const Marginer = styled.div`
   margin-top: 5rem;
 `
+
+const FooterWrapper = styled.div`
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 60px;
+  z-index: 1;
+`;
 
 export default function App() {
   return (
@@ -106,6 +118,9 @@ export default function App() {
             </Web3ReactManager>
             <Marginer />
           </BodyWrapper>
+          <FooterWrapper>
+            <Footer />
+          </FooterWrapper>
         </AppWrapper>
       </HashRouter>
     </Suspense>

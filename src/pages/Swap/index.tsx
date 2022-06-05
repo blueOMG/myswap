@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade, ChainId } from 'hlbscswap-sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from 'hlbscswap-sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -19,7 +19,6 @@ import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
-import Settings from '../../components/Settings'
 import SwiperBanner from '../../components/SwiperBanner';
 
 import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
@@ -46,7 +45,6 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
-import Web3Status from '../../components/Web3Status'
 import styled from 'styled-components';
 const SwapPage = styled.div`
   width: 100%;
@@ -93,15 +91,7 @@ const SwapPage = styled.div`
     }
   }
 `
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-  [ChainId.BSCTEST]: 'BSCTEST', // 需要修改
-  [ChainId.BSC]: 'BSC',
-}
+
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -328,21 +318,13 @@ export default function Swap() {
   ])
 
 
-  const { chainId } = useActiveWeb3React()
 
   return (
     <SwapPage>
       <div className='banner_view'>
         <SwiperBanner />
       </div>
-      
-      <div style={{display:'flex',marginBottom: 10}}>
-        <div className='wallet_view'>
-          <Web3Status/>
-          { chainId && NETWORK_LABELS[chainId] && <p className='network_txt'>已连接至 { chainId && (NETWORK_LABELS[chainId] && NETWORK_LABELS[chainId])}</p>}
-        </div>
-        <Settings/>
-      </div>
+    
       <TokenWarningModal
         isOpen={urlLoadedTokens.length > 0 && !dismissTokenWarning}
         tokens={urlLoadedTokens}

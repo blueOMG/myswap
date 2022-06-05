@@ -1,9 +1,9 @@
 import React, { useContext, useMemo } from 'react'
 import { ThemeContext } from 'styled-components'
-import { Pair, ChainId } from 'hlbscswap-sdk'
+import { Pair } from 'hlbscswap-sdk'
 import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
-import Settings from '../../components/Settings'
+// import Settings from '../../components/Settings'
 
 import Question from '../../components/QuestionHelper'
 import FullPositionCard from '../../components/PositionCard'
@@ -22,7 +22,7 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import AppBody from '../AppBody'
 import { Dots } from '../../components/swap/styleds'
 import SwiperBanner from '../../components/SwiperBanner';
-import Web3Status from '../../components/Web3Status'
+// import Web3Status from '../../components/Web3Status'
 import styled from 'styled-components'
 
 const PoolPage = styled.div`
@@ -71,15 +71,7 @@ const PoolPage = styled.div`
     }
   }
 `
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-  [ChainId.BSCTEST]: 'BSCTEST', // 需要修改
-  [ChainId.BSC]: 'BSC',
-}
+
 export default function Pool() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
@@ -115,20 +107,18 @@ export default function Pool() {
 
   const hasV1Liquidity = useUserHasLiquidityInAllTokens()
   
-  const { chainId } = useActiveWeb3React()
-
   return (
     <PoolPage>
       <div className='banner_view'>
         <SwiperBanner />
       </div>
-      <div style={{display:'flex',marginBottom: 10}}>
+      {/* <div style={{display:'flex',marginBottom: 10}}>
         <div className='wallet_view'>
           <Web3Status/>
           { chainId && NETWORK_LABELS[chainId] && <p className='network_txt'>已连接至 { chainId && (NETWORK_LABELS[chainId] && NETWORK_LABELS[chainId])}</p>}
         </div>
         <Settings/>
-      </div>
+      </div> */}
       <AppBody>
         <SwapPoolTabs active={'pool'} />
         <AutoColumn gap="lg" justify="center">
