@@ -8750,10 +8750,10 @@ history@^4.9.0:
     tiny-warning "^1.0.0"
     value-equal "^1.0.1"
 
-hlbscswap-sdk@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.npmjs.org/hlbscswap-sdk/-/hlbscswap-sdk-1.0.9.tgz#bb6f3e6ab4498de6370c86303c4424e3b2770933"
-  integrity sha512-Vn8EcqyFQyOzhxE7Zb2HTwzXxYmu9AsizjDvMnb1epj7+Pxef2ZUi+TL5x2BFf1j9LeBNVTEder4xCDNxwc3JA==
+hlbscswap-sdk@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmmirror.com/hlbscswap-sdk/-/hlbscswap-sdk-1.1.0.tgz#3903d3d4b965d03c3b81fe296814329936f173df"
+  integrity sha512-HxbfzZtCQDsbqIxJnEZxn2ExXEqOytnFToRjxA7bk5AqITSkEWr+JHbwmQOPxXQCOpZaHrrPpE8gRaeKfA92xA==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"

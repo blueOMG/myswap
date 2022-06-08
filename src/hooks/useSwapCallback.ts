@@ -168,10 +168,10 @@ export function useSwapCallback(
                       case 'UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT':
                       case 'UniswapV2Router: EXCESSIVE_INPUT_AMOUNT':
                         errorMessage =
-                          'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
+                          '由于价格变动或转让费用的原因，本次交易将不会成功。试着增加滑点'
                         break
                       default:
-                        errorMessage = `The transaction cannot succeed due to error: ${callError.reason}. This is probably an issue with one of the tokens you are swapping.`
+                        errorMessage = `由于这个错误: ${callError.reason}，该交易无法成功. 可能是您正在兑换token问题之一.`
                     }
                     return { call, error: new Error(errorMessage) }
                   })
