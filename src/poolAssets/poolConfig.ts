@@ -48,6 +48,24 @@ const poolData:any = {
       total: 75000, // 总量
       id: 2, // id
       title: 'TQ合作矿池',
+    },
+
+    {
+      coin_in: '0x1c31Db837B0F249Bf6FB7439D3D77EF2dd29E6Ab', // 质押币
+      coin_out: '0xE42C011D14Dae3234C02414a3663f2c572Be56B5', // 产出币
+      stake_pool: '0x95Bea61a93aedAD77c5081eFD85721874d6d7B0B' , // 矿池
+      icon_in: 'tq_usdt_lp', // 质押币的图标名称
+      icon_out: 'tq', // 产出币的图标名称
+      demical_in: 18, //质押币精度
+      demical_in_str: '1000000000000000000', // 质押币精度字符串
+      demical_out: 18, // 产出币精度
+      name_in: 'STAR-TQ-LP', // 质押币名称
+      name_out: 'TQ', // 产出币名称
+      start: '2022/06/09 10:00:00', // 挖矿开始时间
+      end: '2022/06/20 21:00:00', // 挖矿结束时间
+      total: 100, // 总量
+      id: 3, // id
+      title: 'TQ合作矿池',
     }
   ]
 }
