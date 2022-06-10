@@ -262,7 +262,7 @@ export default function Pools() {
           coin_in: item,
           coin_out: res.rewardToken[index],
           stake_pool: poolStake_addr,
-          title: 'STAR官方矿池'
+          title: `STAR官方${index+1}号矿池`
         }
         if(Number(res.rewardPerBlock[index]) === 0 || (new Date().getTime() > new Date(res.endTime[index]*1000).getTime()) ) {
           acc.end.push(itemobj)
