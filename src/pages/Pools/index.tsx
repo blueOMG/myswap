@@ -343,12 +343,12 @@ export default function Pools() {
                   <div className='star_title'>{item.title}</div>
                   <div className='intro_view'>
                     <div className='coin_view'>
-                      <img src={require(`./../../assets/img/money${index}_in.png`)}  alt="" />
+                      <img src={require(`./../../assets/img/money0_in.png`)}  alt="" />
                       <p>{item.name_in}</p>
                     </div>
                     <p className='zuanqu'>赚取</p>
                     <div className='coin_view'>
-                      <img src={require(`./../../assets/img/money${index}_out.png`)}  alt="" />
+                      <img src={require(`./../../assets/img/money0_out.png`)}  alt="" />
                       <p>{item.name_out}</p>
                     </div>
                   </div>
