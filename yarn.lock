@@ -15920,10 +15920,10 @@ start-server-and-test@^1.11.0:
     ps-tree "1.2.0"
     wait-on "5.1.0"
 
-startswaphl-sdk@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/startswaphl-sdk/-/startswaphl-sdk-1.0.7.tgz#9e82a6fba89cb82110029fe73e4e43ed5871d15d"
-  integrity sha512-+45dZkaiEayZqa/gvcKCFv8LtPQhOlS0nkW/Y/S+jpMO3Q4+ZctmoDnTBa4Rm0zJeThoJLVTP2gWHvyyynZLYg==
+startswaphl-sdk@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.npmjs.org/startswaphl-sdk/-/startswaphl-sdk-1.0.9.tgz#3259b54481dd7dcc7691de579e203fa3e2cab42f"
+  integrity sha512-ZMWLRABprgdfIPCYH4T0JXvgBiQIceWWNrOKRIPC4jRisWeQVQYthJNZ6SGDS+ACKFcSYYCKdAvrTt7TOhEL6A==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"

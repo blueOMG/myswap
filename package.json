@@ -123,7 +123,7 @@
   "dependencies": {
     "@uniswap/default-token-list": "^2.0.0",
     "antd-mobile": "^5.14.3",
-    "startswaphl-sdk": "^1.0.7",
+    "startswaphl-sdk": "^1.0.9",
     "web3": "^1.7.3"
   }
 }
