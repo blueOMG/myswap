@@ -232,7 +232,7 @@ export default function Home() {
     {/* star 简介 */}
     <div className='star_inter_view' style={{padding: '0 10px'}}>
       <p className='txt1'>全球领先的去中心化交易所</p>
-      <p className='txt2'>THE world’s leading decentralized exchange</p>
+      <p className='txt2'>THE world’s leading decentralized exchange*</p>
       <span></span>
       <p className='txt3'>由社区和加密技术构建DFi、Web3、元宇宙</p>
       <p className='txt3'>为社区捕获行业增长红利</p>
